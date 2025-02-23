@@ -2,13 +2,10 @@ import * as React from "react";
 
 import { IconSvgProps } from "@/types";
 
-export const Logo: React.FC<IconSvgProps> = ({
-  size = 36,
-  height,
-  ...props
-}) => (
+export const Logo: React.FC<IconSvgProps> = ({ size = 36, height }) => (
   <svg
     data-name="Calque 1"
+    height={`${height}px`}
     id="prefix__Calque_1"
     viewBox="0 0 595.08 595.08"
     width={`${size}px`}
