@@ -2,10 +2,12 @@ import React from "react";
 import { Select, SelectItem } from "@heroui/select";
 
 interface OrificeSelectorProps {
+  label?: string;
   selectedOrifice: number;
   onOrificeChange: (orifice: number) => void;
 }
 export const OrificeSelector: React.FC<OrificeSelectorProps> = ({
+  label,
   selectedOrifice,
   onOrificeChange,
 }) => {
@@ -13,6 +15,8 @@ export const OrificeSelector: React.FC<OrificeSelectorProps> = ({
     <Select
       aria-label="Orifice Sizes"
       className="max-w-xs"
+      label={label}
+      labelPlacement="outside-left"
       selectedKeys={new Set([selectedOrifice.toString()])}
       selectionMode="single"
       variant="flat"

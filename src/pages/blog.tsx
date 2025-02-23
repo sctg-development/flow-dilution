@@ -1,8 +1,7 @@
 import React from "react";
 import { availableGasMixtures, type GasMixtureExt } from "@sctg/aga8-js";
-import { Slider } from "@heroui/slider";
-import { GasSelector } from "@/components/GasSelector";
-import { OrificeSelector } from "@/components/OrificeSelector";
+
+import { GasInlet } from "@/components/GasInlet";
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
 
@@ -15,44 +14,32 @@ export default function DilutionPage() {
     React.useState<number>(0.02);
   const [selectedOrificeInlet2, setSelectedOrificeInlet2] =
     React.useState<number>(0.02);
+  const [inlet1Pressure, setInlet1Pressure] = React.useState<number>(400);
+  const [inlet2Pressure, setInlet2Pressure] = React.useState<number>(400);
 
   return (
     <DefaultLayout>
       <section className="">
         <div className="">
           <h1 className={title()}>Dilution</h1>
-          <div className="w-full flex flex-row flex-wrap gap-4">
-            <Slider
-              className="max-w-md"
-              defaultValue={400}
-              label="Inlet 1 Pressure"
-              maxValue={1000}
-              minValue={0}
-              step={1}
-            />
-            <Slider
-              className="max-w-md"
-              defaultValue={400}
-              label="Inlet 2 Pressure"
-              maxValue={1000}
-              minValue={0}
-              step={1}
-            />
-            <GasSelector
+          <div className="w-full flex flex-col md:flex-row gap-4">
+            <GasInlet
+              label="Inlet 1"
+              pressure={inlet1Pressure}
               selectedGas={selectedGasInlet1}
-              onGasChange={setSelectedGasInlet1}
-            />
-            <GasSelector
-              selectedGas={selectedGasInlet2}
-              onGasChange={setSelectedGasInlet2}
-            />
-            <OrificeSelector
               selectedOrifice={selectedOrificeInlet1}
+              onGasChange={setSelectedGasInlet1}
               onOrificeChange={setSelectedOrificeInlet1}
+              onPressureChange={setInlet1Pressure}
             />
-            <OrificeSelector
+            <GasInlet
+              label="Inlet 2"
+              pressure={inlet2Pressure}
+              selectedGas={selectedGasInlet2}
               selectedOrifice={selectedOrificeInlet2}
+              onGasChange={setSelectedGasInlet2}
               onOrificeChange={setSelectedOrificeInlet2}
+              onPressureChange={setInlet2Pressure}
             />
           </div>
         </div>

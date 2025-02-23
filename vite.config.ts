@@ -6,4 +6,7 @@ import tailwindcss from "@tailwindcss/vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), tailwindcss()],
+  optimizeDeps: {
+    exclude: ['@sctg/aga8-js']
+  },
 });
