@@ -1,6 +1,6 @@
 import React from "react";
 import { availableGasMixtures, type GasMixtureExt } from "@sctg/aga8-js";
-
+import { Slider } from "@heroui/slider";
 import { GasSelector } from "@/components/GasSelector";
 import { OrificeSelector } from "@/components/OrificeSelector";
 import { title } from "@/components/primitives";
@@ -21,7 +21,23 @@ export default function DilutionPage() {
       <section className="">
         <div className="">
           <h1 className={title()}>Dilution</h1>
-          <div className="">
+          <div className="w-full flex flex-row flex-wrap gap-4">
+            <Slider
+              className="max-w-md"
+              defaultValue={400}
+              label="Inlet 1 Pressure"
+              maxValue={1000}
+              minValue={0}
+              step={1}
+            />
+            <Slider
+              className="max-w-md"
+              defaultValue={400}
+              label="Inlet 2 Pressure"
+              maxValue={1000}
+              minValue={0}
+              step={1}
+            />
             <GasSelector
               selectedGas={selectedGasInlet1}
               onGasChange={setSelectedGasInlet1}

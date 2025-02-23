@@ -18,6 +18,7 @@
     "@heroui/link": "https://pkg.pr.new/@heroui/link@4656",
     "@heroui/navbar": "https://pkg.pr.new/@heroui/navbar@4656",
     "@heroui/select": "https://pkg.pr.new/@heroui/select@4656",
+    "@heroui/slider": "https://pkg.pr.new/@heroui/slider@4656",
     "@heroui/snippet": "https://pkg.pr.new/@heroui/snippet@4656",
     "@heroui/switch": "https://pkg.pr.new/@heroui/switch@4656",
     "@heroui/system": "https://pkg.pr.new/@heroui/system@4656",
@@ -36,7 +37,7 @@
     "tailwindcss": "4.0.8"
   },
   "devDependencies": {
-    "@types/node": "20.5.7",
+    "@types/node": "20.17.19",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
     "@typescript-eslint/eslint-plugin": "8.24.1",
