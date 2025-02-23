@@ -33,5 +33,5 @@ jobs:
             apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
             accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
             projectName: flow-dilution
-            directory: /dist
+            directory: dist
             gitHubToken: ${{ secrets.GITHUB_TOKEN }}
