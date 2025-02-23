@@ -24,6 +24,7 @@ import {
   TableRow,
   TableCell,
 } from "@heroui/table";
+import { Input } from "@heroui/input";
 import { availableGasMixtures, type GasMixtureExt } from "@sctg/aga8-js";
 
 import { FlowData, GasInlet } from "@/components/GasInlet";
@@ -50,30 +51,46 @@ export default function DilutionPage() {
     massFlow: 0,
     p_crit: 0,
   });
+  const [temperature, setTemperature] = React.useState<number>(293.15);
 
   return (
     <DefaultLayout>
       <section className="">
-        <div className="">
+        <div>
           <h1 className={title()}>Dilution</h1>
+          <p>
+            This page allows you to compute the mass flow of two gas mixtures in
+            a dilution system.
+          </p>
+          <Input
+            isRequired
+            className="max-w-xs mt-4"
+            defaultValue={temperature.toString()}
+            label="Temperature in K"
+            labelPlacement="outside-left"
+            size="md"
+            type="number"
+            variant="flat"
+            onChange={(e) => setTemperature(parseFloat(e.target.value))}
+          />
           <div className="mt-4 w-full flex flex-col md:flex-row gap-4">
             <GasInlet
-              flowData={inlet1FlowData}
               label="Inlet 1"
               pressure={inlet1Pressure}
               selectedGas={selectedGasInlet1}
               selectedOrifice={selectedOrificeInlet1}
+              temperature={temperature}
               onFlowDataChange={setInlet1FlowData}
               onGasChange={setSelectedGasInlet1}
               onOrificeChange={setSelectedOrificeInlet1}
               onPressureChange={setInlet1Pressure}
             />
             <GasInlet
-              flowData={inlet2FlowData}
               label="Inlet 2"
               pressure={inlet2Pressure}
               selectedGas={selectedGasInlet2}
               selectedOrifice={selectedOrificeInlet2}
+              temperature={temperature}
               onFlowDataChange={setInlet2FlowData}
               onGasChange={setSelectedGasInlet2}
               onOrificeChange={setSelectedOrificeInlet2}

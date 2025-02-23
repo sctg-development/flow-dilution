@@ -31,7 +31,7 @@ interface GasInletProps {
   pressure: number;
   selectedGas: GasMixtureExt;
   selectedOrifice: number;
-  flowData: FlowData;
+  temperature: number;
   onPressureChange: (pressure: number) => void;
   onGasChange: (gas: GasMixtureExt) => void;
   onOrificeChange: (orifice: number) => void;
@@ -40,6 +40,7 @@ interface GasInletProps {
 
 /**
  * Compute the gas flow function of pressure
+ * @param temperature - Temperature in K
  * @param pressure - Inlet pressure in kPa
  * @param outletPressure - Outlet pressure in kPa
  * @param gas - Gas mixture
@@ -47,6 +48,7 @@ interface GasInletProps {
  * @returns the mass flow rate in kg/s and the critical pressure in kPa
  */
 async function computeGasFlowFunctionOfPressure(
+  temperature: number,
   pressure: number,
   outletPressure: number,
   gas: GasMixtureExt,
@@ -57,7 +59,6 @@ async function computeGasFlowFunctionOfPressure(
 
   AGA8.SetupGERG();
 
-  const temperature = 273.15 + 20; // 20°C in Kelvin
   const A = Math.PI * Math.pow(orifice / 2000, 2); // A - Area of the orifice
 
   // Constants for toroidal nozzle
@@ -136,72 +137,44 @@ export const GasInlet: React.FC<GasInletProps> = ({
   pressure,
   selectedGas,
   selectedOrifice,
-  flowData,
+  temperature,
   onPressureChange,
   onGasChange,
   onOrificeChange,
   onFlowDataChange,
 }) => {
-  async function localOrificeChange(orifice: number) {
-    onOrificeChange(orifice);
-    flowData = await computeGasFlowFunctionOfPressure(
-      pressure,
-      101.325,
-      selectedGas,
-      orifice,
-    );
-    onFlowDataChange(flowData);
-  }
-
-  async function localPressureChange(pressure: number) {
-    onPressureChange(pressure);
-    flowData = await computeGasFlowFunctionOfPressure(
-      pressure,
-      101.325,
-      selectedGas,
-      selectedOrifice,
-    );
-    onFlowDataChange(flowData);
-  }
-
-  async function localGasChange(gas: GasMixtureExt) {
-    onGasChange(gas);
-    flowData = await computeGasFlowFunctionOfPressure(
-      pressure,
-      101.325,
-      gas,
-      selectedOrifice,
-    );
-    onFlowDataChange(flowData);
-  }
-
   React.useEffect(() => {
-    computeGasFlowFunctionOfPressure(
-      pressure,
-      101.325,
-      selectedGas,
-      selectedOrifice,
-    ).then((_flowData) => {
-      onFlowDataChange(_flowData);
-    });
-  }, []);
+    const updateFlow = async () => {
+      const newFlowData = await computeGasFlowFunctionOfPressure(
+        temperature,
+        pressure,
+        101.325,
+        selectedGas,
+        selectedOrifice,
+      );
+
+      onFlowDataChange(newFlowData);
+    };
+
+    updateFlow();
+  }, [temperature, pressure, selectedGas, selectedOrifice, onFlowDataChange]);
 
   return (
     <div className="w-full md:w-1/2 flex flex-col flex-wrap gap-4">
       <PressureSlider
         label={`${label} Pressure`}
         value={pressure}
-        onChange={localPressureChange}
+        onChange={onPressureChange}
       />
       <GasSelector
         label={`Gas ${label}`}
         selectedGas={selectedGas}
-        onGasChange={localGasChange}
+        onGasChange={onGasChange}
       />
       <OrificeSelector
         label={`Orifice ${label}`}
         selectedOrifice={selectedOrifice}
-        onOrificeChange={localOrificeChange}
+        onOrificeChange={onOrificeChange}
       />
     </div>
   );
