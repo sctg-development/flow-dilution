@@ -38,6 +38,14 @@ interface GasInletProps {
   onFlowDataChange: (flowData: FlowData) => void;
 }
 
+/**
+ * Compute the gas flow function of pressure
+ * @param pressure - Inlet pressure in kPa
+ * @param outletPressure - Outlet pressure in kPa
+ * @param gas - Gas mixture
+ * @param orifice - Orifice diameter in mm
+ * @returns the mass flow rate in kg/s and the critical pressure in kPa
+ */
 async function computeGasFlowFunctionOfPressure(
   pressure: number,
   outletPressure: number,

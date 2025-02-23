@@ -1,55 +1,92 @@
-# Vite & HeroUI Template
+# Flow Dilution Calculator
 
-This is a template for creating applications using Vite 6 and HeroUI (v2).
+A web-based tool for calculating gas flow dilution using sonic nozzles according to ISO 9300:2022 standards.
 
-[Try it on CodeSandbox](https://githubbox.com/sctg-development/vite-react-heroui-template)
+## Overview
 
-## Technologies Used
+This application helps calculate and visualize gas flow dilution using sonic nozzles. It implements the AGA8/GERG-2008 equations of state for accurate gas property calculations and follows ISO 9300:2022 standards for sonic nozzle flow calculations.
 
-- [Vite 6](https://vitejs.dev/guide/)
-- [HeroUI](https://heroui.com)
-- [Tailwind CSS 4](https://tailwindcss.com)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org)
-- [Framer Motion](https://www.framer.com/motion)
+## Features
 
-## Tailwind CSS 4
+- Real-time calculation of mass flow rates
+- Support for multiple gas mixtures using GERG-2008 equation of state
+- Configurable inlet pressures (0-1000 kPa)
+- Selectable orifice sizes (1-7 microns)
+- Automatic calculation of:
+  - Mass flow rates
+  - Critical pressures
+  - Gas mixture concentrations
+- Scientific notation display for precise values
+- Responsive design for desktop and mobile use
 
-This template uses Tailwind CSS 4, which is a utility-first CSS framework. You can customize the styles by modifying the `tailwind.config.js` file.  
-Currently HeroUI uses Tailwind CSS 3, but @winchesHe  create a port of HeroUI to Tailwind CSS 4, you can find it [here](https://github.com/heroui-inc/heroui/pull/4656), HeroUI packages are available at <https://github.com/heroui-inc/heroui/pull/4656#issuecomment-2651218074>.
+## Technical Stack
 
-## How to Use
+- React 19
+- HeroUI 2.7
+- TailwindCSS 4
+- WebAssembly (via @sctg/aga8-js)
+- TypeScript
+- Vite
 
-To clone the project, run the following command:
+## Installation
 
 ```bash
-git clone https://github.com/sctg-development/vite-react-heroui-template.git
-```
+# Clone the repository
+git clone https://github.com/sctg-development/flow-dilution.git
 
-### Install dependencies
-
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
-
-```bash
+# Install dependencies
+cd flow-dilution
 npm install
-```
 
-### Run the development server
-
-```bash
+# Start development server
 npm run dev
 ```
 
-### Setup pnpm (optional)
+## Usage
 
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
+1. Select gas mixtures for both inlets
+2. Adjust inlet pressures using the sliders
+3. Choose appropriate orifice sizes
+4. View results in the table below:
+   - Mass flow rates for each inlet
+   - Resulting concentration
+   - Critical pressure requirements
 
-```bash
-public-hoist-pattern[]=*@heroui/*
-```
+## Technical Details
 
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
+The application uses the GERG-2008 equation of state through a WebAssembly port (@sctg/aga8-js) to calculate gas properties. Flow calculations follow ISO 9300:2022 standards for sonic nozzles, including:
+
+- Critical flow factor calculations
+- Discharge coefficient estimation
+- Mass flow rate computation
+- Critical pressure ratio verification
+
+## Dependencies
+
+- [@sctg/aga8-js](https://github.com/sctg-development/aga8-js) - GERG-2008 equation of state
+- [vite-react-heroui-template](https://github.com/sctg-development/vite-react-heroui-template) - Base template
 
 ## License
 
-Licensed under the [MIT license](https://github.com/sctg-development/vite-react-heroui-template/blob/main/LICENSE).
+Copyright (c) 2024-2025 Ronan LE MEILLAT
+
+This project is licensed under the GNU Affero General Public License v3.0 or later - see the [LICENSE](LICENSE.md) file for details.
+
+## Author
+
+Ronan LE MEILLAT  
+SCTG Development
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a new Pull Request
+
+## Acknowledgments
+
+- Based on ISO 9300:2022 standards
+- Uses GERG-2008 equation of state
+- Implements AGA8 calculations
