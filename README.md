@@ -2,6 +2,10 @@
 
 A web-based tool for calculating gas flow dilution using sonic nozzles according to ISO 9300:2022 standards.
 
+## Star the project
+
+**If you appreciate my work, please consider giving it a star! 🤩**
+
 ## Overview
 
 This application helps calculate and visualize gas flow dilution using sonic nozzles. It implements the AGA8/GERG-2008 equations of state for accurate gas property calculations and follows ISO 9300:2022 standards for sonic nozzle flow calculations.
@@ -24,7 +28,7 @@ This application helps calculate and visualize gas flow dilution using sonic noz
 - React 19
 - HeroUI 2.7
 - TailwindCSS 4
-- WebAssembly (via @sctg/aga8-js)
+- WebAssembly (via [@sctg/aga8-js](https://github.com/sctg-development/aga8-js))
 - TypeScript
 - Vite
 
@@ -51,6 +55,18 @@ npm run dev
    - Mass flow rates for each inlet
    - Resulting concentration
    - Critical pressure requirements
+
+## Privacy & Security
+
+All calculations are performed locally in your browser using WebAssembly technology. No data is ever sent to external servers or third parties. The application can even work offline once loaded, ensuring complete privacy of your calculations and gas mixture configurations.
+
+Key privacy features:
+
+- 100% client-side calculations
+- No data collection or tracking
+- No external API calls
+- Works offline
+- No server-side processing
 
 ## Technical Details
 
