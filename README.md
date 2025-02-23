@@ -11,7 +11,7 @@ This application helps calculate and visualize gas flow dilution using sonic noz
 - Real-time calculation of mass flow rates
 - Support for multiple gas mixtures using GERG-2008 equation of state
 - Configurable inlet pressures (0-1000 kPa)
-- Selectable orifice sizes (1-7 microns)
+- Selectable orifice sizes (1-1000 microns)
 - Automatic calculation of:
   - Mass flow rates
   - Critical pressures
