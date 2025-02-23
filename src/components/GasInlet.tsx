@@ -1,3 +1,20 @@
+/**
+ * @copyright Copyright (c) 2024-2025 Ronan LE MEILLAT
+ * @license AGPL-3.0-or-later
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 import React from "react";
 import { AGA8wasm, type GasMixtureExt } from "@sctg/aga8-js";
 
@@ -5,14 +22,20 @@ import { GasSelector } from "./GasSelector";
 import { OrificeSelector } from "./OrificeSelector";
 import { PressureSlider } from "./PressureSlider";
 
+export type FlowData = {
+  massFlow: number; // kg/s
+  p_crit: number; // kPa
+};
 interface GasInletProps {
   label: string;
   pressure: number;
   selectedGas: GasMixtureExt;
   selectedOrifice: number;
+  flowData: FlowData;
   onPressureChange: (pressure: number) => void;
   onGasChange: (gas: GasMixtureExt) => void;
   onOrificeChange: (orifice: number) => void;
+  onFlowDataChange: (flowData: FlowData) => void;
 }
 
 async function computeGasFlowFunctionOfPressure(
@@ -20,7 +43,7 @@ async function computeGasFlowFunctionOfPressure(
   outletPressure: number,
   gas: GasMixtureExt,
   orifice: number,
-): Promise<number> {
+): Promise<FlowData> {
   // Initialize GERG-2008 module
   const AGA8 = await AGA8wasm();
 
@@ -97,7 +120,7 @@ async function computeGasFlowFunctionOfPressure(
 \t\tMass flow rate: ${(massFlow * 1000 * 60).toPrecision(4)} g/min
 \t\tVolume flow at outlet: ${(massFlow / rho_out).toPrecision(4)} m³/s (${((massFlow / rho_out) * 1000 * 3600).toPrecision(4)} L/h)`);
 
-  return 0;
+  return { massFlow: massFlow, p_crit: p_crit };
 }
 
 export const GasInlet: React.FC<GasInletProps> = ({
@@ -105,28 +128,43 @@ export const GasInlet: React.FC<GasInletProps> = ({
   pressure,
   selectedGas,
   selectedOrifice,
+  flowData,
   onPressureChange,
   onGasChange,
   onOrificeChange,
+  onFlowDataChange,
 }) => {
-  function localOrificeChange(orifice: number) {
+  async function localOrificeChange(orifice: number) {
     onOrificeChange(orifice);
-    computeGasFlowFunctionOfPressure(pressure, 101.325, selectedGas, orifice);
+    flowData = await computeGasFlowFunctionOfPressure(
+      pressure,
+      101.325,
+      selectedGas,
+      orifice,
+    );
+    onFlowDataChange(flowData);
   }
 
-  function localPressureChange(pressure: number) {
+  async function localPressureChange(pressure: number) {
     onPressureChange(pressure);
-    computeGasFlowFunctionOfPressure(
+    flowData = await computeGasFlowFunctionOfPressure(
       pressure,
       101.325,
       selectedGas,
       selectedOrifice,
     );
+    onFlowDataChange(flowData);
   }
 
-  function localGasChange(gas: GasMixtureExt) {
+  async function localGasChange(gas: GasMixtureExt) {
     onGasChange(gas);
-    computeGasFlowFunctionOfPressure(pressure, 101.325, gas, selectedOrifice);
+    flowData = await computeGasFlowFunctionOfPressure(
+      pressure,
+      101.325,
+      gas,
+      selectedOrifice,
+    );
+    onFlowDataChange(flowData);
   }
 
   React.useEffect(() => {
@@ -135,7 +173,9 @@ export const GasInlet: React.FC<GasInletProps> = ({
       101.325,
       selectedGas,
       selectedOrifice,
-    );
+    ).then((_flowData) => {
+      onFlowDataChange(_flowData);
+    });
   }, []);
 
   return (

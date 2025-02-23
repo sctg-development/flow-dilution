@@ -1,6 +1,25 @@
+/**
+ * @copyright Copyright (c) 2024-2025 Ronan LE MEILLAT
+ * @license AGPL-3.0-or-later
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 import React from "react";
 import { Select, SelectItem } from "@heroui/select";
-import { availableGasMixtures, type GasMixtureExt } from "@sctg/aga8-js";
+import { pureGasMixtures, type GasMixtureExt } from "@sctg/aga8-js";
+
+const usedGasMixtures = [...pureGasMixtures];
 
 interface GasSelectorProps {
   label?: string;
@@ -24,14 +43,14 @@ export const GasSelector: React.FC<GasSelectorProps> = ({
       variant="flat"
       onSelectionChange={(keys) => {
         const gasName = keys.currentKey;
-        const gas = availableGasMixtures.find((_gas) => _gas.name === gasName);
+        const gas = usedGasMixtures.find((_gas) => _gas.name === gasName);
 
         if (gas) {
           onGasChange(gas);
         }
       }}
     >
-      {availableGasMixtures.map((gas) => (
+      {usedGasMixtures.map((gas) => (
         <SelectItem key={gas.name}>{gas.name}</SelectItem>
       ))}
     </Select>
