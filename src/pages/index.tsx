@@ -83,7 +83,7 @@ export default function DilutionPage() {
           <h1 className={title()}>Dilution</h1>
           <p>
             This page allows you to compute the mass flow of two gas mixtures in
-            a dilution system.
+            a dilution system using two sonic nozzles.
           </p>
           <Input
             isRequired
