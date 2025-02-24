@@ -7,19 +7,41 @@
     <title>SCTG Flow Dilution</title>
     <meta key="title" content="SCTG Flow Dilution" property="og:title" />
     <meta
-      content="Make beautiful websites regardless of your design experience."
+      content="Calculate gas flow dilution using sonic nozzles with GERG-2008 equations of state and ISO 9300:2022 standards"
       property="og:description"
     />
     <meta
-      content="Make beautiful websites regardless of your design experience."
+      content="A web-based tool for calculating gas flow dilution using sonic nozzles with real-time calculations and support for multiple gas mixtures"
       name="description"
     />
-    <meta
-      key="viewport"
-      content="viewport-fit=cover, width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-      name="viewport"
-    />
     <link href="/favicon.ico" rel="icon" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "SCTG Flow Dilution",
+        "applicationCategory": "Engineering Tool",
+        "SoftwareSourceCode" : {
+          "codeRepository": "https://github.com/sctg-development/flow-dilution",
+          "programmingLanguage": "typescript"
+        },
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "EUR"
+        },
+        "description": "A web-based tool for calculating gas flow dilution using sonic nozzles. Implements GERG-2008 equations of state and ISO 9300:2022 standards for accurate gas property calculations.",
+        "softwareVersion": "1.0",
+        "author": {
+          "@type": "Organization",
+          "name": "SCTG Development",
+          "url": "https://github.com/sctg-development"
+        },
+        "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+        "keywords": "gas flow, dilution, sonic nozzles, GERG-2008, ISO 9300:2022, gas mixtures, flow calculation"
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

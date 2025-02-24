@@ -15,20 +15,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import React from "react";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
 import {
   Table,
-  TableHeader,
   TableBody,
-  TableColumn,
-  TableRow,
   TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
 } from "@heroui/table";
-import { Input } from "@heroui/input";
-import { availableGasMixtures, type GasMixtureExt } from "@sctg/aga8-js";
+import {
+  availableGasMixtures,
+  PropertiesGERGResult,
+  type GasMixtureExt,
+} from "@sctg/aga8-js";
+import React from "react";
 
 import { FlowData, GasInlet } from "@/components/GasInlet";
 import { title } from "@/components/primitives";
+import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import DefaultLayout from "@/layouts/default";
 import { ScientificNotation } from "@/utilities/scientific";
 
@@ -46,12 +52,29 @@ export default function DilutionPage() {
   const [inlet1FlowData, setInlet1FlowData] = React.useState<FlowData>({
     massFlow: 0,
     p_crit: 0,
+    A: 0,
+    properties: {} as PropertiesGERGResult,
+    molarMass: 0,
+    Rs: 0,
+    rho: 0,
+    rho_out: 0,
   });
   const [inlet2FlowData, setInlet2FlowData] = React.useState<FlowData>({
     massFlow: 0,
     p_crit: 0,
+    A: 0,
+    properties: {} as PropertiesGERGResult,
+    molarMass: 0,
+    Rs: 0,
+    rho: 0,
+    rho_out: 0,
   });
   const [temperature, setTemperature] = React.useState<number>(293.15);
+  const [gas1DetailsVisible, setGas1DetailsVisible] =
+    React.useState<boolean>(false);
+
+  const [gas2DetailsVisible, setGas2DetailsVisible] =
+    React.useState<boolean>(false);
 
   return (
     <DefaultLayout>
@@ -74,29 +97,71 @@ export default function DilutionPage() {
             onChange={(e) => setTemperature(parseFloat(e.target.value))}
           />
           <div className="mt-4 w-full flex flex-col md:flex-row gap-4">
-            <GasInlet
-              label="Inlet 1"
-              pressure={inlet1Pressure}
-              selectedGas={selectedGasInlet1}
-              selectedOrifice={selectedOrificeInlet1}
-              temperature={temperature}
-              onFlowDataChange={setInlet1FlowData}
-              onGasChange={setSelectedGasInlet1}
-              onOrificeChange={setSelectedOrificeInlet1}
-              onPressureChange={setInlet1Pressure}
-            />
-            <GasInlet
-              label="Inlet 2"
-              pressure={inlet2Pressure}
-              selectedGas={selectedGasInlet2}
-              selectedOrifice={selectedOrificeInlet2}
-              temperature={temperature}
-              onFlowDataChange={setInlet2FlowData}
-              onGasChange={setSelectedGasInlet2}
-              onOrificeChange={setSelectedOrificeInlet2}
-              onPressureChange={setInlet2Pressure}
-            />
+            <div className="w-full md:w-1/2 flex flex-col flex-wrap gap-4">
+              <GasInlet
+                label="Inlet 1"
+                pressure={inlet1Pressure}
+                selectedGas={selectedGasInlet1}
+                selectedOrifice={selectedOrificeInlet1}
+                temperature={temperature}
+                onFlowDataChange={setInlet1FlowData}
+                onGasChange={setSelectedGasInlet1}
+                onOrificeChange={setSelectedOrificeInlet1}
+                onPressureChange={setInlet1Pressure}
+              />
+              <Button
+                className="mt-4 max-w-xs w-fit"
+                color={!gas1DetailsVisible ? "primary" : "secondary"}
+                onPress={() => setGas1DetailsVisible(!gas1DetailsVisible)}
+              >
+                {gas1DetailsVisible ? "Hide" : "Show"} gas 1 properties
+              </Button>
+            </div>
+            <div className="w-w-full md:w-1/2 flex flex-col flex-wrap gap-4">
+              <GasInlet
+                label="Inlet 2"
+                pressure={inlet2Pressure}
+                selectedGas={selectedGasInlet2}
+                selectedOrifice={selectedOrificeInlet2}
+                temperature={temperature}
+                onFlowDataChange={setInlet2FlowData}
+                onGasChange={setSelectedGasInlet2}
+                onOrificeChange={setSelectedOrificeInlet2}
+                onPressureChange={setInlet2Pressure}
+              />
+              <Button
+                className="mt-4 max-w-xs w-fit"
+                color={!gas2DetailsVisible ? "primary" : "secondary"}
+                onPress={() => setGas2DetailsVisible(!gas2DetailsVisible)}
+              >
+                {gas2DetailsVisible ? "Hide" : "Show"} gas 2 properties
+              </Button>
+            </div>
           </div>
+        </div>
+        <div className="mt-4">
+          {inlet1FlowData && gas1DetailsVisible && (
+            <SonicNozzleTable
+              flowData={inlet1FlowData}
+              gas={selectedGasInlet1}
+              orifice={selectedOrificeInlet1}
+              outletPressure={101.325}
+              pressure={inlet1Pressure}
+              temperature={temperature}
+            />
+          )}
+        </div>
+        <div className="mt-4">
+          {inlet2FlowData && gas2DetailsVisible && (
+            <SonicNozzleTable
+              flowData={inlet2FlowData}
+              gas={selectedGasInlet2}
+              orifice={selectedOrificeInlet2}
+              outletPressure={101.325}
+              pressure={inlet2Pressure}
+              temperature={temperature}
+            />
+          )}
         </div>
         <Table removeWrapper aria-label="Flow Results" className="mt-4">
           <TableHeader>
