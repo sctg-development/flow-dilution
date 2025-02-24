@@ -15,8 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import type React from "react";
-
+import React from "react";
 import { Select, SelectItem } from "@heroui/select";
 import { pureGasMixtures, type GasMixtureExt } from "@sctg/aga8-js";
 

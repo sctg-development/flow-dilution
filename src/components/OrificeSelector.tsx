@@ -1,5 +1,4 @@
-import type React from "react";
-
+import React from "react";
 import { Select, SelectItem } from "@heroui/select";
 
 interface OrificeSelectorProps {

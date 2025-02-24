@@ -1,4 +1,4 @@
-import { type FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 import { VisuallyHidden } from "@react-aria/visually-hidden";
 import { SwitchProps, useSwitch } from "@heroui/switch";
 import clsx from "clsx";
