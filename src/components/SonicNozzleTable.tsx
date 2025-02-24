@@ -68,6 +68,7 @@ export const SonicNozzleTable: React.FC<SonicNozzleTableProps> = ({
         ["Mass flow rate", massFlow * 1000 * 3600, "g/h"],
         ["Mass flow rate", massFlow * 1000 * 60, "g/min"],
         ["Volume flow at outlet", massFlow / rho_out, "m³/s"],
+        ["Volume flow at outlet", (massFlow / rho_out) * 1000, "L/s"],
         ["Volume flow at outlet", (massFlow / rho_out) * 1000 * 3600, "L/h"],
       ],
     },
