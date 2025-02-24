@@ -9,4 +9,26 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["@sctg/aga8-js"],
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("react")) {
+            return "react";
+          }
+          if (id.includes("heroui")) {
+            return "heroui";
+          }
+          if (id.includes("sctg")) {
+            return "sctg";
+          }
+          if (id.includes("tailwind")) {
+            return "tailwind";
+          }
+
+          return null;
+        },
+      },
+    },
+  },
 });
