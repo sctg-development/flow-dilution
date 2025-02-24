@@ -9,4 +9,7 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ["@sctg/aga8-js"],
   },
+  build: {
+    rollupOptions: {},
+  },
 });
