@@ -191,7 +191,8 @@ function logSonicNozzleFlowCalculation(
   outletPressure: number,
   orifice: number,
   flowData: FlowData,
-  target = window.console.log,
+  // eslint-disable-next-line no-console
+  target = console.log,
 ) {
   const { A, molarMass, Rs, rho, p_crit, properties, rho_out, massFlow } =
     flowData;

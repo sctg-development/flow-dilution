@@ -8,8 +8,7 @@ import {
   TableCell,
 } from "@heroui/table";
 import { type GasMixtureExt } from "@sctg/aga8-js";
-
-import { ScientificNotation } from "../utilities/scientific";
+import { ScientificNotation } from "@sctg/scientific-notation";
 
 import { type FlowData } from "./GasInlet";
 

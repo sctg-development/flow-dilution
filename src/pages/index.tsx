@@ -31,12 +31,12 @@ import {
   type GasMixtureExt,
 } from "@sctg/aga8-js";
 import React from "react";
+import { ScientificNotation } from "@sctg/scientific-notation";
 
 import { FlowData, GasInlet } from "@/components/GasInlet";
 import { title } from "@/components/primitives";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import DefaultLayout from "@/layouts/default";
-import { ScientificNotation } from "@/utilities/scientific";
 
 export default function DilutionPage() {
   const [selectedGasInlet1, setSelectedGasInlet1] =

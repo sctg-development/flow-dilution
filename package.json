@@ -27,6 +27,7 @@
     "@react-aria/visually-hidden": "3.8.19",
     "@react-types/shared": "3.27.0",
     "@sctg/aga8-js": "1.0.9",
+    "@sctg/scientific-notation": "^1.0.0",
     "@tailwindcss/postcss": "^4.0.8",
     "@tailwindcss/vite": "^4.0.8",
     "clsx": "2.1.1",

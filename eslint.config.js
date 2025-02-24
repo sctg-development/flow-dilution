@@ -18,6 +18,7 @@ export default [
       parser: tsParser,
       globals: {
         // Ajout des globals du navigateur
+        console: 'readonly',
         document: 'readonly',
         localStorage: 'readonly',
         window: 'readonly',
