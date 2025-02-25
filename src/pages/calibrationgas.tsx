@@ -211,16 +211,30 @@ export default function CalibrationGasPage() {
               </TableCell>
               <TableCell>kg/s</TableCell>
             </TableRow>
+            <TableRow key="flowcalibration">
+              <TableCell>Calibration Mass Flow</TableCell>
+              <TableCell>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: ScientificNotation.toScientificNotationHTML(
+                      inlet2FlowData.massFlow*selectedCalibrationConcentration,
+                      5,
+                    ),
+                  }}
+                />
+              </TableCell>
+              <TableCell>kg/s</TableCell>
+            </TableRow>
             <TableRow key="concentration">
-              <TableCell>Concentration of Gas 2 in total flow</TableCell>
+              <TableCell>Concentration of calibration gas at outlet</TableCell>
               <TableCell>
                 {(
-                  (inlet2FlowData.massFlow /
+                  selectedCalibrationConcentration*(inlet2FlowData.massFlow /
                     (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
-                  100
+                  1e6
                 ).toPrecision(5)}
               </TableCell>
-              <TableCell>%</TableCell>
+              <TableCell>ppm</TableCell>
             </TableRow>
             <TableRow key="criticalPressure">
               <TableCell>Flow Critical Pressure</TableCell>
