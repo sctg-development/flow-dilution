@@ -33,10 +33,11 @@ import {
 import { useState } from "react";
 import { ScientificNotation } from "@sctg/scientific-notation";
 
-import { FlowData, GasInlet } from "@/components/GasInlet";
+import { GasInlet } from "@/components/GasInlet";
 import { title } from "@/components/primitives";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import DefaultLayout from "@/layouts/default";
+import { FlowData } from "@/utilities";
 
 export default function DilutionPage() {
   const [selectedGasInlet1, setSelectedGasInlet1] = useState<GasMixtureExt>(

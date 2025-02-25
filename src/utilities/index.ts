@@ -1,9 +1,18 @@
-import { type FlowData } from "@/components/GasInlet";
 import { Cd, Cd_max, Cd_min } from "@/config/site";
-import { type GasMixtureExt } from "@sctg/aga8-js";
+import { PropertiesGERGResult, type GasMixtureExt } from "@sctg/aga8-js";
 
-export 
-function logSonicNozzleFlowCalculation(
+export type FlowData = {
+    massFlow: number; // kg/s
+    p_crit: number; // kPa
+    A: number; // area of the orifice in m²
+    properties: PropertiesGERGResult; // Gas properties
+    molarMass: number; // g/mol
+    Rs: number; // J/(kg·K)
+    rho: number; // kg/m³
+    rho_out: number; // kg/m³
+  };
+  
+export function logSonicNozzleFlowCalculation(
   gas: GasMixtureExt,
   temperature: number,
   pressure: number,

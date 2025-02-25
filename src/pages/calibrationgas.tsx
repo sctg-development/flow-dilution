@@ -27,9 +27,12 @@ import { Button } from "@heroui/button";
 
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
-import { FlowData, GasInlet } from "@/components/GasInlet";
+import { GasInlet } from "@/components/GasInlet";
 import { CalibrationInlet } from "@/components/CalibrationInlet";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
+import { FlowData } from "@/utilities";
+import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/table";
+import { ScientificNotation } from "@sctg/scientific-notation";
 
 export default function CalibrationGasPage() {
   const [temperature, setTemperature] = useState<number>(293.15);
@@ -173,6 +176,64 @@ export default function CalibrationGasPage() {
             />
           )}
         </div>
+        <Table removeWrapper aria-label="Flow Results" className="mt-4">
+          <TableHeader>
+            <TableColumn>Parameter</TableColumn>
+            <TableColumn>Value</TableColumn>
+            <TableColumn>Unit</TableColumn>
+          </TableHeader>
+          <TableBody>
+            <TableRow key="flow1">
+              <TableCell>Flow 1 Mass Flow</TableCell>
+              <TableCell>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: ScientificNotation.toScientificNotationHTML(
+                      inlet1FlowData.massFlow,
+                      5,
+                    ),
+                  }}
+                />
+              </TableCell>
+              <TableCell>kg/s</TableCell>
+            </TableRow>
+            <TableRow key="flow2">
+              <TableCell>Flow 2 Mass Flow</TableCell>
+              <TableCell>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: ScientificNotation.toScientificNotationHTML(
+                      inlet2FlowData.massFlow,
+                      5,
+                    ),
+                  }}
+                />
+              </TableCell>
+              <TableCell>kg/s</TableCell>
+            </TableRow>
+            <TableRow key="concentration">
+              <TableCell>Concentration of Gas 2 in total flow</TableCell>
+              <TableCell>
+                {(
+                  (inlet2FlowData.massFlow /
+                    (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
+                  100
+                ).toPrecision(5)}
+              </TableCell>
+              <TableCell>%</TableCell>
+            </TableRow>
+            <TableRow key="criticalPressure">
+              <TableCell>Flow Critical Pressure</TableCell>
+              <TableCell>
+                {Math.min(
+                  inlet1FlowData.p_crit,
+                  inlet2FlowData.p_crit,
+                ).toPrecision(5)}
+              </TableCell>
+              <TableCell>kPa</TableCell>
+            </TableRow>
+          </TableBody>
+        </Table>
       </section>
     </DefaultLayout>
   );

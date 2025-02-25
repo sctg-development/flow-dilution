@@ -29,18 +29,8 @@ import { OrificeSelector } from "./OrificeSelector";
 import { PressureSlider } from "./PressureSlider";
 import { ConcentrationSelector } from "./ConcentrationSelector";
 import { Cd } from "@/config/site";
-import { logSonicNozzleFlowCalculation } from "@/utilities";
+import { FlowData, logSonicNozzleFlowCalculation } from "@/utilities";
 
-export type FlowData = {
-  massFlow: number; // kg/s
-  p_crit: number; // kPa
-  A: number; // area of the orifice in m²
-  properties: PropertiesGERGResult; // Gas properties
-  molarMass: number; // g/mol
-  Rs: number; // J/(kg·K)
-  rho: number; // kg/m³
-  rho_out: number; // kg/m³
-};
 interface CalibrationInletProps {
   label: string;
   pressure: number;
