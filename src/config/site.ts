@@ -9,7 +9,18 @@ export type SiteConfig = typeof siteConfig;
 export interface Orifice {
   size: number;
   name: string;
-};
+}
+
+/**
+ * Interface representing a calibration gas concentration
+ * @interface Concentration
+ * @property {number} concentration - The concentration value in ppm
+ * @property {string} name - The display name of the concentration (e.g., "5 ppm")
+ */
+export interface Concentration {
+  concentration: number;
+  name: string;
+}
 
 export const siteConfig = {
   name: "Flow Dilution",
@@ -80,5 +91,16 @@ export const siteConfig = {
     { size: 0.9, name: "900 Micron" },
     { size: 0.95, name: "950 Micron" },
     { size: 1.0, name: "1 mm" },
+  ],
+  calibrationConcentrations: [
+    { concentration: 5e-6, name: "5 ppm" },
+    { concentration: 10e-6, name: "10 ppm" },
+    { concentration: 20e-6, name: "20 ppm" },
+    { concentration: 30e-6, name: "30 ppm" },
+    { concentration: 50e-6, name: "50 ppm" },
+    { concentration: 100e-6, name: "100 ppm" },
+    { concentration: 200e-6, name: "200 ppm" },
+    { concentration: 500e-6, name: "500 ppm" },
+    { concentration: 1e-3, name: "1000 ppm" },
   ],
 };

@@ -7,7 +7,6 @@ import {
   NavbarItem,
   NavbarMenuToggle,
   NavbarMenu,
-  NavbarMenuItem,
 } from "@heroui/navbar";
 import { link as linkStyles } from "@heroui/theme";
 import clsx from "clsx";
@@ -83,7 +82,7 @@ export const Navbar = () => {
 
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
-        {siteConfig.navItems.map((item) => (
+          {siteConfig.navItems.map((item) => (
             <NavbarItem key={item.href}>
               <Link
                 className={clsx(

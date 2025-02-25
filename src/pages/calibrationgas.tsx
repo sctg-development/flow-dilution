@@ -27,13 +27,19 @@ import {
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
 import { FlowData, GasInlet } from "@/components/GasInlet";
+import { ConcentrationSelector } from "@/components/ConcentrationSelector";
+import { OrificeSelector } from "@/components/OrificeSelector";
+import { PressureSlider } from "@/components/PressureSlider";
 
 export default function CalibrationGasPage() {
   const [temperature, setTemperature] = useState<number>(293.15);
   const [selectedGasInlet1, setSelectedGasInlet1] = useState<GasMixtureExt>(
-    availableGasMixtures.find((gas) => gas.name.toLowerCase() === "nitrogen") as GasMixtureExt,
+    availableGasMixtures.find(
+      (gas) => gas.name.toLowerCase() === "nitrogen",
+    ) as GasMixtureExt,
   );
   const [inlet1Pressure, setInlet1Pressure] = useState<number>(400);
+  const [inlet2Pressure, setInlet2Pressure] = useState<number>(400);
   const [selectedOrificeInlet1, setSelectedOrificeInlet1] =
     useState<number>(0.02);
   const [inlet1FlowData, setInlet1FlowData] = useState<FlowData>({
@@ -60,6 +66,9 @@ export default function CalibrationGasPage() {
             concentration of 5 ppm H<sub>2</sub>S. The calculator uses ISO
             9300:2022 standards for sonic nozzle flow calculations.
           </p>
+          <p className="text-xs">Note that the mass of the calibration (ppm values) is ignored in the
+            calculation. 1000 ppm = 0.1% so it is less than the ISO9300:2022
+            standard tolerance.</p>
           <Input
             isRequired
             className="max-w-xs mt-4"
@@ -82,6 +91,31 @@ export default function CalibrationGasPage() {
             onOrificeChange={setSelectedOrificeInlet1}
             onPressureChange={setInlet1Pressure}
           />
+          <div className="mt-4">
+            <PressureSlider
+                    label={`Calibration gas Pressure`}
+                    value={inlet2Pressure}
+                    onChange={setInlet2Pressure}
+                  />
+            </div>
+          <div className="mt-4">
+            <OrificeSelector
+              label="Calibration orifice"
+              selectedOrifice={0.020}
+              onOrificeChange={function (orifice: number): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
+          <div className="mt-4">
+            <ConcentrationSelector
+              label="Calibration bottle"
+              selectedConcentration={50e-6}
+              onConcentrationChange={function (concentration: number): void {
+                throw new Error("Function not implemented.");
+              }}
+            />
+          </div>
         </div>
       </section>
     </DefaultLayout>
