@@ -73,7 +73,6 @@ export default function DilutionPage() {
   });
   const [temperature, setTemperature] = useState<number>(293.15);
   const [gas1DetailsVisible, setGas1DetailsVisible] = useState<boolean>(false);
-
   const [gas2DetailsVisible, setGas2DetailsVisible] = useState<boolean>(false);
 
   return (

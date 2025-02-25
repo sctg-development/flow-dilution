@@ -104,3 +104,14 @@ export const siteConfig = {
     { concentration: 1e-3, name: "1000 ppm" },
   ],
 };
+
+// Constants for toroidal nozzle
+export const Re_thoroidal_max = 3.2e7; // Maximal Reynolds number for toroidal nozzle
+export const Re_thoroidal_min = 2.1e4; // Minimal Reynolds number for toroidal nozzle
+export const Cd_a = 0.9959; // Constant for toroidal nozzle
+export const Cd_b = 2.72; // Reynolds number factor for toroidal nozzle
+export const Cd_n = 0.5; // Reynolds number exponent for toroidal nozzle
+export const Cd_max = Cd_a - Cd_b * Re_thoroidal_min ** (Cd_n * -1); // Typical discharge coefficient for toroidal sonic nozzle
+export const Cd_min = Cd_a - Cd_b * Re_thoroidal_max ** (Cd_n * -1); // Typical discharge coefficient for toroidal sonic nozzle
+export const Cd_geometric_mean = Math.sqrt(Cd_max * Cd_min); // Geometric mean of discharge coefficients
+export const Cd = Cd_geometric_mean; // Use geometric mean of discharge coefficients

@@ -23,13 +23,13 @@ import {
   GasMixtureExt,
   PropertiesGERGResult,
 } from "@sctg/aga8-js";
+import { Button } from "@heroui/button";
 
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
 import { FlowData, GasInlet } from "@/components/GasInlet";
-import { ConcentrationSelector } from "@/components/ConcentrationSelector";
-import { OrificeSelector } from "@/components/OrificeSelector";
-import { PressureSlider } from "@/components/PressureSlider";
+import { CalibrationInlet } from "@/components/CalibrationInlet";
+import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 
 export default function CalibrationGasPage() {
   const [temperature, setTemperature] = useState<number>(293.15);
@@ -42,6 +42,8 @@ export default function CalibrationGasPage() {
   const [inlet2Pressure, setInlet2Pressure] = useState<number>(400);
   const [selectedOrificeInlet1, setSelectedOrificeInlet1] =
     useState<number>(0.02);
+  const [selectedOrificeInlet2, setSelectedOrificeInlet2] =
+    useState<number>(0.02);
   const [inlet1FlowData, setInlet1FlowData] = useState<FlowData>({
     massFlow: 0,
     p_crit: 0,
@@ -52,6 +54,22 @@ export default function CalibrationGasPage() {
     rho: 0,
     rho_out: 0,
   });
+  const [inlet2FlowData, setInlet2FlowData] = useState<FlowData>({
+    massFlow: 0,
+    p_crit: 0,
+    A: 0,
+    properties: {} as PropertiesGERGResult,
+    molarMass: 0,
+    Rs: 0,
+    rho: 0,
+    rho_out: 0,
+  });
+  const [
+    selectedCalibrationConcentration,
+    setSelectedCalibrationConcentration,
+  ] = useState<number>(50e-6);
+  const [gas1DetailsVisible, setGas1DetailsVisible] = useState<boolean>(false);
+  const [gas2DetailsVisible, setGas2DetailsVisible] = useState<boolean>(false);
 
   return (
     <DefaultLayout>
@@ -66,9 +84,11 @@ export default function CalibrationGasPage() {
             concentration of 5 ppm H<sub>2</sub>S. The calculator uses ISO
             9300:2022 standards for sonic nozzle flow calculations.
           </p>
-          <p className="text-xs">Note that the mass of the calibration (ppm values) is ignored in the
+          <p className="text-xs">
+            Note that the mass of the calibration (ppm values) is ignored in the
             calculation. 1000 ppm = 0.1% so it is less than the ISO9300:2022
-            standard tolerance.</p>
+            standard tolerance.
+          </p>
           <Input
             isRequired
             className="max-w-xs mt-4"
@@ -80,42 +100,78 @@ export default function CalibrationGasPage() {
             variant="flat"
             onChange={(e) => setTemperature(parseFloat(e.target.value))}
           />
-          <GasInlet
-            label="Dilution gas"
-            pressure={inlet1Pressure}
-            selectedGas={selectedGasInlet1}
-            selectedOrifice={selectedOrificeInlet1}
-            temperature={temperature}
-            onFlowDataChange={setInlet1FlowData}
-            onGasChange={setSelectedGasInlet1}
-            onOrificeChange={setSelectedOrificeInlet1}
-            onPressureChange={setInlet1Pressure}
-          />
-          <div className="mt-4">
-            <PressureSlider
-                    label={`Calibration gas Pressure`}
-                    value={inlet2Pressure}
-                    onChange={setInlet2Pressure}
-                  />
+          <div className="mt-4 w-full flex flex-col md:flex-row gap-4">
+            <div className="w-full md:w-1/2 flex flex-col flex-wrap gap-4">
+              <GasInlet
+                label="Dilution gas"
+                pressure={inlet1Pressure}
+                selectedGas={selectedGasInlet1}
+                selectedOrifice={selectedOrificeInlet1}
+                temperature={temperature}
+                onFlowDataChange={setInlet1FlowData}
+                onGasChange={setSelectedGasInlet1}
+                onOrificeChange={setSelectedOrificeInlet1}
+                onPressureChange={setInlet1Pressure}
+              />
+              <Button
+                className="mt-4 max-w-xs w-fit"
+                color={!gas1DetailsVisible ? "primary" : "secondary"}
+                onPress={() => setGas1DetailsVisible(!gas1DetailsVisible)}
+              >
+                {gas1DetailsVisible ? "Hide" : "Show"} dilution gas properties
+              </Button>
             </div>
-          <div className="mt-4">
-            <OrificeSelector
-              label="Calibration orifice"
-              selectedOrifice={0.020}
-              onOrificeChange={function (orifice: number): void {
-                throw new Error("Function not implemented.");
-              }}
-            />
+            <div className="w-full md:w-1/2 flex flex-col flex-wrap gap-4">
+              <CalibrationInlet
+                label={"Calibration bottle"}
+                pressure={inlet2Pressure}
+                selectedCalibrationConcentration={
+                  selectedCalibrationConcentration
+                }
+                selectedGas={selectedGasInlet1}
+                selectedOrifice={selectedOrificeInlet2}
+                temperature={temperature}
+                onCalibrationConcentrationChange={
+                  setSelectedCalibrationConcentration
+                }
+                onFlowDataChange={setInlet2FlowData}
+                onOrificeChange={setSelectedOrificeInlet2}
+                onPressureChange={setInlet2Pressure}
+              />
+              <Button
+                className="mt-4 max-w-xs w-fit"
+                color={!gas2DetailsVisible ? "primary" : "secondary"}
+                onPress={() => setGas2DetailsVisible(!gas2DetailsVisible)}
+              >
+                {gas2DetailsVisible ? "Hide" : "Show"} calibration gas
+                properties
+              </Button>
+            </div>
           </div>
-          <div className="mt-4">
-            <ConcentrationSelector
-              label="Calibration bottle"
-              selectedConcentration={50e-6}
-              onConcentrationChange={function (concentration: number): void {
-                throw new Error("Function not implemented.");
-              }}
+        </div>
+        <div className="mt-4">
+          {inlet1FlowData && gas1DetailsVisible && (
+            <SonicNozzleTable
+              flowData={inlet1FlowData}
+              gas={selectedGasInlet1}
+              orifice={selectedOrificeInlet1}
+              outletPressure={101.325}
+              pressure={inlet1Pressure}
+              temperature={temperature}
             />
-          </div>
+          )}
+        </div>
+        <div className="mt-4">
+          {inlet2FlowData && gas2DetailsVisible && (
+            <SonicNozzleTable
+              flowData={inlet2FlowData}
+              gas={selectedGasInlet1}
+              orifice={selectedOrificeInlet2}
+              outletPressure={101.325}
+              pressure={inlet2Pressure}
+              temperature={temperature}
+            />
+          )}
         </div>
       </section>
     </DefaultLayout>

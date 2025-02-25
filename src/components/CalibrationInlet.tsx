@@ -25,11 +25,11 @@ import {
 } from "@sctg/aga8-js";
 import { useEffect } from "react";
 
-import { GasSelector } from "./GasSelector";
 import { OrificeSelector } from "./OrificeSelector";
 import { PressureSlider } from "./PressureSlider";
-import { logSonicNozzleFlowCalculation } from "@/utilities";
+import { ConcentrationSelector } from "./ConcentrationSelector";
 import { Cd } from "@/config/site";
+import { logSonicNozzleFlowCalculation } from "@/utilities";
 
 export type FlowData = {
   massFlow: number; // kg/s
@@ -41,14 +41,15 @@ export type FlowData = {
   rho: number; // kg/m³
   rho_out: number; // kg/m³
 };
-interface GasInletProps {
+interface CalibrationInletProps {
   label: string;
   pressure: number;
   selectedGas: GasMixtureExt;
+  selectedCalibrationConcentration: number;
   selectedOrifice: number;
   temperature: number;
   onPressureChange: (pressure: number) => void;
-  onGasChange: (gas: GasMixtureExt) => void;
+  onCalibrationConcentrationChange: (concentration: number) => void;
   onOrificeChange: (orifice: number) => void;
   onFlowDataChange: (flowData: FlowData) => void;
 }
@@ -90,6 +91,7 @@ async function computeGasFlowFunctionOfPressure(
   const densitySI = D * 1000; // mol/m³ (SI units)
   // Extract critical flow factor (Cf)
   const Cf = properties.Cf;
+
   /** Specific gas constant */
   const Rs = R / molarMassSI; // J/(kg·K)
 
@@ -127,14 +129,15 @@ async function computeGasFlowFunctionOfPressure(
   return _flowData;
 }
 
-export const GasInlet: React.FC<GasInletProps> = ({
+export const CalibrationInlet: React.FC<CalibrationInletProps> = ({
   label,
   pressure,
   selectedGas,
+  selectedCalibrationConcentration,
   selectedOrifice,
   temperature,
   onPressureChange,
-  onGasChange,
+  onCalibrationConcentrationChange,
   onOrificeChange,
   onFlowDataChange,
 }) => {
@@ -162,10 +165,10 @@ export const GasInlet: React.FC<GasInletProps> = ({
         onChange={onPressureChange}
       />
       <div className="my-4">
-        <GasSelector
-          label={`Gas ${label}`}
-          selectedGas={selectedGas}
-          onGasChange={onGasChange}
+        <ConcentrationSelector
+          label={`${label} concentration`}
+          selectedConcentration={selectedCalibrationConcentration}
+          onConcentrationChange={onCalibrationConcentrationChange}
         />
       </div>
       <OrificeSelector
