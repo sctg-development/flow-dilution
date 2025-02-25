@@ -78,7 +78,7 @@ export default function CalibrationGasPage() {
     <DefaultLayout>
       <section className="">
         <div>
-          <h1 className={title()}>Dilution</h1>
+          <h1 className={title()}>Dilution of calibration gas bottle</h1>
           <p>
             This page helps you select appropriate sonic nozzles for diluting
             calibration gases to desired concentrations. For example, you can
