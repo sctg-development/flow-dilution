@@ -19,7 +19,6 @@ import type React from "react";
 
 import {
   AGA8wasm,
-  PropertiesGERGResult,
   R,
   type GasMixtureExt,
 } from "@sctg/aga8-js";

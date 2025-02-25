@@ -12,6 +12,9 @@ This application helps calculate and visualize gas flow dilution using sonic noz
 
 ## Features
 
+- Two main calculation modes:
+  - General gas dilution
+  - Calibration gas dilution
 - Real-time calculation of mass flow rates
 - Support for multiple gas mixtures using GERG-2008 equation of state
 - Configurable inlet pressures (0-1000 kPa)
@@ -20,8 +23,31 @@ This application helps calculate and visualize gas flow dilution using sonic noz
   - Mass flow rates
   - Critical pressures
   - Gas mixture concentrations
+  - Final calibration gas concentration
+- Predefined calibration concentrations (5-1000 ppm)
 - Scientific notation display for precise values
 - Responsive design for desktop and mobile use
+- Detailed gas properties display for each inlet
+
+## Usage
+
+### General Dilution
+
+1. Select gas mixtures for both inlets
+2. Adjust inlet pressures using the sliders
+3. Choose appropriate orifice sizes
+4. View results in the table below
+
+### Calibration Gas Dilution
+
+1. Set the temperature
+2. Configure the dilution gas (typically N₂)
+3. Select the calibration gas concentration
+4. Adjust pressures and orifice sizes
+5. View resulting concentration and flow rates
+6. Optional: View detailed gas properties for each inlet
+
+Note: The mass of the calibration gas (ppm values) is ignored in calculations as 1000 ppm = 0.1% is within ISO 9300:2022 standard tolerance.
 
 ## Technical Stack
 
@@ -45,16 +71,6 @@ npm install
 # Start development server
 npm run dev
 ```
-
-## Usage
-
-1. Select gas mixtures for both inlets
-2. Adjust inlet pressures using the sliders
-3. Choose appropriate orifice sizes
-4. View results in the table below:
-   - Mass flow rates for each inlet
-   - Resulting concentration
-   - Critical pressure requirements
 
 ## Privacy & Security
 
