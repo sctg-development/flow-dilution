@@ -15,12 +15,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import React from "react";
+import type React from "react";
+
 import {
   AGA8wasm,
   PropertiesGERGResult,
   type GasMixtureExt,
 } from "@sctg/aga8-js";
+import { useEffect } from "react";
 
 import { GasSelector } from "./GasSelector";
 import { OrificeSelector } from "./OrificeSelector";
@@ -145,7 +147,7 @@ export const GasInlet: React.FC<GasInletProps> = ({
   onOrificeChange,
   onFlowDataChange,
 }) => {
-  React.useEffect(() => {
+  useEffect(() => {
     const updateFlow = async () => {
       const newFlowData = await computeGasFlowFunctionOfPressure(
         temperature,
@@ -169,11 +171,11 @@ export const GasInlet: React.FC<GasInletProps> = ({
         onChange={onPressureChange}
       />
       <div className="my-4">
-          <GasSelector
-            label={`Gas ${label}`}
-            selectedGas={selectedGas}
-            onGasChange={onGasChange}
-          />
+        <GasSelector
+          label={`Gas ${label}`}
+          selectedGas={selectedGas}
+          onGasChange={onGasChange}
+        />
       </div>
       <OrificeSelector
         label={`Orifice ${label}`}

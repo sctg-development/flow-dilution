@@ -5,14 +5,22 @@ export const siteConfig = {
   description: "Comprehensive dilution simulator for AGA8 gaz",
   navItems: [
     {
-      label: "Home",
+      label: "Dilution",
       href: "/",
+    },
+    {
+      label: "Calibration Gas",
+      href: "/calibrationgas",
     },
   ],
   navMenuItems: [
     {
-      label: "Home",
+      label: "Dilution",
       href: "/",
+    },
+    {
+      label: "Calibration Gas",
+      href: "/calibrationgas",
     },
   ],
   links: {

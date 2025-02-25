@@ -30,7 +30,7 @@ import {
   PropertiesGERGResult,
   type GasMixtureExt,
 } from "@sctg/aga8-js";
-import React from "react";
+import { useState } from "react";
 import { ScientificNotation } from "@sctg/scientific-notation";
 
 import { FlowData, GasInlet } from "@/components/GasInlet";
@@ -39,17 +39,19 @@ import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import DefaultLayout from "@/layouts/default";
 
 export default function DilutionPage() {
-  const [selectedGasInlet1, setSelectedGasInlet1] =
-    React.useState<GasMixtureExt>(availableGasMixtures[0]);
-  const [selectedGasInlet2, setSelectedGasInlet2] =
-    React.useState<GasMixtureExt>(availableGasMixtures[0]);
+  const [selectedGasInlet1, setSelectedGasInlet1] = useState<GasMixtureExt>(
+    availableGasMixtures[0],
+  );
+  const [selectedGasInlet2, setSelectedGasInlet2] = useState<GasMixtureExt>(
+    availableGasMixtures[0],
+  );
   const [selectedOrificeInlet1, setSelectedOrificeInlet1] =
-    React.useState<number>(0.02);
+    useState<number>(0.02);
   const [selectedOrificeInlet2, setSelectedOrificeInlet2] =
-    React.useState<number>(0.02);
-  const [inlet1Pressure, setInlet1Pressure] = React.useState<number>(400);
-  const [inlet2Pressure, setInlet2Pressure] = React.useState<number>(400);
-  const [inlet1FlowData, setInlet1FlowData] = React.useState<FlowData>({
+    useState<number>(0.02);
+  const [inlet1Pressure, setInlet1Pressure] = useState<number>(400);
+  const [inlet2Pressure, setInlet2Pressure] = useState<number>(400);
+  const [inlet1FlowData, setInlet1FlowData] = useState<FlowData>({
     massFlow: 0,
     p_crit: 0,
     A: 0,
@@ -59,7 +61,7 @@ export default function DilutionPage() {
     rho: 0,
     rho_out: 0,
   });
-  const [inlet2FlowData, setInlet2FlowData] = React.useState<FlowData>({
+  const [inlet2FlowData, setInlet2FlowData] = useState<FlowData>({
     massFlow: 0,
     p_crit: 0,
     A: 0,
@@ -69,12 +71,10 @@ export default function DilutionPage() {
     rho: 0,
     rho_out: 0,
   });
-  const [temperature, setTemperature] = React.useState<number>(293.15);
-  const [gas1DetailsVisible, setGas1DetailsVisible] =
-    React.useState<boolean>(false);
+  const [temperature, setTemperature] = useState<number>(293.15);
+  const [gas1DetailsVisible, setGas1DetailsVisible] = useState<boolean>(false);
 
-  const [gas2DetailsVisible, setGas2DetailsVisible] =
-    React.useState<boolean>(false);
+  const [gas2DetailsVisible, setGas2DetailsVisible] = useState<boolean>(false);
 
   return (
     <DefaultLayout>

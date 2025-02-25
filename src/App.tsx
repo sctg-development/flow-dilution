@@ -1,11 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 
-import IndexPage from "@/pages/dilution";
+import CalibrationGasPage from "@/pages/calibrationgas";
+import DilutionPage from "@/pages/dilution";
 
 function App() {
   return (
     <Routes>
-      <Route element={<IndexPage />} path="/" />
+      <Route element={<DilutionPage />} path="/" />
+      <Route element={<CalibrationGasPage />} path="/calibrationgas" />
     </Routes>
   );
 }
