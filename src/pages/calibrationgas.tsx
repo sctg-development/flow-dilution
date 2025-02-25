@@ -18,12 +18,34 @@
 
 import { Input } from "@heroui/input";
 import { useState } from "react";
+import {
+  availableGasMixtures,
+  GasMixtureExt,
+  PropertiesGERGResult,
+} from "@sctg/aga8-js";
 
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
+import { FlowData, GasInlet } from "@/components/GasInlet";
 
 export default function CalibrationGasPage() {
   const [temperature, setTemperature] = useState<number>(293.15);
+  const [selectedGasInlet1, setSelectedGasInlet1] = useState<GasMixtureExt>(
+    availableGasMixtures.find((gas) => gas.name.toLowerCase() === "nitrogen") as GasMixtureExt,
+  );
+  const [inlet1Pressure, setInlet1Pressure] = useState<number>(400);
+  const [selectedOrificeInlet1, setSelectedOrificeInlet1] =
+    useState<number>(0.02);
+  const [inlet1FlowData, setInlet1FlowData] = useState<FlowData>({
+    massFlow: 0,
+    p_crit: 0,
+    A: 0,
+    properties: {} as PropertiesGERGResult,
+    molarMass: 0,
+    Rs: 0,
+    rho: 0,
+    rho_out: 0,
+  });
 
   return (
     <DefaultLayout>
@@ -48,6 +70,17 @@ export default function CalibrationGasPage() {
             type="number"
             variant="flat"
             onChange={(e) => setTemperature(parseFloat(e.target.value))}
+          />
+          <GasInlet
+            label="Dilution gas"
+            pressure={inlet1Pressure}
+            selectedGas={selectedGasInlet1}
+            selectedOrifice={selectedOrificeInlet1}
+            temperature={temperature}
+            onFlowDataChange={setInlet1FlowData}
+            onGasChange={setSelectedGasInlet1}
+            onOrificeChange={setSelectedOrificeInlet1}
+            onPressureChange={setInlet1Pressure}
           />
         </div>
       </section>
