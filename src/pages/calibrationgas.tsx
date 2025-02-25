@@ -88,7 +88,7 @@ export default function CalibrationGasPage() {
             9300:2022 standards for sonic nozzle flow calculations.
           </p>
           <p className="text-xs">
-            Note that the mass of the calibration (ppm values) is ignored in the
+            Note that the mass of the calibration gas (ppm values) is ignored in the
             calculation. 1000 ppm = 0.1% so it is less than the ISO9300:2022
             standard tolerance.
           </p>
@@ -198,7 +198,7 @@ export default function CalibrationGasPage() {
               <TableCell>kg/s</TableCell>
             </TableRow>
             <TableRow key="flow2">
-              <TableCell>Flow 2 Mass Flow</TableCell>
+              <TableCell>Calibration bottle Flow</TableCell>
               <TableCell>
                 <span
                   dangerouslySetInnerHTML={{
