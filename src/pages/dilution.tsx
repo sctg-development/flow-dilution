@@ -209,6 +209,34 @@ export default function DilutionPage() {
               </TableCell>
               <TableCell>%</TableCell>
             </TableRow>
+            <TableRow key="flow2">
+              <TableCell>Flow 2 Mass Flow</TableCell>
+              <TableCell>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: ScientificNotation.toScientificNotationHTML(
+                      inlet2FlowData.massFlow,
+                      5,
+                    ),
+                  }}
+                />
+              </TableCell>
+              <TableCell>kg/s</TableCell>
+            </TableRow>            
+            <TableRow key="volumeflow">
+              <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
+              <TableCell>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: ScientificNotation.toScientificNotationHTML(
+                      (inlet2FlowData.massFlow / inlet2FlowData.rho_out)*1000,
+                      5,
+                    ),
+                  }}
+                />
+              </TableCell>
+              <TableCell>L/s</TableCell>
+            </TableRow>
             <TableRow key="criticalPressure">
               <TableCell>Flow Critical Pressure</TableCell>
               <TableCell>

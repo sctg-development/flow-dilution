@@ -184,7 +184,7 @@ export default function CalibrationGasPage() {
           </TableHeader>
           <TableBody>
             <TableRow key="flow1">
-              <TableCell>Flow 1 Mass Flow</TableCell>
+              <TableCell>Dilution Mass Flow</TableCell>
               <TableCell>
                 <span
                   dangerouslySetInnerHTML={{
@@ -212,7 +212,7 @@ export default function CalibrationGasPage() {
               <TableCell>kg/s</TableCell>
             </TableRow>
             <TableRow key="flowcalibration">
-              <TableCell>Calibration Mass Flow</TableCell>
+              <TableCell>Calibration gas Mass Flow</TableCell>
               <TableCell>
                 <span
                   dangerouslySetInnerHTML={{
@@ -224,6 +224,34 @@ export default function CalibrationGasPage() {
                 />
               </TableCell>
               <TableCell>kg/s</TableCell>
+            </TableRow>
+            <TableRow key="volumeflow">
+              <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
+              <TableCell>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: ScientificNotation.toScientificNotationHTML(
+                      ((inlet1FlowData.massFlow / inlet1FlowData.rho_out)+(inlet2FlowData.massFlow / inlet2FlowData.rho_out))*1000,
+                      5,
+                    ),
+                  }}
+                />
+              </TableCell>
+              <TableCell>L/s</TableCell>
+            </TableRow>
+            <TableRow key="volumeflow2">
+              <TableCell>&nbsp;</TableCell>
+              <TableCell>
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: ScientificNotation.toScientificNotationHTML(
+                      ((inlet1FlowData.massFlow / inlet1FlowData.rho_out)+(inlet2FlowData.massFlow / inlet2FlowData.rho_out))*1000*60,
+                      5,
+                    ),
+                  }}
+                />
+              </TableCell>
+              <TableCell>L/min</TableCell>
             </TableRow>
             <TableRow key="concentration">
               <TableCell>Concentration of calibration gas at outlet</TableCell>
