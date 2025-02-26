@@ -40,6 +40,7 @@ import { GasInlet } from "@/components/GasInlet";
 import { CalibrationInlet } from "@/components/CalibrationInlet";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import { type FlowData } from "@/utilities";
+import { CopyButton } from "@/components/copy-button";
 
 export const CalibrationGasPage = () => {
   /**
@@ -286,6 +287,7 @@ export const CalibrationGasPage = () => {
                     ),
                   }}
                 />
+                <CopyButton value={inlet1FlowData.massFlow} />
               </TableCell>
               <TableCell>kg/s</TableCell>
             </TableRow>
@@ -300,6 +302,7 @@ export const CalibrationGasPage = () => {
                     ),
                   }}
                 />
+                <CopyButton value={inlet2FlowData.massFlow} />
               </TableCell>
               <TableCell>kg/s</TableCell>
             </TableRow>
@@ -314,6 +317,11 @@ export const CalibrationGasPage = () => {
                       5,
                     ),
                   }}
+                />
+                <CopyButton
+                  value={
+                    inlet2FlowData.massFlow * selectedCalibrationConcentration
+                  }
                 />
               </TableCell>
               <TableCell>kg/s</TableCell>
@@ -333,6 +341,16 @@ export const CalibrationGasPage = () => {
                       5,
                     ),
                   }}
+                />
+                <CopyButton
+                  value={
+                    computeOutletVolumeFlowAt101325kPa(
+                      inlet1FlowData.massFlow,
+                      inlet1FlowData.rho_out,
+                      inlet2FlowData.massFlow,
+                      inlet2FlowData.rho_out,
+                    ) * 1000
+                  }
                 />
               </TableCell>
               <TableCell>L/s</TableCell>
@@ -355,6 +373,18 @@ export const CalibrationGasPage = () => {
                     ),
                   }}
                 />
+                <CopyButton
+                  value={
+                    computeOutletVolumeFlowAt101325kPa(
+                      inlet1FlowData.massFlow,
+                      inlet1FlowData.rho_out,
+                      inlet2FlowData.massFlow,
+                      inlet2FlowData.rho_out,
+                    ) *
+                    1000 *
+                    60
+                  }
+                />
               </TableCell>
               <TableCell>L/min</TableCell>
             </TableRow>
@@ -373,6 +403,15 @@ export const CalibrationGasPage = () => {
                     ),
                   }}
                 />
+                <CopyButton
+                  value={
+                    computeCalibrationGasConcentrationAtOutlet(
+                      inlet1FlowData.massFlow,
+                      inlet2FlowData.massFlow,
+                      selectedCalibrationConcentration,
+                    ) * 1e6
+                  }
+                />
               </TableCell>
               <TableCell>ppm</TableCell>
             </TableRow>
@@ -383,6 +422,9 @@ export const CalibrationGasPage = () => {
                   inlet1FlowData.p_crit,
                   inlet2FlowData.p_crit,
                 ).toPrecision(5)}
+                <CopyButton
+                  value={Math.min(inlet1FlowData.p_crit, inlet2FlowData.p_crit)}
+                />
               </TableCell>
               <TableCell>kPa</TableCell>
             </TableRow>

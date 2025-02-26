@@ -38,6 +38,7 @@ import { title } from "@/components/primitives";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import { DefaultLayout } from "@/layouts/default";
 import { FlowData } from "@/utilities";
+import { CopyButton } from "@/components/copy-button";
 
 export const DilutionPage = () => {
   const [selectedGasInlet1, setSelectedGasInlet1] = useState<GasMixtureExt>(
@@ -181,6 +182,7 @@ export const DilutionPage = () => {
                     ),
                   }}
                 />
+                <CopyButton value={inlet1FlowData.massFlow} />
               </TableCell>
               <TableCell>kg/s</TableCell>
             </TableRow>
@@ -195,6 +197,7 @@ export const DilutionPage = () => {
                     ),
                   }}
                 />
+                <CopyButton value={inlet2FlowData.massFlow} />
               </TableCell>
               <TableCell>kg/s</TableCell>
             </TableRow>
@@ -206,6 +209,13 @@ export const DilutionPage = () => {
                     (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
                   100
                 ).toPrecision(5)}
+                <CopyButton
+                  value={
+                    (inlet2FlowData.massFlow /
+                      (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
+                    100
+                  }
+                />
               </TableCell>
               <TableCell>%</TableCell>
             </TableRow>
@@ -220,6 +230,7 @@ export const DilutionPage = () => {
                     ),
                   }}
                 />
+                <CopyButton value={inlet2FlowData.massFlow} />
               </TableCell>
               <TableCell>kg/s</TableCell>
             </TableRow>
@@ -234,6 +245,11 @@ export const DilutionPage = () => {
                     ),
                   }}
                 />
+                <CopyButton
+                  value={
+                    (inlet2FlowData.massFlow / inlet2FlowData.rho_out) * 1000
+                  }
+                />
               </TableCell>
               <TableCell>L/s</TableCell>
             </TableRow>
@@ -244,6 +260,9 @@ export const DilutionPage = () => {
                   inlet1FlowData.p_crit,
                   inlet2FlowData.p_crit,
                 ).toPrecision(5)}
+                <CopyButton
+                  value={Math.min(inlet1FlowData.p_crit, inlet2FlowData.p_crit)}
+                />
               </TableCell>
               <TableCell>kPa</TableCell>
             </TableRow>
