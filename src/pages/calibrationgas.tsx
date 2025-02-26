@@ -17,7 +17,7 @@
  */
 
 import { Input } from "@heroui/input";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import {
   availableGasMixtures,
   GasMixtureExt,
@@ -166,6 +166,37 @@ export const CalibrationGasPage = () => {
   ): number {
     return concentration * (massFlow2 / (massFlow1 + massFlow2));
   }
+
+  // Memoize complex calculations
+  const outletVolumeFlow = useMemo(
+    () =>
+      computeOutletVolumeFlowAt101325kPa(
+        inlet1FlowData.massFlow,
+        inlet1FlowData.rho_out,
+        inlet2FlowData.massFlow,
+        inlet2FlowData.rho_out,
+      ),
+    [
+      inlet1FlowData.massFlow,
+      inlet1FlowData.rho_out,
+      inlet2FlowData.massFlow,
+      inlet2FlowData.rho_out,
+    ],
+  );
+
+  const calibrationGasConcentration = useMemo(
+    () =>
+      computeCalibrationGasConcentrationAtOutlet(
+        inlet1FlowData.massFlow,
+        inlet2FlowData.massFlow,
+        selectedCalibrationConcentration,
+      ),
+    [
+      inlet1FlowData.massFlow,
+      inlet2FlowData.massFlow,
+      selectedCalibrationConcentration,
+    ],
+  );
 
   return (
     <DefaultLayout>
@@ -332,26 +363,12 @@ export const CalibrationGasPage = () => {
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      computeOutletVolumeFlowAt101325kPa(
-                        inlet1FlowData.massFlow,
-                        inlet1FlowData.rho_out,
-                        inlet2FlowData.massFlow,
-                        inlet2FlowData.rho_out,
-                      ) * 1000,
+                      outletVolumeFlow * 1000,
                       5,
                     ),
                   }}
                 />
-                <CopyButton
-                  value={
-                    computeOutletVolumeFlowAt101325kPa(
-                      inlet1FlowData.massFlow,
-                      inlet1FlowData.rho_out,
-                      inlet2FlowData.massFlow,
-                      inlet2FlowData.rho_out,
-                    ) * 1000
-                  }
-                />
+                <CopyButton value={outletVolumeFlow * 1000} />
               </TableCell>
               <TableCell>L/s</TableCell>
             </TableRow>
@@ -361,30 +378,12 @@ export const CalibrationGasPage = () => {
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      computeOutletVolumeFlowAt101325kPa(
-                        inlet1FlowData.massFlow,
-                        inlet1FlowData.rho_out,
-                        inlet2FlowData.massFlow,
-                        inlet2FlowData.rho_out,
-                      ) *
-                        1000 *
-                        60,
+                      outletVolumeFlow * 1000 * 60,
                       5,
                     ),
                   }}
                 />
-                <CopyButton
-                  value={
-                    computeOutletVolumeFlowAt101325kPa(
-                      inlet1FlowData.massFlow,
-                      inlet1FlowData.rho_out,
-                      inlet2FlowData.massFlow,
-                      inlet2FlowData.rho_out,
-                    ) *
-                    1000 *
-                    60
-                  }
-                />
+                <CopyButton value={outletVolumeFlow * 1000 * 60} />
               </TableCell>
               <TableCell>L/min</TableCell>
             </TableRow>
@@ -394,11 +393,7 @@ export const CalibrationGasPage = () => {
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      computeCalibrationGasConcentrationAtOutlet(
-                        inlet1FlowData.massFlow,
-                        inlet2FlowData.massFlow,
-                        selectedCalibrationConcentration,
-                      ) * 1e6,
+                      calibrationGasConcentration * 1e6,
                       3,
                     ),
                   }}
