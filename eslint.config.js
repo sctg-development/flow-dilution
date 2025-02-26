@@ -23,6 +23,8 @@ export default [
         localStorage: 'readonly',
         window: 'readonly',
         SVGSVGElement: 'readonly',
+        Blob: 'readonly',
+        URL: 'readonly',
       },
       parserOptions: {
         ecmaFeatures: {

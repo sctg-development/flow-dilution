@@ -23,7 +23,6 @@ import {
   GasMixtureExt,
   PropertiesGERGResult,
 } from "@sctg/aga8-js";
-import { Button } from "@heroui/button";
 import {
   Table,
   TableBody,
@@ -42,6 +41,7 @@ import { CalibrationInlet } from "@/components/CalibrationInlet";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import { type FlowData } from "@/utilities";
 import { CopyButton } from "@/components/copy-button";
+import { Button } from "@heroui/button";
 
 export const CalibrationGasPage = () => {
   /**
@@ -125,18 +125,43 @@ export const CalibrationGasPage = () => {
     setSelectedCalibrationConcentration,
   ] = useState<number>(50e-6);
 
-  /**
-   * The visibility of the dilution gas details table.
-   */
-  const [gas1DetailsVisible, setGas1DetailsVisible] = useState<boolean>(false);
+  const exportData = () => {
+    const data = {
+      temperature,
+      dilutionGas: {
+        name: selectedGasInlet1.name,
+        pressure: inlet1Pressure,
+        orifice: selectedOrificeInlet1,
+        massFlow: inlet1FlowData.massFlow,
+      },
+      calibrationGas: {
+        bottleConcentration: selectedCalibrationConcentration,
+        pressure: inlet2Pressure,
+        orifice: selectedOrificeInlet2,
+        massFlow: inlet2FlowData.massFlow,
+      },
+      results: {
+        outletConcentration: calibrationGasConcentration,
+        outletVolumeFlow: outletVolumeFlow,
+        criticalPressure: Math.min(
+          inlet1FlowData.p_crit,
+          inlet2FlowData.p_crit,
+        ),
+      },
+    };
 
-  /**
-   * The visibility of the calibration gas details table.
-   * The default value is false.
-   */
-  const [gas2DetailsVisible, setGas2DetailsVisible] = useState<boolean>(false);
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
 
-  /**
+    a.href = url;
+    a.download = "calibration-setup.json";
+    a.click();
+  };
+
+  /**s
    * Compute the outlet volume flow at 101.325 kPa.
    * @param massFlow1 - The mass flow of the dilution gas.
    * @param rho_out1 - The output density of the dilution gas.
@@ -421,6 +446,9 @@ export const CalibrationGasPage = () => {
           )}
         </Tab>
       </Tabs>
+      <Button className="mt-4" color="secondary" onPress={exportData}>
+        Export Configuration
+      </Button>
     </DefaultLayout>
   );
 };
