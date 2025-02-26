@@ -209,7 +209,7 @@ export default function DilutionPage() {
               </TableCell>
               <TableCell>%</TableCell>
             </TableRow>
-            <TableRow key="flow2">
+            <TableRow key="Flow 2 Mass Flow">
               <TableCell>Flow 2 Mass Flow</TableCell>
               <TableCell>
                 <span
