@@ -39,13 +39,14 @@ import DefaultLayout from "@/layouts/default";
 import { GasInlet } from "@/components/GasInlet";
 import { CalibrationInlet } from "@/components/CalibrationInlet";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
-import { FlowData } from "@/utilities";
+import { type FlowData } from "@/utilities";
 
 export default function CalibrationGasPage() {
   /**
    * The temperature in Kelvin.
    */
   const [temperature, setTemperature] = useState<number>(293.15);
+
   /**
    * The selected gas for the dilution gas.
    */
@@ -54,14 +55,17 @@ export default function CalibrationGasPage() {
       (gas) => gas.name.toLowerCase() === "nitrogen",
     ) as GasMixtureExt,
   );
+
   /**
    * The pressure of the gas for the dilution.
    */
   const [inlet1Pressure, setInlet1Pressure] = useState<number>(400);
+
   /**
    * The pressure of the gas for the calibration gas.
    */
   const [inlet2Pressure, setInlet2Pressure] = useState<number>(400);
+
   /**
    * The sonic nozzle orifice for the dilution gas.
    * The default value is 0.02.
@@ -69,6 +73,7 @@ export default function CalibrationGasPage() {
    */
   const [selectedOrificeInlet1, setSelectedOrificeInlet1] =
     useState<number>(0.02);
+
   /**
    * The sonic nozzle orifice for the calibration gas.
    * The default value is 0.02.
@@ -76,6 +81,7 @@ export default function CalibrationGasPage() {
    */
   const [selectedOrificeInlet2, setSelectedOrificeInlet2] =
     useState<number>(0.02);
+
   /**
    * The flow data for the dilution gas.
    * Contains the mass flow, critical pressure, area, properties, molar mass, Rs, rho, and rho_out…
@@ -91,6 +97,7 @@ export default function CalibrationGasPage() {
     rho: 0,
     rho_out: 0,
   });
+
   /**
    * The flow data for the calibration gas.
    * Contains the mass flow, critical pressure, area, properties, molar mass, Rs, rho, and rho_out…
@@ -106,6 +113,7 @@ export default function CalibrationGasPage() {
     rho: 0,
     rho_out: 0,
   });
+
   /**
    * The selected calibration bottle concentration.
    * The default value is 50e-6.
@@ -114,8 +122,49 @@ export default function CalibrationGasPage() {
     selectedCalibrationConcentration,
     setSelectedCalibrationConcentration,
   ] = useState<number>(50e-6);
+
+  /**
+   * The visibility of the dilution gas details table.
+   */
   const [gas1DetailsVisible, setGas1DetailsVisible] = useState<boolean>(false);
+
+  /**
+   * The visibility of the calibration gas details table.
+   * The default value is false.
+   */
   const [gas2DetailsVisible, setGas2DetailsVisible] = useState<boolean>(false);
+
+  /**
+   * Compute the outlet volume flow at 101.325 kPa.
+   * @param massFlow1 - The mass flow of the dilution gas.
+   * @param rho_out1 - The output density of the dilution gas.
+   * @param massFlow2 - The mass flow of the calibration gas.
+   * @param rho_out2 - The output density of the calibration gas.
+   * @returns The outlet volume flow at 101.325 kPa.
+   */
+  function computeOutletVolumeFlowAt101325kPa(
+    massFlow1: number,
+    rho_out1: number,
+    massFlow2: number,
+    rho_out2: number,
+  ): number {
+    return massFlow1 / rho_out1 + massFlow2 / rho_out2;
+  }
+
+  /**
+   * Compute the concentration of the calibration gas at the outlet.
+   * @param massFlow1 - The mass flow of the dilution gas in kg/s.
+   * @param massFlow2 - The mass flow of the calibration gas in kg/s.
+   * @param concentration - The concentration of the calibration gas dimensionless.
+   * @returns The concentration of the calibration gas at the outlet.
+   */
+  function computeCalibrationGasConcentrationAtOutlet(
+    massFlow1: number,
+    massFlow2: number,
+    concentration: number,
+  ): number {
+    return concentration * (massFlow2 / (massFlow1 + massFlow2));
+  }
 
   return (
     <DefaultLayout>
@@ -275,9 +324,12 @@ export default function CalibrationGasPage() {
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      (inlet1FlowData.massFlow / inlet1FlowData.rho_out +
-                        inlet2FlowData.massFlow / inlet2FlowData.rho_out) *
-                        1000,
+                      computeOutletVolumeFlowAt101325kPa(
+                        inlet1FlowData.massFlow,
+                        inlet1FlowData.rho_out,
+                        inlet2FlowData.massFlow,
+                        inlet2FlowData.rho_out,
+                      ) * 1000,
                       5,
                     ),
                   }}
@@ -291,8 +343,12 @@ export default function CalibrationGasPage() {
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      (inlet1FlowData.massFlow / inlet1FlowData.rho_out +
-                        inlet2FlowData.massFlow / inlet2FlowData.rho_out) *
+                      computeOutletVolumeFlowAt101325kPa(
+                        inlet1FlowData.massFlow,
+                        inlet1FlowData.rho_out,
+                        inlet2FlowData.massFlow,
+                        inlet2FlowData.rho_out,
+                      ) *
                         1000 *
                         60,
                       5,
@@ -306,10 +362,11 @@ export default function CalibrationGasPage() {
               <TableCell>Concentration of calibration gas at outlet</TableCell>
               <TableCell>
                 {(
-                  selectedCalibrationConcentration *
-                  (inlet2FlowData.massFlow /
-                    (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
-                  1e6
+                  computeCalibrationGasConcentrationAtOutlet(
+                    inlet1FlowData.massFlow,
+                    inlet2FlowData.massFlow,
+                    selectedCalibrationConcentration,
+                  ) * 1e6
                 ).toPrecision(5)}
               </TableCell>
               <TableCell>ppm</TableCell>
