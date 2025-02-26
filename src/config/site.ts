@@ -34,6 +34,14 @@ export const siteConfig = {
       label: "Calibration Gas",
       href: "/calibrationgas",
     },
+    {
+      label: "AGA8 Computations",
+      href: "https://aga8.lasersmart.work/",
+    },
+    {
+      label: "Sonic Nozzle",
+      href: "https://sonic.lasersmart.work/",
+    },
   ],
   navMenuItems: [
     {
@@ -43,6 +51,14 @@ export const siteConfig = {
     {
       label: "Calibration Gas",
       href: "/calibrationgas",
+    },
+    {
+      label: "AGA8 Computations",
+      href: "https://aga8.lasersmart.work/",
+    },
+    {
+      label: "Sonic Nozzle",
+      href: "https://sonic.lasersmart.work/",
     },
   ],
   links: {
