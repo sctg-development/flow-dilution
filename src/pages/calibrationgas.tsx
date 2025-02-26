@@ -24,6 +24,15 @@ import {
   PropertiesGERGResult,
 } from "@sctg/aga8-js";
 import { Button } from "@heroui/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableColumn,
+  TableHeader,
+  TableRow,
+} from "@heroui/table";
+import { ScientificNotation } from "@sctg/scientific-notation";
 
 import { title } from "@/components/primitives";
 import DefaultLayout from "@/layouts/default";
@@ -31,22 +40,47 @@ import { GasInlet } from "@/components/GasInlet";
 import { CalibrationInlet } from "@/components/CalibrationInlet";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import { FlowData } from "@/utilities";
-import { Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from "@heroui/table";
-import { ScientificNotation } from "@sctg/scientific-notation";
 
 export default function CalibrationGasPage() {
+  /**
+   * The temperature in Kelvin.
+   */
   const [temperature, setTemperature] = useState<number>(293.15);
+  /**
+   * The selected gas for the dilution gas.
+   */
   const [selectedGasInlet1, setSelectedGasInlet1] = useState<GasMixtureExt>(
     availableGasMixtures.find(
       (gas) => gas.name.toLowerCase() === "nitrogen",
     ) as GasMixtureExt,
   );
+  /**
+   * The pressure of the gas for the dilution.
+   */
   const [inlet1Pressure, setInlet1Pressure] = useState<number>(400);
+  /**
+   * The pressure of the gas for the calibration gas.
+   */
   const [inlet2Pressure, setInlet2Pressure] = useState<number>(400);
+  /**
+   * The sonic nozzle orifice for the dilution gas.
+   * The default value is 0.02.
+   * The value is in mm.
+   */
   const [selectedOrificeInlet1, setSelectedOrificeInlet1] =
     useState<number>(0.02);
+  /**
+   * The sonic nozzle orifice for the calibration gas.
+   * The default value is 0.02.
+   * The value is in mm.
+   */
   const [selectedOrificeInlet2, setSelectedOrificeInlet2] =
     useState<number>(0.02);
+  /**
+   * The flow data for the dilution gas.
+   * Contains the mass flow, critical pressure, area, properties, molar mass, Rs, rho, and rho_out…
+   * @see https://sctg-development.github.io/aga8-js/
+   */
   const [inlet1FlowData, setInlet1FlowData] = useState<FlowData>({
     massFlow: 0,
     p_crit: 0,
@@ -57,6 +91,11 @@ export default function CalibrationGasPage() {
     rho: 0,
     rho_out: 0,
   });
+  /**
+   * The flow data for the calibration gas.
+   * Contains the mass flow, critical pressure, area, properties, molar mass, Rs, rho, and rho_out…
+   * @see https://sctg-development.github.io/aga8-js/
+   */
   const [inlet2FlowData, setInlet2FlowData] = useState<FlowData>({
     massFlow: 0,
     p_crit: 0,
@@ -67,6 +106,10 @@ export default function CalibrationGasPage() {
     rho: 0,
     rho_out: 0,
   });
+  /**
+   * The selected calibration bottle concentration.
+   * The default value is 50e-6.
+   */
   const [
     selectedCalibrationConcentration,
     setSelectedCalibrationConcentration,
@@ -88,8 +131,8 @@ export default function CalibrationGasPage() {
             9300:2022 standards for sonic nozzle flow calculations.
           </p>
           <p className="text-xs">
-            Note that the mass of the calibration gas (ppm values) is ignored in the
-            calculation. 1000 ppm = 0.1% so it is less than the ISO9300:2022
+            Note that the mass of the calibration gas (ppm values) is ignored in
+            the calculation. 1000 ppm = 0.1% so it is less than the ISO9300:2022
             standard tolerance.
           </p>
           <Input
@@ -183,7 +226,7 @@ export default function CalibrationGasPage() {
             <TableColumn>Unit</TableColumn>
           </TableHeader>
           <TableBody>
-            <TableRow key="flow1">
+            <TableRow key="Dilution Mass Flow">
               <TableCell>Dilution Mass Flow</TableCell>
               <TableCell>
                 <span
@@ -197,7 +240,7 @@ export default function CalibrationGasPage() {
               </TableCell>
               <TableCell>kg/s</TableCell>
             </TableRow>
-            <TableRow key="flow2">
+            <TableRow key="Calibration bottle Flow">
               <TableCell>Calibration bottle Flow</TableCell>
               <TableCell>
                 <span
@@ -211,13 +254,14 @@ export default function CalibrationGasPage() {
               </TableCell>
               <TableCell>kg/s</TableCell>
             </TableRow>
-            <TableRow key="flowcalibration">
+            <TableRow key="Calibration gas Mass Flow">
               <TableCell>Calibration gas Mass Flow</TableCell>
               <TableCell>
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      inlet2FlowData.massFlow*selectedCalibrationConcentration,
+                      inlet2FlowData.massFlow *
+                        selectedCalibrationConcentration,
                       5,
                     ),
                   }}
@@ -225,13 +269,15 @@ export default function CalibrationGasPage() {
               </TableCell>
               <TableCell>kg/s</TableCell>
             </TableRow>
-            <TableRow key="volumeflow">
+            <TableRow key="Outlet Volume Flow at 101.325 kPa">
               <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
               <TableCell>
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      ((inlet1FlowData.massFlow / inlet1FlowData.rho_out)+(inlet2FlowData.massFlow / inlet2FlowData.rho_out))*1000,
+                      (inlet1FlowData.massFlow / inlet1FlowData.rho_out +
+                        inlet2FlowData.massFlow / inlet2FlowData.rho_out) *
+                        1000,
                       5,
                     ),
                   }}
@@ -239,13 +285,16 @@ export default function CalibrationGasPage() {
               </TableCell>
               <TableCell>L/s</TableCell>
             </TableRow>
-            <TableRow key="volumeflow2">
+            <TableRow key="Outlet Volume Flow at 101.325 kPa 2">
               <TableCell>&nbsp;</TableCell>
               <TableCell>
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      ((inlet1FlowData.massFlow / inlet1FlowData.rho_out)+(inlet2FlowData.massFlow / inlet2FlowData.rho_out))*1000*60,
+                      (inlet1FlowData.massFlow / inlet1FlowData.rho_out +
+                        inlet2FlowData.massFlow / inlet2FlowData.rho_out) *
+                        1000 *
+                        60,
                       5,
                     ),
                   }}
@@ -253,18 +302,19 @@ export default function CalibrationGasPage() {
               </TableCell>
               <TableCell>L/min</TableCell>
             </TableRow>
-            <TableRow key="concentration">
+            <TableRow key="Concentration of calibration gas at outlet">
               <TableCell>Concentration of calibration gas at outlet</TableCell>
               <TableCell>
                 {(
-                  selectedCalibrationConcentration*(inlet2FlowData.massFlow /
+                  selectedCalibrationConcentration *
+                  (inlet2FlowData.massFlow /
                     (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
                   1e6
                 ).toPrecision(5)}
               </TableCell>
               <TableCell>ppm</TableCell>
             </TableRow>
-            <TableRow key="criticalPressure">
+            <TableRow key="Flow Critical Pressure">
               <TableCell>Flow Critical Pressure</TableCell>
               <TableCell>
                 {Math.min(
