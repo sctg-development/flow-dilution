@@ -32,6 +32,7 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/table";
+import { Tabs, Tab } from "@heroui/tabs";
 import { ScientificNotation } from "@sctg/scientific-notation";
 
 import { title } from "@/components/primitives";
@@ -240,13 +241,6 @@ export const CalibrationGasPage = () => {
                 onOrificeChange={setSelectedOrificeInlet1}
                 onPressureChange={setInlet1Pressure}
               />
-              <Button
-                className="mt-4 max-w-xs w-fit"
-                color={!gas1DetailsVisible ? "primary" : "secondary"}
-                onPress={() => setGas1DetailsVisible(!gas1DetailsVisible)}
-              >
-                {gas1DetailsVisible ? "Hide" : "Show"} dilution gas properties
-              </Button>
             </div>
             <div className="w-full md:w-1/2 flex flex-col flex-wrap gap-4">
               <CalibrationInlet
@@ -265,19 +259,145 @@ export const CalibrationGasPage = () => {
                 onOrificeChange={setSelectedOrificeInlet2}
                 onPressureChange={setInlet2Pressure}
               />
-              <Button
-                className="mt-4 max-w-xs w-fit"
-                color={!gas2DetailsVisible ? "primary" : "secondary"}
-                onPress={() => setGas2DetailsVisible(!gas2DetailsVisible)}
-              >
-                {gas2DetailsVisible ? "Hide" : "Show"} calibration gas
-                properties
-              </Button>
             </div>
           </div>
         </div>
-        <div className="mt-4">
-          {inlet1FlowData && gas1DetailsVisible && (
+      </section>
+      <Tabs aria-label="Gas Information" className="mt-4">
+        <Tab key="results" title="Results">
+          <Table removeWrapper aria-label="Flow Results" className="mt-4">
+            <TableHeader>
+              <TableColumn>Parameter</TableColumn>
+              <TableColumn>Value</TableColumn>
+              <TableColumn>Unit</TableColumn>
+            </TableHeader>
+            <TableBody>
+              <TableRow key="Dilution Mass Flow">
+                <TableCell>Dilution Mass Flow</TableCell>
+                <TableCell>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: ScientificNotation.toScientificNotationHTML(
+                        inlet1FlowData.massFlow,
+                        5,
+                      ),
+                    }}
+                  />
+                  <CopyButton value={inlet1FlowData.massFlow} />
+                </TableCell>
+                <TableCell>kg/s</TableCell>
+              </TableRow>
+              <TableRow key="Calibration bottle Flow">
+                <TableCell>Calibration bottle Flow</TableCell>
+                <TableCell>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: ScientificNotation.toScientificNotationHTML(
+                        inlet2FlowData.massFlow,
+                        5,
+                      ),
+                    }}
+                  />
+                  <CopyButton value={inlet2FlowData.massFlow} />
+                </TableCell>
+                <TableCell>kg/s</TableCell>
+              </TableRow>
+              <TableRow key="Calibration gas Mass Flow">
+                <TableCell>Calibration gas Mass Flow</TableCell>
+                <TableCell>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: ScientificNotation.toScientificNotationHTML(
+                        inlet2FlowData.massFlow *
+                          selectedCalibrationConcentration,
+                        5,
+                      ),
+                    }}
+                  />
+                  <CopyButton
+                    value={
+                      inlet2FlowData.massFlow * selectedCalibrationConcentration
+                    }
+                  />
+                </TableCell>
+                <TableCell>kg/s</TableCell>
+              </TableRow>
+              <TableRow key="Outlet Volume Flow at 101.325 kPa">
+                <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
+                <TableCell>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: ScientificNotation.toScientificNotationHTML(
+                        outletVolumeFlow * 1000,
+                        5,
+                      ),
+                    }}
+                  />
+                  <CopyButton value={outletVolumeFlow * 1000} />
+                </TableCell>
+                <TableCell>L/s</TableCell>
+              </TableRow>
+              <TableRow key="Outlet Volume Flow at 101.325 kPa 2">
+                <TableCell>&nbsp;</TableCell>
+                <TableCell>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: ScientificNotation.toScientificNotationHTML(
+                        outletVolumeFlow * 1000 * 60,
+                        5,
+                      ),
+                    }}
+                  />
+                  <CopyButton value={outletVolumeFlow * 1000 * 60} />
+                </TableCell>
+                <TableCell>L/min</TableCell>
+              </TableRow>
+              <TableRow key="Concentration of calibration gas at outlet">
+                <TableCell>
+                  Concentration of calibration gas at outlet
+                </TableCell>
+                <TableCell>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: ScientificNotation.toScientificNotationHTML(
+                        calibrationGasConcentration * 1e6,
+                        3,
+                      ),
+                    }}
+                  />
+                  <CopyButton
+                    value={
+                      computeCalibrationGasConcentrationAtOutlet(
+                        inlet1FlowData.massFlow,
+                        inlet2FlowData.massFlow,
+                        selectedCalibrationConcentration,
+                      ) * 1e6
+                    }
+                  />
+                </TableCell>
+                <TableCell>ppm</TableCell>
+              </TableRow>
+              <TableRow key="Flow Critical Pressure">
+                <TableCell>Flow Critical Pressure</TableCell>
+                <TableCell>
+                  {Math.min(
+                    inlet1FlowData.p_crit,
+                    inlet2FlowData.p_crit,
+                  ).toPrecision(5)}
+                  <CopyButton
+                    value={Math.min(
+                      inlet1FlowData.p_crit,
+                      inlet2FlowData.p_crit,
+                    )}
+                  />
+                </TableCell>
+                <TableCell>kPa</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Tab>
+        <Tab key="dilution" title="Dilution Gas Details">
+          {inlet1FlowData && (
             <SonicNozzleTable
               flowData={inlet1FlowData}
               gas={selectedGasInlet1}
@@ -287,9 +407,9 @@ export const CalibrationGasPage = () => {
               temperature={temperature}
             />
           )}
-        </div>
-        <div className="mt-4">
-          {inlet2FlowData && gas2DetailsVisible && (
+        </Tab>
+        <Tab key="calibration" title="Calibration Gas Details">
+          {inlet2FlowData && (
             <SonicNozzleTable
               flowData={inlet2FlowData}
               gas={selectedGasInlet1}
@@ -299,133 +419,8 @@ export const CalibrationGasPage = () => {
               temperature={temperature}
             />
           )}
-        </div>
-        <Table removeWrapper aria-label="Flow Results" className="mt-4">
-          <TableHeader>
-            <TableColumn>Parameter</TableColumn>
-            <TableColumn>Value</TableColumn>
-            <TableColumn>Unit</TableColumn>
-          </TableHeader>
-          <TableBody>
-            <TableRow key="Dilution Mass Flow">
-              <TableCell>Dilution Mass Flow</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      inlet1FlowData.massFlow,
-                      5,
-                    ),
-                  }}
-                />
-                <CopyButton value={inlet1FlowData.massFlow} />
-              </TableCell>
-              <TableCell>kg/s</TableCell>
-            </TableRow>
-            <TableRow key="Calibration bottle Flow">
-              <TableCell>Calibration bottle Flow</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      inlet2FlowData.massFlow,
-                      5,
-                    ),
-                  }}
-                />
-                <CopyButton value={inlet2FlowData.massFlow} />
-              </TableCell>
-              <TableCell>kg/s</TableCell>
-            </TableRow>
-            <TableRow key="Calibration gas Mass Flow">
-              <TableCell>Calibration gas Mass Flow</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      inlet2FlowData.massFlow *
-                        selectedCalibrationConcentration,
-                      5,
-                    ),
-                  }}
-                />
-                <CopyButton
-                  value={
-                    inlet2FlowData.massFlow * selectedCalibrationConcentration
-                  }
-                />
-              </TableCell>
-              <TableCell>kg/s</TableCell>
-            </TableRow>
-            <TableRow key="Outlet Volume Flow at 101.325 kPa">
-              <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      outletVolumeFlow * 1000,
-                      5,
-                    ),
-                  }}
-                />
-                <CopyButton value={outletVolumeFlow * 1000} />
-              </TableCell>
-              <TableCell>L/s</TableCell>
-            </TableRow>
-            <TableRow key="Outlet Volume Flow at 101.325 kPa 2">
-              <TableCell>&nbsp;</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      outletVolumeFlow * 1000 * 60,
-                      5,
-                    ),
-                  }}
-                />
-                <CopyButton value={outletVolumeFlow * 1000 * 60} />
-              </TableCell>
-              <TableCell>L/min</TableCell>
-            </TableRow>
-            <TableRow key="Concentration of calibration gas at outlet">
-              <TableCell>Concentration of calibration gas at outlet</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      calibrationGasConcentration * 1e6,
-                      3,
-                    ),
-                  }}
-                />
-                <CopyButton
-                  value={
-                    computeCalibrationGasConcentrationAtOutlet(
-                      inlet1FlowData.massFlow,
-                      inlet2FlowData.massFlow,
-                      selectedCalibrationConcentration,
-                    ) * 1e6
-                  }
-                />
-              </TableCell>
-              <TableCell>ppm</TableCell>
-            </TableRow>
-            <TableRow key="Flow Critical Pressure">
-              <TableCell>Flow Critical Pressure</TableCell>
-              <TableCell>
-                {Math.min(
-                  inlet1FlowData.p_crit,
-                  inlet2FlowData.p_crit,
-                ).toPrecision(5)}
-                <CopyButton
-                  value={Math.min(inlet1FlowData.p_crit, inlet2FlowData.p_crit)}
-                />
-              </TableCell>
-              <TableCell>kPa</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </section>
+        </Tab>
+      </Tabs>
     </DefaultLayout>
   );
 };

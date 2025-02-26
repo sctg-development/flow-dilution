@@ -24,6 +24,7 @@
     "@heroui/switch": "https://pkg.pr.new/@heroui/switch@4656",
     "@heroui/system": "https://pkg.pr.new/@heroui/system@4656",
     "@heroui/table": "https://pkg.pr.new/@heroui/table@4656",
+    "@heroui/tabs": "https://pkg.pr.new/@heroui/tabs@4656",
     "@heroui/theme": "https://pkg.pr.new/@heroui/theme@4656",
     "@react-aria/visually-hidden": "3.8.19",
     "@react-types/shared": "3.27.0",
