@@ -361,13 +361,18 @@ export const CalibrationGasPage = () => {
             <TableRow key="Concentration of calibration gas at outlet">
               <TableCell>Concentration of calibration gas at outlet</TableCell>
               <TableCell>
-                {(
-                  computeCalibrationGasConcentrationAtOutlet(
-                    inlet1FlowData.massFlow,
-                    inlet2FlowData.massFlow,
-                    selectedCalibrationConcentration,
-                  ) * 1e6
-                ).toPrecision(5)}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: ScientificNotation.toScientificNotationHTML(
+                      computeCalibrationGasConcentrationAtOutlet(
+                        inlet1FlowData.massFlow,
+                        inlet2FlowData.massFlow,
+                        selectedCalibrationConcentration,
+                      ) * 1e6,
+                      3,
+                    ),
+                  }}
+                />
               </TableCell>
               <TableCell>ppm</TableCell>
             </TableRow>
