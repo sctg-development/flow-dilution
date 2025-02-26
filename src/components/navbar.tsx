@@ -76,7 +76,7 @@ export const Navbar = () => {
         <Link isExternal href={siteConfig.links.github}>
           <GithubIcon className="text-default-500" />
         </Link>
-        <ThemeSwitch />
+
         <NavbarMenuToggle />
       </NavbarContent>
 
@@ -96,6 +96,10 @@ export const Navbar = () => {
               </Link>
             </NavbarItem>
           ))}
+          <NavbarItem>
+            Theme&nbsp;
+            <ThemeSwitch />
+          </NavbarItem>
         </div>
       </NavbarMenu>
     </HeroUINavbar>
