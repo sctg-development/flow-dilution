@@ -38,9 +38,9 @@ import { Button } from "@heroui/button";
 
 import { title } from "@/components/primitives";
 import { DefaultLayout } from "@/layouts/default";
-import { GasInlet } from "@/components/GasInlet";
-import { CalibrationInlet } from "@/components/CalibrationInlet";
-import { SonicNozzleTable } from "@/components/SonicNozzleTable";
+import { GasInlet } from "@/components/gas-inlet";
+import { CalibrationInlet } from "@/components/calibration-inlet";
+import { SonicNozzleTable } from "@/components/sonic-nozzle-table";
 import { type FlowData } from "@/utilities";
 import { CopyButton } from "@/components/copy-button";
 

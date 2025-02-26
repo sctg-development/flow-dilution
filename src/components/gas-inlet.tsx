@@ -20,9 +20,9 @@ import type React from "react";
 import { AGA8wasm, R, type GasMixtureExt } from "@sctg/aga8-js";
 import { useEffect } from "react";
 
-import { GasSelector } from "@/components/GasSelector";
-import { OrificeSelector } from "@/components/OrificeSelector";
-import { PressureSlider } from "@/components/PressureSlider";
+import { GasSelector } from "@/components/gas-selector";
+import { OrificeSelector } from "@/components/orifice-selector";
+import { PressureSlider } from "@/components/pressure-slider";
 import { type FlowData, logSonicNozzleFlowCalculation } from "@/utilities";
 import { Cd } from "@/config/site";
 

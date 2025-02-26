@@ -36,9 +36,9 @@ import { Tab, Tabs } from "@heroui/tabs";
 import { Button } from "@heroui/button";
 import { Tooltip } from "@heroui/tooltip";
 
-import { GasInlet } from "@/components/GasInlet";
+import { GasInlet } from "@/components/gas-inlet";
 import { title } from "@/components/primitives";
-import { SonicNozzleTable } from "@/components/SonicNozzleTable";
+import { SonicNozzleTable } from "@/components/sonic-nozzle-table";
 import { DefaultLayout } from "@/layouts/default";
 import { FlowData } from "@/utilities";
 import { CopyButton } from "@/components/copy-button";
