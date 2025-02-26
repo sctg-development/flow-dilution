@@ -16,7 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 import { useState, useMemo } from "react";
-import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import {
   Table,
@@ -33,6 +32,9 @@ import {
 } from "@sctg/aga8-js";
 import { ScientificNotation } from "@sctg/scientific-notation";
 import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Tab, Tabs } from "@heroui/tabs";
+import { Button } from "@heroui/button";
+import { Tooltip } from "@heroui/tooltip";
 
 import { GasInlet } from "@/components/GasInlet";
 import { title } from "@/components/primitives";
@@ -75,8 +77,6 @@ export const DilutionPage = () => {
     rho_out: 0,
   });
   const [temperature, setTemperature] = useState<number>(293.15);
-  const [gas1DetailsVisible, setGas1DetailsVisible] = useState<boolean>(false);
-  const [gas2DetailsVisible, setGas2DetailsVisible] = useState<boolean>(false);
 
   const criticalPressure = useMemo(
     () => Math.min(inlet1FlowData.p_crit, inlet2FlowData.p_crit),
@@ -103,6 +103,40 @@ export const DilutionPage = () => {
       inlet2FlowData.rho_out,
     ],
   );
+
+  const exportData = () => {
+    const data = {
+      timestamp: new Date().toISOString(),
+      temperature,
+      gas1: {
+        name: selectedGasInlet1.name,
+        pressure: inlet1Pressure,
+        orifice: selectedOrificeInlet1,
+        massFlow: inlet1FlowData.massFlow,
+      },
+      gas2: {
+        name: selectedGasInlet2.name,
+        pressure: inlet2Pressure,
+        orifice: selectedOrificeInlet2,
+        massFlow: inlet2FlowData.massFlow,
+      },
+      results: {
+        concentration: concentrationGas2,
+        totalVolumeFlow: outletVolumeFlow,
+        criticalPressure,
+      },
+    };
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = `dilution-setup-${new Date().toISOString().split("T")[0]}.json`;
+    a.click();
+  };
 
   return (
     <DefaultLayout>
@@ -137,13 +171,6 @@ export const DilutionPage = () => {
                 onOrificeChange={setSelectedOrificeInlet1}
                 onPressureChange={setInlet1Pressure}
               />
-              <Button
-                className="mt-4 max-w-xs w-fit"
-                color={!gas1DetailsVisible ? "primary" : "secondary"}
-                onPress={() => setGas1DetailsVisible(!gas1DetailsVisible)}
-              >
-                {gas1DetailsVisible ? "Hide" : "Show"} gas 1 properties
-              </Button>
             </div>
             <div className="w-w-full md:w-1/2 flex flex-col flex-wrap gap-4">
               <GasInlet
@@ -157,40 +184,10 @@ export const DilutionPage = () => {
                 onOrificeChange={setSelectedOrificeInlet2}
                 onPressureChange={setInlet2Pressure}
               />
-              <Button
-                className="mt-4 max-w-xs w-fit"
-                color={!gas2DetailsVisible ? "primary" : "secondary"}
-                onPress={() => setGas2DetailsVisible(!gas2DetailsVisible)}
-              >
-                {gas2DetailsVisible ? "Hide" : "Show"} gas 2 properties
-              </Button>
             </div>
           </div>
         </div>
-        <div className="mt-4">
-          {inlet1FlowData && gas1DetailsVisible && (
-            <SonicNozzleTable
-              flowData={inlet1FlowData}
-              gas={selectedGasInlet1}
-              orifice={selectedOrificeInlet1}
-              outletPressure={101.325}
-              pressure={inlet1Pressure}
-              temperature={temperature}
-            />
-          )}
-        </div>
-        <div className="mt-4">
-          {inlet2FlowData && gas2DetailsVisible && (
-            <SonicNozzleTable
-              flowData={inlet2FlowData}
-              gas={selectedGasInlet2}
-              orifice={selectedOrificeInlet2}
-              outletPressure={101.325}
-              pressure={inlet2Pressure}
-              temperature={temperature}
-            />
-          )}
-        </div>
+
         <Card className="mt-4">
           <CardHeader className="text-lg font-bold -mb-3">
             Flow Ratio Visualization
@@ -235,77 +232,112 @@ export const DilutionPage = () => {
             </div>
           </CardBody>
         </Card>
-        <Table removeWrapper aria-label="Flow Results" className="mt-4">
-          <TableHeader>
-            <TableColumn>Parameter</TableColumn>
-            <TableColumn>Value</TableColumn>
-            <TableColumn>Unit</TableColumn>
-          </TableHeader>
-          <TableBody>
-            <TableRow key="flow1">
-              <TableCell>Flow 1 Mass Flow</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      inlet1FlowData.massFlow,
-                      5,
-                    ),
-                  }}
-                />
-                <CopyButton value={inlet1FlowData.massFlow} />
-              </TableCell>
-              <TableCell>kg/s</TableCell>
-            </TableRow>
-            <TableRow key="flow2">
-              <TableCell>Flow 2 Mass Flow</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      inlet2FlowData.massFlow,
-                      5,
-                    ),
-                  }}
-                />
-                <CopyButton value={inlet2FlowData.massFlow} />
-              </TableCell>
-              <TableCell>kg/s</TableCell>
-            </TableRow>
-            <TableRow key="concentration">
-              <TableCell>Concentration of Gas 2 in total flow</TableCell>
-              <TableCell>
-                {concentrationGas2.toPrecision(5)}
-                <CopyButton value={concentrationGas2} />
-              </TableCell>
-              <TableCell>%</TableCell>
-            </TableRow>
-            <TableRow key="volumeflow">
-              <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      outletVolumeFlow,
-                      5,
-                    ),
-                  }}
-                />
-                <CopyButton value={outletVolumeFlow} />
-              </TableCell>
-              <TableCell>L/s</TableCell>
-            </TableRow>
-            <TableRow key="criticalPressure">
-              <TableCell>Flow Critical Pressure</TableCell>
-              <TableCell>
-                {criticalPressure.toPrecision(5)}
-                <CopyButton value={criticalPressure} />
-              </TableCell>
-              <TableCell>kPa</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
+        <Tabs aria-label="Gas Information" className="mt-4">
+          <Tab key="results" title="Results">
+            <Table removeWrapper aria-label="Flow Results" className="mt-4">
+              <TableHeader>
+                <TableColumn>Parameter</TableColumn>
+                <TableColumn>Value</TableColumn>
+                <TableColumn>Unit</TableColumn>
+              </TableHeader>
+              <TableBody>
+                <TableRow key="flow1">
+                  <TableCell>Flow 1 Mass Flow</TableCell>
+                  <TableCell>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: ScientificNotation.toScientificNotationHTML(
+                          inlet1FlowData.massFlow,
+                          5,
+                        ),
+                      }}
+                    />
+                    <CopyButton value={inlet1FlowData.massFlow} />
+                  </TableCell>
+                  <TableCell>kg/s</TableCell>
+                </TableRow>
+                <TableRow key="flow2">
+                  <TableCell>Flow 2 Mass Flow</TableCell>
+                  <TableCell>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: ScientificNotation.toScientificNotationHTML(
+                          inlet2FlowData.massFlow,
+                          5,
+                        ),
+                      }}
+                    />
+                    <CopyButton value={inlet2FlowData.massFlow} />
+                  </TableCell>
+                  <TableCell>kg/s</TableCell>
+                </TableRow>
+                <TableRow key="concentration">
+                  <TableCell>Concentration of Gas 2 in total flow</TableCell>
+                  <TableCell>
+                    {concentrationGas2.toPrecision(5)}
+                    <CopyButton value={concentrationGas2} />
+                  </TableCell>
+                  <TableCell>%</TableCell>
+                </TableRow>
+                <TableRow key="volumeflow">
+                  <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
+                  <TableCell>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: ScientificNotation.toScientificNotationHTML(
+                          outletVolumeFlow,
+                          5,
+                        ),
+                      }}
+                    />
+                    <CopyButton value={outletVolumeFlow} />
+                  </TableCell>
+                  <TableCell>L/s</TableCell>
+                </TableRow>
+                <TableRow key="criticalPressure">
+                  <TableCell>Flow Critical Pressure</TableCell>
+                  <TableCell>
+                    {criticalPressure.toPrecision(5)}
+                    <CopyButton value={criticalPressure} />
+                  </TableCell>
+                  <TableCell>kPa</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </Tab>
+          <Tab key="dilution" title="Gas 1 Details">
+            {inlet1FlowData && (
+              <SonicNozzleTable
+                flowData={inlet1FlowData}
+                gas={selectedGasInlet1}
+                orifice={selectedOrificeInlet1}
+                outletPressure={101.325}
+                pressure={inlet1Pressure}
+                temperature={temperature}
+              />
+            )}
+          </Tab>
+          <Tab key="calibration" title="Gas 2 Details">
+            {inlet2FlowData && (
+              <SonicNozzleTable
+                flowData={inlet2FlowData}
+                gas={selectedGasInlet1}
+                orifice={selectedOrificeInlet2}
+                outletPressure={101.325}
+                pressure={inlet2Pressure}
+                temperature={temperature}
+              />
+            )}
+          </Tab>
+        </Tabs>
       </section>
+      <div className="mt-4 flex gap-2 justify-start">
+        <Tooltip content="Save current configuration as JSON">
+          <Button color="secondary" onPress={exportData}>
+            Export Configuration
+          </Button>
+        </Tooltip>
+      </div>
     </DefaultLayout>
   );
 };
