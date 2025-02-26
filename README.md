@@ -6,6 +6,10 @@ A web-based tool for calculating gas flow dilution using sonic nozzles according
 
 **If you appreciate my work, please consider giving it a star! 🤩**
 
+## 🚀 Live Flow Dilution Demo
+
+Try it now at [Lasersmart Dilution](https://dilution.lasersmart.work/)!
+
 ## Overview
 
 This application helps calculate and visualize gas flow dilution using sonic nozzles. It implements the AGA8/GERG-2008 equations of state for accurate gas property calculations and follows ISO 9300:2022 standards for sonic nozzle flow calculations.
