@@ -10,6 +10,7 @@ import {
 } from "@heroui/table";
 import { type GasMixtureExt } from "@sctg/aga8-js";
 import { ScientificNotation } from "@sctg/scientific-notation";
+
 import { type FlowData } from "@/utilities";
 
 interface SonicNozzleTableProps {

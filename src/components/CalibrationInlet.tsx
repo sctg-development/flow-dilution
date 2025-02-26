@@ -17,16 +17,13 @@
  */
 import type React from "react";
 
-import {
-  AGA8wasm,
-  R,
-  type GasMixtureExt,
-} from "@sctg/aga8-js";
+import { AGA8wasm, R, type GasMixtureExt } from "@sctg/aga8-js";
 import { useEffect } from "react";
 
 import { OrificeSelector } from "./OrificeSelector";
 import { PressureSlider } from "./PressureSlider";
 import { ConcentrationSelector } from "./ConcentrationSelector";
+
 import { Cd } from "@/config/site";
 import { FlowData, logSonicNozzleFlowCalculation } from "@/utilities";
 
@@ -168,4 +165,3 @@ export const CalibrationInlet: React.FC<CalibrationInletProps> = ({
     </div>
   );
 };
-
