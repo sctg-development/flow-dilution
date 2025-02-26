@@ -1,17 +1,40 @@
-import { Cd, Cd_max, Cd_min } from "@/config/site";
 import { PropertiesGERGResult, type GasMixtureExt } from "@sctg/aga8-js";
 
+import { Cd, Cd_max, Cd_min } from "@/config/site";
+
+/**
+ * Interface representing flow data parameters
+ * @type FlowData
+ * @property {number} massFlow - Mass flow rate in kg/s
+ * @property {number} p_crit - Critical pressure in kPa
+ * @property {number} A - Area of the orifice in m²
+ * @property {PropertiesGERGResult} properties - Gas properties
+ * @property {number} molarMass - Molar mass in g/mol
+ * @property {number} Rs - Specific gas constant in J/(kg·K)
+ * @property {number} rho - Density in kg/m³
+ * @property {number} rho_out - Output density in kg/m³
+ */
 export type FlowData = {
-    massFlow: number; // kg/s
-    p_crit: number; // kPa
-    A: number; // area of the orifice in m²
-    properties: PropertiesGERGResult; // Gas properties
-    molarMass: number; // g/mol
-    Rs: number; // J/(kg·K)
-    rho: number; // kg/m³
-    rho_out: number; // kg/m³
-  };
-  
+  massFlow: number; // kg/s
+  p_crit: number; // kPa
+  A: number; // area of the orifice in m²
+  properties: PropertiesGERGResult; // Gas properties
+  molarMass: number; // g/mol
+  Rs: number; // J/(kg·K)
+  rho: number; // kg/m³
+  rho_out: number; // kg/m³
+};
+
+/**
+ * Log the sonic nozzle flow calculation
+ * @param {GasMixtureExt} gas - Gas mixture
+ * @param {number} temperature - Temperature in K
+ * @param {number} pressure - Inlet pressure in kPa
+ * @param {number} outletPressure - Outlet pressure in kPa
+ * @param {number} orifice - Orifice diameter in m
+ * @param {FlowData} flowData - Flow data
+ * @param {Function} target - Target function defaulting to console.log
+ */
 export function logSonicNozzleFlowCalculation(
   gas: GasMixtureExt,
   temperature: number,
