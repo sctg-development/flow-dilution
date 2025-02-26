@@ -32,6 +32,7 @@ import {
   type GasMixtureExt,
 } from "@sctg/aga8-js";
 import { ScientificNotation } from "@sctg/scientific-notation";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 
 import { GasInlet } from "@/components/GasInlet";
 import { title } from "@/components/primitives";
@@ -190,6 +191,50 @@ export const DilutionPage = () => {
             />
           )}
         </div>
+        <Card className="mt-4">
+          <CardHeader className="text-lg font-bold -mb-3">
+            Flow Ratio Visualization
+          </CardHeader>
+          <CardBody>
+            <div className="w-full h-8 bg-gray-200 rounded-lg overflow-hidden relative">
+              {/* Bande rouge pour le gaz de calibration (affichée en-dessous) */}
+              <div
+                className="h-full bg-indigo-400 absolute top-0 left-0"
+                style={{
+                  width: `100%`,
+                  right: 0,
+                }}
+              />
+              {/* Bande de gradient pour le gaz de dilution (affichée au-dessus) */}
+              <div
+                className="h-full bg-gradient-to-r from-emerald-500 from-10% via-sky-500 via-30% to-indigo-500 to-90% absolute top-0 left-0"
+                style={{
+                  width: `${(inlet1FlowData.massFlow / (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) * 100}%`,
+                }}
+              />
+            </div>
+            <div className="flex justify-between text-xs mt-0.5">
+              <span>
+                Gas 1:{" "}
+                {(
+                  (inlet1FlowData.massFlow /
+                    (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
+                  100
+                ).toFixed(1)}
+                %
+              </span>
+              <span>
+                Gas 2:{" "}
+                {(
+                  (inlet2FlowData.massFlow /
+                    (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
+                  100
+                ).toFixed(1)}
+                %
+              </span>
+            </div>
+          </CardBody>
+        </Card>
         <Table removeWrapper aria-label="Flow Results" className="mt-4">
           <TableHeader>
             <TableColumn>Parameter</TableColumn>
