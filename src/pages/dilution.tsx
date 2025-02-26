@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+import { useState, useMemo } from "react";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import {
@@ -30,7 +31,6 @@ import {
   PropertiesGERGResult,
   type GasMixtureExt,
 } from "@sctg/aga8-js";
-import { useState } from "react";
 import { ScientificNotation } from "@sctg/scientific-notation";
 
 import { GasInlet } from "@/components/GasInlet";
@@ -76,6 +76,32 @@ export const DilutionPage = () => {
   const [temperature, setTemperature] = useState<number>(293.15);
   const [gas1DetailsVisible, setGas1DetailsVisible] = useState<boolean>(false);
   const [gas2DetailsVisible, setGas2DetailsVisible] = useState<boolean>(false);
+
+  const criticalPressure = useMemo(
+    () => Math.min(inlet1FlowData.p_crit, inlet2FlowData.p_crit),
+    [inlet1FlowData.p_crit, inlet2FlowData.p_crit],
+  );
+
+  const concentrationGas2 = useMemo(
+    () =>
+      (inlet2FlowData.massFlow /
+        (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
+      100,
+    [inlet1FlowData.massFlow, inlet2FlowData.massFlow],
+  );
+
+  const outletVolumeFlow = useMemo(
+    () =>
+      (inlet1FlowData.massFlow / inlet1FlowData.rho_out +
+        inlet2FlowData.massFlow / inlet2FlowData.rho_out) *
+      1000,
+    [
+      inlet1FlowData.massFlow,
+      inlet1FlowData.rho_out,
+      inlet2FlowData.massFlow,
+      inlet2FlowData.rho_out,
+    ],
+  );
 
   return (
     <DefaultLayout>
@@ -204,35 +230,10 @@ export const DilutionPage = () => {
             <TableRow key="concentration">
               <TableCell>Concentration of Gas 2 in total flow</TableCell>
               <TableCell>
-                {(
-                  (inlet2FlowData.massFlow /
-                    (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
-                  100
-                ).toPrecision(5)}
-                <CopyButton
-                  value={
-                    (inlet2FlowData.massFlow /
-                      (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
-                    100
-                  }
-                />
+                {concentrationGas2.toPrecision(5)}
+                <CopyButton value={concentrationGas2} />
               </TableCell>
               <TableCell>%</TableCell>
-            </TableRow>
-            <TableRow key="Flow 2 Mass Flow">
-              <TableCell>Flow 2 Mass Flow</TableCell>
-              <TableCell>
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: ScientificNotation.toScientificNotationHTML(
-                      inlet2FlowData.massFlow,
-                      5,
-                    ),
-                  }}
-                />
-                <CopyButton value={inlet2FlowData.massFlow} />
-              </TableCell>
-              <TableCell>kg/s</TableCell>
             </TableRow>
             <TableRow key="volumeflow">
               <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
@@ -240,29 +241,20 @@ export const DilutionPage = () => {
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      (inlet2FlowData.massFlow / inlet2FlowData.rho_out) * 1000,
+                      outletVolumeFlow,
                       5,
                     ),
                   }}
                 />
-                <CopyButton
-                  value={
-                    (inlet2FlowData.massFlow / inlet2FlowData.rho_out) * 1000
-                  }
-                />
+                <CopyButton value={outletVolumeFlow} />
               </TableCell>
               <TableCell>L/s</TableCell>
             </TableRow>
             <TableRow key="criticalPressure">
               <TableCell>Flow Critical Pressure</TableCell>
               <TableCell>
-                {Math.min(
-                  inlet1FlowData.p_crit,
-                  inlet2FlowData.p_crit,
-                ).toPrecision(5)}
-                <CopyButton
-                  value={Math.min(inlet1FlowData.p_crit, inlet2FlowData.p_crit)}
-                />
+                {criticalPressure.toPrecision(5)}
+                <CopyButton value={criticalPressure} />
               </TableCell>
               <TableCell>kPa</TableCell>
             </TableRow>
