@@ -31,8 +31,10 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/table";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Tabs, Tab } from "@heroui/tabs";
 import { ScientificNotation } from "@sctg/scientific-notation";
+import { Button } from "@heroui/button";
 
 import { title } from "@/components/primitives";
 import { DefaultLayout } from "@/layouts/default";
@@ -41,7 +43,6 @@ import { CalibrationInlet } from "@/components/CalibrationInlet";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import { type FlowData } from "@/utilities";
 import { CopyButton } from "@/components/copy-button";
-import { Button } from "@heroui/button";
 
 export const CalibrationGasPage = () => {
   /**
@@ -288,6 +289,41 @@ export const CalibrationGasPage = () => {
           </div>
         </div>
       </section>
+      <Card className="mt-4">
+        <CardHeader className="text-lg font-bold -mb-3">
+          Flow Ratio Visualization
+        </CardHeader>
+        <CardBody>
+          <div className="w-full h-8 bg-gray-200 rounded-lg overflow-hidden">
+            <div
+              className="h-full bg-gradient-to-r from-emerald-500 from-10% via-sky-500 via-30% to-indigo-500 to-90%"
+              style={{
+                width: `${(inlet1FlowData.massFlow / (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) * 100}%`,
+              }}
+            />
+          </div>
+          <div className="flex justify-between text-xs mt-0.5">
+            <span>
+              Dilution Gas:{" "}
+              {(
+                (inlet1FlowData.massFlow /
+                  (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
+                100
+              ).toFixed(1)}
+              %
+            </span>
+            <span>
+              Calibration Gas:{" "}
+              {(
+                (inlet2FlowData.massFlow /
+                  (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
+                100
+              ).toFixed(1)}
+              %
+            </span>
+          </div>
+        </CardBody>
+      </Card>
       <Tabs aria-label="Gas Information" className="mt-4">
         <Tab key="results" title="Results">
           <Table removeWrapper aria-label="Flow Results" className="mt-4">

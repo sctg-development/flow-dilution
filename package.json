@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@heroui/button": "https://pkg.pr.new/@heroui/button@4656",
+    "@heroui/card": "https://pkg.pr.new/@heroui/card@4656",
     "@heroui/code": "https://pkg.pr.new/@heroui/code@4656",
     "@heroui/dropdown": "https://pkg.pr.new/@heroui/dropdown@4656",
     "@heroui/input": "https://pkg.pr.new/@heroui/input@4656",
