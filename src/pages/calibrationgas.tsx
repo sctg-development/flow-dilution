@@ -35,13 +35,13 @@ import {
 import { ScientificNotation } from "@sctg/scientific-notation";
 
 import { title } from "@/components/primitives";
-import DefaultLayout from "@/layouts/default";
+import { DefaultLayout } from "@/layouts/default";
 import { GasInlet } from "@/components/GasInlet";
 import { CalibrationInlet } from "@/components/CalibrationInlet";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
 import { type FlowData } from "@/utilities";
 
-export default function CalibrationGasPage() {
+export const CalibrationGasPage = () => {
   /**
    * The temperature in Kelvin.
    */
@@ -386,4 +386,4 @@ export default function CalibrationGasPage() {
       </section>
     </DefaultLayout>
   );
-}
+};

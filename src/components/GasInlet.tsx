@@ -17,16 +17,12 @@
  */
 import type React from "react";
 
-import {
-  AGA8wasm,
-  R,
-  type GasMixtureExt,
-} from "@sctg/aga8-js";
+import { AGA8wasm, R, type GasMixtureExt } from "@sctg/aga8-js";
 import { useEffect } from "react";
 
-import { GasSelector } from "./GasSelector";
-import { OrificeSelector } from "./OrificeSelector";
-import { PressureSlider } from "./PressureSlider";
+import { GasSelector } from "@/components/GasSelector";
+import { OrificeSelector } from "@/components/OrificeSelector";
+import { PressureSlider } from "@/components/PressureSlider";
 import { type FlowData, logSonicNozzleFlowCalculation } from "@/utilities";
 import { Cd } from "@/config/site";
 
@@ -165,4 +161,3 @@ export const GasInlet: React.FC<GasInletProps> = ({
     </div>
   );
 };
-

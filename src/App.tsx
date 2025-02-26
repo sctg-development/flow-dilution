@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 
-import CalibrationGasPage from "@/pages/calibrationgas";
-import DilutionPage from "@/pages/dilution";
+import { CalibrationGasPage } from "@/pages/calibrationgas";
+import { DilutionPage } from "@/pages/dilution";
 
-function App() {
+export function App() {
   return (
     <Routes>
       <Route element={<DilutionPage />} path="/" />
@@ -11,5 +11,3 @@ function App() {
     </Routes>
   );
 }
-
-export default App;

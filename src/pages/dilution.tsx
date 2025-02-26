@@ -36,10 +36,10 @@ import { ScientificNotation } from "@sctg/scientific-notation";
 import { GasInlet } from "@/components/GasInlet";
 import { title } from "@/components/primitives";
 import { SonicNozzleTable } from "@/components/SonicNozzleTable";
-import DefaultLayout from "@/layouts/default";
+import { DefaultLayout } from "@/layouts/default";
 import { FlowData } from "@/utilities";
 
-export default function DilutionPage() {
+export const DilutionPage = () => {
   const [selectedGasInlet1, setSelectedGasInlet1] = useState<GasMixtureExt>(
     availableGasMixtures[0],
   );
@@ -222,14 +222,14 @@ export default function DilutionPage() {
                 />
               </TableCell>
               <TableCell>kg/s</TableCell>
-            </TableRow>            
+            </TableRow>
             <TableRow key="volumeflow">
               <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
               <TableCell>
                 <span
                   dangerouslySetInnerHTML={{
                     __html: ScientificNotation.toScientificNotationHTML(
-                      (inlet2FlowData.massFlow / inlet2FlowData.rho_out)*1000,
+                      (inlet2FlowData.massFlow / inlet2FlowData.rho_out) * 1000,
                       5,
                     ),
                   }}
@@ -252,4 +252,4 @@ export default function DilutionPage() {
       </section>
     </DefaultLayout>
   );
-}
+};
