@@ -4,26 +4,26 @@ import { Cd, Cd_max, Cd_min } from "@/config/site";
 
 /**
  * Interface representing flow data parameters
- * @type FlowData
+ * @interface FlowData
  * @property {number} massFlow - Mass flow rate in kg/s
  * @property {number} p_crit - Critical pressure in kPa
  * @property {number} A - Area of the orifice in m²
  * @property {PropertiesGERGResult} properties - Gas properties
  * @property {number} molarMass - Molar mass in g/mol
  * @property {number} Rs - Specific gas constant in J/(kg·K)
- * @property {number} rho - Density in kg/m³
- * @property {number} rho_out - Output density in kg/m³
+ * @property {number} rho - Density at inlet in kg/m³
+ * @property {number} rho_out - Density at outlet in kg/m³
  */
-export type FlowData = {
-  massFlow: number; // kg/s
-  p_crit: number; // kPa
-  A: number; // area of the orifice in m²
-  properties: PropertiesGERGResult; // Gas properties
-  molarMass: number; // g/mol
-  Rs: number; // J/(kg·K)
-  rho: number; // kg/m³
-  rho_out: number; // kg/m³
-};
+export interface FlowData {
+  massFlow: number;
+  p_crit: number;
+  A: number;
+  properties: PropertiesGERGResult;
+  molarMass: number;
+  Rs: number;
+  rho: number;
+  rho_out: number;
+}
 
 /**
  * Log the sonic nozzle flow calculation
