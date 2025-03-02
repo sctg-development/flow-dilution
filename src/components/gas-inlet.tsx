@@ -140,7 +140,7 @@ export const GasInlet: React.FC<GasInletProps> = ({
   }, [temperature, pressure, selectedGas, selectedOrifice, onFlowDataChange]);
 
   return (
-    <div>
+    <div aria-label={`${label} Configuration`} role="group">
       <PressureSlider
         label={`${label} Pressure`}
         value={pressure}

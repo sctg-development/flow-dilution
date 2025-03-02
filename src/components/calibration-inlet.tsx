@@ -144,7 +144,7 @@ export const CalibrationInlet: React.FC<CalibrationInletProps> = ({
   }, [temperature, pressure, selectedGas, selectedOrifice, onFlowDataChange]);
 
   return (
-    <div>
+    <div aria-label={`${label} Configuration`} role="group">
       <PressureSlider
         label={`${label} Pressure`}
         value={pressure}
