@@ -16,13 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
-import { useMemo, useState } from "react";
-import {
-  availableGasMixtures,
-  GasMixtureExt,
-  PropertiesGERGResult,
-} from "@sctg/aga8-js";
+import { Skeleton } from "@heroui/skeleton";
 import {
   Table,
   TableBody,
@@ -31,18 +28,22 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/table";
-import { Card, CardBody, CardHeader } from "@heroui/card";
-import { Tabs, Tab } from "@heroui/tabs";
+import { Tab, Tabs } from "@heroui/tabs";
+import {
+  availableGasMixtures,
+  GasMixtureExt,
+  PropertiesGERGResult,
+} from "@sctg/aga8-js";
 import { ScientificNotation } from "@sctg/scientific-notation";
-import { Button } from "@heroui/button";
+import { useMemo, useState } from "react";
 
-import { title } from "@/components/primitives";
-import { DefaultLayout } from "@/layouts/default";
-import { GasInlet } from "@/components/gas-inlet";
 import { CalibrationInlet } from "@/components/calibration-inlet";
-import { SonicNozzleTable } from "@/components/sonic-nozzle-table";
-import { type FlowData } from "@/utilities";
 import { CopyButton } from "@/components/copy-button";
+import { GasInlet } from "@/components/gas-inlet";
+import { title } from "@/components/primitives";
+import { SonicNozzleTable } from "@/components/sonic-nozzle-table";
+import { DefaultLayout } from "@/layouts/default";
+import { type FlowData } from "@/utilities";
 
 export const CalibrationGasPage = () => {
   /**
@@ -53,7 +54,7 @@ export const CalibrationGasPage = () => {
   /**
    * The selected gas for the dilution gas.
    */
-  const [selectedGasInlet1, setSelectedGasInlet1] = useState<GasMixtureExt>(
+  const [selectedGasDilution, setSelectedGasDilution] = useState<GasMixtureExt>(
     availableGasMixtures.find(
       (gas) => gas.name.toLowerCase() === "nitrogen",
     ) as GasMixtureExt,
@@ -62,7 +63,7 @@ export const CalibrationGasPage = () => {
   /**
    * The pressure of the gas for the dilution.
    */
-  const [inlet1Pressure, setInlet1Pressure] = useState<number>(400);
+  const [inlet1Pressure, setInletDilutionPressure] = useState<number>(400);
 
   /**
    * The pressure of the gas for the calibration gas.
@@ -74,7 +75,7 @@ export const CalibrationGasPage = () => {
    * The default value is 0.02.
    * The value is in mm.
    */
-  const [selectedOrificeInlet1, setSelectedOrificeInlet1] =
+  const [selectedOrificeInlet1, setSelectedOrificeInletDilution] =
     useState<number>(0.02);
 
   /**
@@ -90,7 +91,7 @@ export const CalibrationGasPage = () => {
    * Contains the mass flow, critical pressure, area, properties, molar mass, Rs, rho, and rho_out…
    * @see https://sctg-development.github.io/aga8-js/
    */
-  const [inlet1FlowData, setInlet1FlowData] = useState<FlowData>({
+  const [inletDilutionFlowData, setInletDilutionFlowData] = useState<FlowData>({
     massFlow: 0,
     p_crit: 0,
     A: 0,
@@ -106,16 +107,17 @@ export const CalibrationGasPage = () => {
    * Contains the mass flow, critical pressure, area, properties, molar mass, Rs, rho, and rho_out…
    * @see https://sctg-development.github.io/aga8-js/
    */
-  const [inlet2FlowData, setInlet2FlowData] = useState<FlowData>({
-    massFlow: 0,
-    p_crit: 0,
-    A: 0,
-    properties: {} as PropertiesGERGResult,
-    molarMass: 0,
-    Rs: 0,
-    rho: 0,
-    rho_out: 0,
-  });
+  const [inletCalibrationFlowData, setInletCalibrationFlowData] =
+    useState<FlowData>({
+      massFlow: 0,
+      p_crit: 0,
+      A: 0,
+      properties: {} as PropertiesGERGResult,
+      molarMass: 0,
+      Rs: 0,
+      rho: 0,
+      rho_out: 0,
+    });
 
   /**
    * The selected calibration bottle concentration.
@@ -126,27 +128,35 @@ export const CalibrationGasPage = () => {
     setSelectedCalibrationConcentration,
   ] = useState<number>(50e-6);
 
+  /**
+   * True if the dilution gas is computing.
+   */
+  const [inletDilutionisComputing, setDilutionisComputing] =
+    useState<boolean>(false);
+  const [inletCalibrationisComputing, setInletCalibrationisComputing] =
+    useState<boolean>(false);
+
   const exportData = () => {
     const data = {
       temperature,
       dilutionGas: {
-        name: selectedGasInlet1.name,
+        name: selectedGasDilution.name,
         pressure: inlet1Pressure,
         orifice: selectedOrificeInlet1,
-        massFlow: inlet1FlowData.massFlow,
+        massFlow: inletDilutionFlowData.massFlow,
       },
       calibrationGas: {
         bottleConcentration: selectedCalibrationConcentration,
         pressure: inlet2Pressure,
         orifice: selectedOrificeInlet2,
-        massFlow: inlet2FlowData.massFlow,
+        massFlow: inletCalibrationFlowData.massFlow,
       },
       results: {
         outletConcentration: calibrationGasConcentration,
         outletVolumeFlow: outletVolumeFlow,
         criticalPressure: Math.min(
-          inlet1FlowData.p_crit,
-          inlet2FlowData.p_crit,
+          inletDilutionFlowData.p_crit,
+          inletCalibrationFlowData.p_crit,
         ),
       },
     };
@@ -198,29 +208,29 @@ export const CalibrationGasPage = () => {
   const outletVolumeFlow = useMemo(
     () =>
       computeOutletVolumeFlowAt101325kPa(
-        inlet1FlowData.massFlow,
-        inlet1FlowData.rho_out,
-        inlet2FlowData.massFlow,
-        inlet2FlowData.rho_out,
+        inletDilutionFlowData.massFlow,
+        inletDilutionFlowData.rho_out,
+        inletCalibrationFlowData.massFlow,
+        inletCalibrationFlowData.rho_out,
       ),
     [
-      inlet1FlowData.massFlow,
-      inlet1FlowData.rho_out,
-      inlet2FlowData.massFlow,
-      inlet2FlowData.rho_out,
+      inletDilutionFlowData.massFlow,
+      inletDilutionFlowData.rho_out,
+      inletCalibrationFlowData.massFlow,
+      inletCalibrationFlowData.rho_out,
     ],
   );
 
   const calibrationGasConcentration = useMemo(
     () =>
       computeCalibrationGasConcentrationAtOutlet(
-        inlet1FlowData.massFlow,
-        inlet2FlowData.massFlow,
+        inletDilutionFlowData.massFlow,
+        inletCalibrationFlowData.massFlow,
         selectedCalibrationConcentration,
       ),
     [
-      inlet1FlowData.massFlow,
-      inlet2FlowData.massFlow,
+      inletDilutionFlowData.massFlow,
+      inletCalibrationFlowData.massFlow,
       selectedCalibrationConcentration,
     ],
   );
@@ -259,13 +269,14 @@ export const CalibrationGasPage = () => {
               <GasInlet
                 label="Dilution gas"
                 pressure={inlet1Pressure}
-                selectedGas={selectedGasInlet1}
+                selectedGas={selectedGasDilution}
                 selectedOrifice={selectedOrificeInlet1}
                 temperature={temperature}
-                onFlowDataChange={setInlet1FlowData}
-                onGasChange={setSelectedGasInlet1}
-                onOrificeChange={setSelectedOrificeInlet1}
-                onPressureChange={setInlet1Pressure}
+                onComputeFlow={setDilutionisComputing}
+                onFlowDataChange={setInletDilutionFlowData}
+                onGasChange={setSelectedGasDilution}
+                onOrificeChange={setSelectedOrificeInletDilution}
+                onPressureChange={setInletDilutionPressure}
               />
             </div>
             <div className="w-full md:w-1/2 flex flex-col flex-wrap gap-4">
@@ -275,13 +286,14 @@ export const CalibrationGasPage = () => {
                 selectedCalibrationConcentration={
                   selectedCalibrationConcentration
                 }
-                selectedGas={selectedGasInlet1}
+                selectedGas={selectedGasDilution}
                 selectedOrifice={selectedOrificeInlet2}
                 temperature={temperature}
                 onCalibrationConcentrationChange={
                   setSelectedCalibrationConcentration
                 }
-                onFlowDataChange={setInlet2FlowData}
+                onComputeFlow={setInletCalibrationisComputing}
+                onFlowDataChange={setInletCalibrationFlowData}
                 onOrificeChange={setSelectedOrificeInlet2}
                 onPressureChange={setInlet2Pressure}
               />
@@ -307,7 +319,7 @@ export const CalibrationGasPage = () => {
             <div
               className="h-full bg-gradient-to-r from-emerald-500 from-10% via-sky-500 via-30% to-indigo-500 to-90% absolute top-0 left-0"
               style={{
-                width: `${(inlet1FlowData.massFlow / (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) * 100}%`,
+                width: `${(inletDilutionFlowData.massFlow / (inletDilutionFlowData.massFlow + inletCalibrationFlowData.massFlow)) * 100}%`,
               }}
             />
           </div>
@@ -315,8 +327,9 @@ export const CalibrationGasPage = () => {
             <span>
               Dilution Gas:{" "}
               {(
-                (inlet1FlowData.massFlow /
-                  (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
+                (inletDilutionFlowData.massFlow /
+                  (inletDilutionFlowData.massFlow +
+                    inletCalibrationFlowData.massFlow)) *
                 100
               ).toFixed(1)}
               %
@@ -324,8 +337,9 @@ export const CalibrationGasPage = () => {
             <span>
               Calibration Gas:{" "}
               {(
-                (inlet2FlowData.massFlow /
-                  (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
+                (inletCalibrationFlowData.massFlow /
+                  (inletDilutionFlowData.massFlow +
+                    inletCalibrationFlowData.massFlow)) *
                 100
               ).toFixed(1)}
               %
@@ -345,80 +359,111 @@ export const CalibrationGasPage = () => {
               <TableRow key="Dilution Mass Flow">
                 <TableCell>Dilution Mass Flow</TableCell>
                 <TableCell>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: ScientificNotation.toScientificNotationHTML(
-                        inlet1FlowData.massFlow,
-                        5,
-                      ),
-                    }}
-                  />
-                  <CopyButton value={inlet1FlowData.massFlow} />
+                  {inletDilutionisComputing ? (
+                    <Skeleton className="h-8">&nbsp;</Skeleton>
+                  ) : (
+                    <>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: ScientificNotation.toScientificNotationHTML(
+                            inletDilutionFlowData.massFlow,
+                            5,
+                          ),
+                        }}
+                      />
+                      <CopyButton value={inletDilutionFlowData.massFlow} />
+                    </>
+                  )}
                 </TableCell>
                 <TableCell>kg/s</TableCell>
               </TableRow>
               <TableRow key="Calibration bottle Flow">
                 <TableCell>Calibration bottle Flow</TableCell>
                 <TableCell>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: ScientificNotation.toScientificNotationHTML(
-                        inlet2FlowData.massFlow,
-                        5,
-                      ),
-                    }}
-                  />
-                  <CopyButton value={inlet2FlowData.massFlow} />
+                  {inletCalibrationisComputing ? (
+                    <Skeleton className="h-8">&nbsp;</Skeleton>
+                  ) : (
+                    <>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: ScientificNotation.toScientificNotationHTML(
+                            inletCalibrationFlowData.massFlow,
+                            5,
+                          ),
+                        }}
+                      />
+                      <CopyButton value={inletCalibrationFlowData.massFlow} />
+                    </>
+                  )}
                 </TableCell>
                 <TableCell>kg/s</TableCell>
               </TableRow>
               <TableRow key="Calibration gas Mass Flow">
                 <TableCell>Calibration gas Mass Flow</TableCell>
                 <TableCell>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: ScientificNotation.toScientificNotationHTML(
-                        inlet2FlowData.massFlow *
-                          selectedCalibrationConcentration,
-                        5,
-                      ),
-                    }}
-                  />
-                  <CopyButton
-                    value={
-                      inlet2FlowData.massFlow * selectedCalibrationConcentration
-                    }
-                  />
+                  {inletDilutionisComputing || inletCalibrationisComputing ? (
+                    <Skeleton className="h-8">&nbsp;</Skeleton>
+                  ) : (
+                    <>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: ScientificNotation.toScientificNotationHTML(
+                            inletCalibrationFlowData.massFlow *
+                              selectedCalibrationConcentration,
+                            5,
+                          ),
+                        }}
+                      />
+                      <CopyButton
+                        value={
+                          inletCalibrationFlowData.massFlow *
+                          selectedCalibrationConcentration
+                        }
+                      />
+                    </>
+                  )}
                 </TableCell>
                 <TableCell>kg/s</TableCell>
               </TableRow>
               <TableRow key="Outlet Volume Flow at 101.325 kPa">
                 <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
                 <TableCell>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: ScientificNotation.toScientificNotationHTML(
-                        outletVolumeFlow * 1000,
-                        5,
-                      ),
-                    }}
-                  />
-                  <CopyButton value={outletVolumeFlow * 1000} />
+                  {inletDilutionisComputing || inletCalibrationisComputing ? (
+                    <Skeleton className="h-8">&nbsp;</Skeleton>
+                  ) : (
+                    <>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: ScientificNotation.toScientificNotationHTML(
+                            outletVolumeFlow,
+                            5,
+                          ),
+                        }}
+                      />
+                      <CopyButton value={outletVolumeFlow} />
+                    </>
+                  )}
                 </TableCell>
                 <TableCell>L/s</TableCell>
               </TableRow>
               <TableRow key="Outlet Volume Flow at 101.325 kPa 2">
                 <TableCell>&nbsp;</TableCell>
                 <TableCell>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: ScientificNotation.toScientificNotationHTML(
-                        outletVolumeFlow * 1000 * 60,
-                        5,
-                      ),
-                    }}
-                  />
-                  <CopyButton value={outletVolumeFlow * 1000 * 60} />
+                  {inletDilutionisComputing || inletCalibrationisComputing ? (
+                    <Skeleton className="h-8">&nbsp;</Skeleton>
+                  ) : (
+                    <>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: ScientificNotation.toScientificNotationHTML(
+                            outletVolumeFlow * 1000 * 60,
+                            5,
+                          ),
+                        }}
+                      />
+                      <CopyButton value={outletVolumeFlow * 1000 * 60} />
+                    </>
+                  )}
                 </TableCell>
                 <TableCell>L/min</TableCell>
               </TableRow>
@@ -427,39 +472,50 @@ export const CalibrationGasPage = () => {
                   Concentration of calibration gas at outlet
                 </TableCell>
                 <TableCell>
-                  <span
-                    dangerouslySetInnerHTML={{
-                      __html: ScientificNotation.toScientificNotationHTML(
-                        calibrationGasConcentration * 1e6,
-                        3,
-                      ),
-                    }}
-                  />
-                  <CopyButton
-                    value={
-                      computeCalibrationGasConcentrationAtOutlet(
-                        inlet1FlowData.massFlow,
-                        inlet2FlowData.massFlow,
-                        selectedCalibrationConcentration,
-                      ) * 1e6
-                    }
-                  />
+                  {inletDilutionisComputing || inletCalibrationisComputing ? (
+                    <Skeleton className="h-8">&nbsp;</Skeleton>
+                  ) : (
+                    <>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: ScientificNotation.toScientificNotationHTML(
+                            calibrationGasConcentration * 1e6,
+                            3,
+                          ),
+                        }}
+                      />
+                      <CopyButton value={calibrationGasConcentration * 1e6} />
+                    </>
+                  )}
                 </TableCell>
                 <TableCell>ppm</TableCell>
               </TableRow>
               <TableRow key="Flow Critical Pressure">
                 <TableCell>Flow Critical Pressure</TableCell>
                 <TableCell>
-                  {Math.min(
-                    inlet1FlowData.p_crit,
-                    inlet2FlowData.p_crit,
-                  ).toPrecision(5)}
-                  <CopyButton
-                    value={Math.min(
-                      inlet1FlowData.p_crit,
-                      inlet2FlowData.p_crit,
-                    )}
-                  />
+                  {inletDilutionisComputing || inletCalibrationisComputing ? (
+                    <Skeleton className="h-8">&nbsp;</Skeleton>
+                  ) : (
+                    <>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: ScientificNotation.toScientificNotationHTML(
+                            Math.min(
+                              inletDilutionFlowData.p_crit,
+                              inletCalibrationFlowData.p_crit,
+                            ),
+                            5,
+                          ),
+                        }}
+                      />
+                      <CopyButton
+                        value={Math.min(
+                          inletDilutionFlowData.p_crit,
+                          inletCalibrationFlowData.p_crit,
+                        )}
+                      />
+                    </>
+                  )}
                 </TableCell>
                 <TableCell>kPa</TableCell>
               </TableRow>
@@ -467,28 +523,32 @@ export const CalibrationGasPage = () => {
           </Table>
         </Tab>
         <Tab key="dilution" title="Dilution Gas Details">
-          {inlet1FlowData && (
-            <SonicNozzleTable
-              flowData={inlet1FlowData}
-              gas={selectedGasInlet1}
-              orifice={selectedOrificeInlet1}
-              outletPressure={101.325}
-              pressure={inlet1Pressure}
-              temperature={temperature}
-            />
-          )}
+          <Skeleton isLoaded={!inletDilutionisComputing}>
+            {inletDilutionFlowData && (
+              <SonicNozzleTable
+                flowData={inletDilutionFlowData}
+                gas={selectedGasDilution}
+                orifice={selectedOrificeInlet1}
+                outletPressure={101.325}
+                pressure={inlet1Pressure}
+                temperature={temperature}
+              />
+            )}
+          </Skeleton>
         </Tab>
         <Tab key="calibration" title="Calibration Gas Details">
-          {inlet2FlowData && (
-            <SonicNozzleTable
-              flowData={inlet2FlowData}
-              gas={selectedGasInlet1}
-              orifice={selectedOrificeInlet2}
-              outletPressure={101.325}
-              pressure={inlet2Pressure}
-              temperature={temperature}
-            />
-          )}
+          <Skeleton isLoaded={!inletCalibrationisComputing}>
+            {inletCalibrationFlowData && (
+              <SonicNozzleTable
+                flowData={inletCalibrationFlowData}
+                gas={selectedGasDilution}
+                orifice={selectedOrificeInlet2}
+                outletPressure={101.325}
+                pressure={inlet2Pressure}
+                temperature={temperature}
+              />
+            )}
+          </Skeleton>
         </Tab>
       </Tabs>
       <Button className="mt-4" color="secondary" onPress={exportData}>

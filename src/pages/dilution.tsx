@@ -25,6 +25,7 @@ import {
   TableHeader,
   TableRow,
 } from "@heroui/table";
+import { Skeleton } from "@heroui/skeleton";
 import {
   availableGasMixtures,
   PropertiesGERGResult,
@@ -76,6 +77,8 @@ export const DilutionPage = () => {
     rho: 0,
     rho_out: 0,
   });
+  const [inlet1isComputing, setInlet1isComputing] = useState<boolean>(false);
+  const [inlet2isComputing, setInlet2isComputing] = useState<boolean>(false);
   const [temperature, setTemperature] = useState<number>(293.15);
 
   const criticalPressure = useMemo(
@@ -166,6 +169,7 @@ export const DilutionPage = () => {
                 selectedGas={selectedGasInlet1}
                 selectedOrifice={selectedOrificeInlet1}
                 temperature={temperature}
+                onComputeFlow={setInlet1isComputing}
                 onFlowDataChange={setInlet1FlowData}
                 onGasChange={setSelectedGasInlet1}
                 onOrificeChange={setSelectedOrificeInlet1}
@@ -179,6 +183,7 @@ export const DilutionPage = () => {
                 selectedGas={selectedGasInlet2}
                 selectedOrifice={selectedOrificeInlet2}
                 temperature={temperature}
+                onComputeFlow={setInlet2isComputing}
                 onFlowDataChange={setInlet2FlowData}
                 onGasChange={setSelectedGasInlet2}
                 onOrificeChange={setSelectedOrificeInlet2}
@@ -244,61 +249,85 @@ export const DilutionPage = () => {
                 <TableRow key="flow1">
                   <TableCell>Flow 1 Mass Flow</TableCell>
                   <TableCell>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: ScientificNotation.toScientificNotationHTML(
-                          inlet1FlowData.massFlow,
-                          5,
-                        ),
-                      }}
-                    />
-                    <CopyButton value={inlet1FlowData.massFlow} />
+                    {inlet1isComputing ? (
+                      <Skeleton className="h-8">&nbsp;</Skeleton>
+                    ) : (
+                      <>
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: ScientificNotation.toScientificNotationHTML(
+                              inlet1FlowData.massFlow,
+                              5,
+                            ),
+                          }}
+                        />
+                        <CopyButton value={inlet1FlowData.massFlow} />
+                      </>
+                    )}
                   </TableCell>
                   <TableCell>kg/s</TableCell>
                 </TableRow>
                 <TableRow key="flow2">
                   <TableCell>Flow 2 Mass Flow</TableCell>
                   <TableCell>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: ScientificNotation.toScientificNotationHTML(
-                          inlet2FlowData.massFlow,
-                          5,
-                        ),
-                      }}
-                    />
-                    <CopyButton value={inlet2FlowData.massFlow} />
+                    {inlet2isComputing ? (
+                      <Skeleton className="h-8">&nbsp;</Skeleton>
+                    ) : (
+                      <>
+                        <span
+                          dangerouslySetInnerHTML={{
+                            __html: ScientificNotation.toScientificNotationHTML(
+                              inlet2FlowData.massFlow,
+                              5,
+                            ),
+                          }}
+                        />
+                        <CopyButton value={inlet2FlowData.massFlow} />
+                      </>
+                    )}
                   </TableCell>
                   <TableCell>kg/s</TableCell>
                 </TableRow>
                 <TableRow key="concentration">
                   <TableCell>Concentration of Gas 2 in total flow</TableCell>
                   <TableCell>
-                    {concentrationGas2.toPrecision(5)}
-                    <CopyButton value={concentrationGas2} />
+                    <Skeleton
+                      isLoaded={!inlet1isComputing && !inlet2isComputing}
+                    >
+                      {concentrationGas2.toPrecision(5)}
+                      <CopyButton value={concentrationGas2} />
+                    </Skeleton>
                   </TableCell>
                   <TableCell>%</TableCell>
                 </TableRow>
                 <TableRow key="volumeflow">
                   <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
                   <TableCell>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: ScientificNotation.toScientificNotationHTML(
-                          outletVolumeFlow,
-                          5,
-                        ),
-                      }}
-                    />
-                    <CopyButton value={outletVolumeFlow} />
+                    <Skeleton
+                      isLoaded={!inlet1isComputing && !inlet2isComputing}
+                    >
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: ScientificNotation.toScientificNotationHTML(
+                            outletVolumeFlow,
+                            5,
+                          ),
+                        }}
+                      />
+                      <CopyButton value={outletVolumeFlow} />
+                    </Skeleton>
                   </TableCell>
                   <TableCell>L/s</TableCell>
                 </TableRow>
                 <TableRow key="criticalPressure">
                   <TableCell>Flow Critical Pressure</TableCell>
                   <TableCell>
-                    {criticalPressure.toPrecision(5)}
-                    <CopyButton value={criticalPressure} />
+                    <Skeleton
+                      isLoaded={!inlet1isComputing && !inlet2isComputing}
+                    >
+                      {criticalPressure.toPrecision(5)}
+                      <CopyButton value={criticalPressure} />
+                    </Skeleton>
                   </TableCell>
                   <TableCell>kPa</TableCell>
                 </TableRow>
@@ -306,28 +335,32 @@ export const DilutionPage = () => {
             </Table>
           </Tab>
           <Tab key="dilution" title="Gas 1 Details">
-            {inlet1FlowData && (
-              <SonicNozzleTable
-                flowData={inlet1FlowData}
-                gas={selectedGasInlet1}
-                orifice={selectedOrificeInlet1}
-                outletPressure={101.325}
-                pressure={inlet1Pressure}
-                temperature={temperature}
-              />
-            )}
+            <Skeleton isLoaded={!inlet1isComputing}>
+              {inlet1FlowData && (
+                <SonicNozzleTable
+                  flowData={inlet1FlowData}
+                  gas={selectedGasInlet1}
+                  orifice={selectedOrificeInlet1}
+                  outletPressure={101.325}
+                  pressure={inlet1Pressure}
+                  temperature={temperature}
+                />
+              )}
+            </Skeleton>
           </Tab>
           <Tab key="calibration" title="Gas 2 Details">
-            {inlet2FlowData && (
-              <SonicNozzleTable
-                flowData={inlet2FlowData}
-                gas={selectedGasInlet1}
-                orifice={selectedOrificeInlet2}
-                outletPressure={101.325}
-                pressure={inlet2Pressure}
-                temperature={temperature}
-              />
-            )}
+            <Skeleton isLoaded={!inlet2isComputing}>
+              {inlet2FlowData && (
+                <SonicNozzleTable
+                  flowData={inlet2FlowData}
+                  gas={selectedGasInlet1}
+                  orifice={selectedOrificeInlet2}
+                  outletPressure={101.325}
+                  pressure={inlet2Pressure}
+                  temperature={temperature}
+                />
+              )}
+            </Skeleton>
           </Tab>
         </Tabs>
       </section>
