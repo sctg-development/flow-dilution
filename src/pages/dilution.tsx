@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import { useState, useMemo } from "react";
+import { useState, useMemo, lazy, Suspense } from "react";
 import { Input } from "@heroui/input";
 import {
   Table,
@@ -39,10 +39,15 @@ import { Tooltip } from "@heroui/tooltip";
 
 import { GasInlet } from "@/components/gas-inlet";
 import { title } from "@/components/primitives";
-import { SonicNozzleTable } from "@/components/sonic-nozzle-table";
 import { DefaultLayout } from "@/layouts/default";
 import { FlowData } from "@/utilities";
 import { CopyButton } from "@/components/copy-button";
+
+const SonicNozzleTable = lazy(() =>
+  import("@/components/sonic-nozzle-table").then((module) => ({
+    default: module.SonicNozzleTable,
+  })),
+);
 
 export const DilutionPage = () => {
   const [selectedGasInlet1, setSelectedGasInlet1] = useState<GasMixtureExt>(
@@ -337,28 +342,36 @@ export const DilutionPage = () => {
           <Tab key="dilution" title="Gas 1 Details">
             <Skeleton isLoaded={!inlet1isComputing}>
               {inlet1FlowData && (
-                <SonicNozzleTable
-                  flowData={inlet1FlowData}
-                  gas={selectedGasInlet1}
-                  orifice={selectedOrificeInlet1}
-                  outletPressure={101.325}
-                  pressure={inlet1Pressure}
-                  temperature={temperature}
-                />
+                <Suspense
+                  fallback={<Skeleton className="h-8">&nbsp;</Skeleton>}
+                >
+                  <SonicNozzleTable
+                    flowData={inlet1FlowData}
+                    gas={selectedGasInlet1}
+                    orifice={selectedOrificeInlet1}
+                    outletPressure={101.325}
+                    pressure={inlet1Pressure}
+                    temperature={temperature}
+                  />
+                </Suspense>
               )}
             </Skeleton>
           </Tab>
           <Tab key="calibration" title="Gas 2 Details">
             <Skeleton isLoaded={!inlet2isComputing}>
               {inlet2FlowData && (
-                <SonicNozzleTable
-                  flowData={inlet2FlowData}
-                  gas={selectedGasInlet1}
-                  orifice={selectedOrificeInlet2}
-                  outletPressure={101.325}
-                  pressure={inlet2Pressure}
-                  temperature={temperature}
-                />
+                <Suspense
+                  fallback={<Skeleton className="h-8">&nbsp;</Skeleton>}
+                >
+                  <SonicNozzleTable
+                    flowData={inlet2FlowData}
+                    gas={selectedGasInlet1}
+                    orifice={selectedOrificeInlet2}
+                    outletPressure={101.325}
+                    pressure={inlet2Pressure}
+                    temperature={temperature}
+                  />
+                </Suspense>
               )}
             </Skeleton>
           </Tab>

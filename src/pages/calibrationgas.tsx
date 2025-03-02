@@ -35,15 +35,20 @@ import {
   PropertiesGERGResult,
 } from "@sctg/aga8-js";
 import { ScientificNotation } from "@sctg/scientific-notation";
-import { useMemo, useState } from "react";
+import { lazy, Suspense, useMemo, useState } from "react";
 
 import { CalibrationInlet } from "@/components/calibration-inlet";
 import { CopyButton } from "@/components/copy-button";
 import { GasInlet } from "@/components/gas-inlet";
 import { title } from "@/components/primitives";
-import { SonicNozzleTable } from "@/components/sonic-nozzle-table";
 import { DefaultLayout } from "@/layouts/default";
 import { type FlowData } from "@/utilities";
+
+const SonicNozzleTable = lazy(() =>
+  import("@/components/sonic-nozzle-table").then((module) => ({
+    default: module.SonicNozzleTable,
+  })),
+);
 
 export const CalibrationGasPage = () => {
   /**
@@ -525,28 +530,32 @@ export const CalibrationGasPage = () => {
         <Tab key="dilution" title="Dilution Gas Details">
           <Skeleton isLoaded={!inletDilutionisComputing}>
             {inletDilutionFlowData && (
-              <SonicNozzleTable
-                flowData={inletDilutionFlowData}
-                gas={selectedGasDilution}
-                orifice={selectedOrificeInlet1}
-                outletPressure={101.325}
-                pressure={inlet1Pressure}
-                temperature={temperature}
-              />
+              <Suspense fallback={<Skeleton className="h-8">&nbsp;</Skeleton>}>
+                <SonicNozzleTable
+                  flowData={inletDilutionFlowData}
+                  gas={selectedGasDilution}
+                  orifice={selectedOrificeInlet1}
+                  outletPressure={101.325}
+                  pressure={inlet1Pressure}
+                  temperature={temperature}
+                />
+              </Suspense>
             )}
           </Skeleton>
         </Tab>
         <Tab key="calibration" title="Calibration Gas Details">
           <Skeleton isLoaded={!inletCalibrationisComputing}>
             {inletCalibrationFlowData && (
-              <SonicNozzleTable
-                flowData={inletCalibrationFlowData}
-                gas={selectedGasDilution}
-                orifice={selectedOrificeInlet2}
-                outletPressure={101.325}
-                pressure={inlet2Pressure}
-                temperature={temperature}
-              />
+              <Suspense fallback={<Skeleton className="h-8">&nbsp;</Skeleton>}>
+                <SonicNozzleTable
+                  flowData={inletCalibrationFlowData}
+                  gas={selectedGasDilution}
+                  orifice={selectedOrificeInlet2}
+                  outletPressure={101.325}
+                  pressure={inlet2Pressure}
+                  temperature={temperature}
+                />
+              </Suspense>
             )}
           </Skeleton>
         </Tab>
