@@ -1,4 +1,9 @@
-import { PropertiesGERGResult, type GasMixtureExt } from "@sctg/aga8-js";
+import {
+  AGA8wasm,
+  MainModule,
+  PropertiesGERGResult,
+  type GasMixtureExt,
+} from "@sctg/aga8-js";
 
 import { Cd, Cd_max, Cd_min } from "@/config/site";
 
@@ -75,4 +80,36 @@ export function logSonicNozzleFlowCalculation(
 \t\tMass flow rate: ${(massFlow * 1000 * 3600).toPrecision(4)} g/h
 \t\tMass flow rate: ${(massFlow * 1000 * 60).toPrecision(4)} g/min
 \t\tVolume flow at outlet: ${(massFlow / rho_out).toPrecision(4)} m³/s (${((massFlow / rho_out) * 1000 * 3600).toPrecision(4)} L/h)`);
+}
+
+let aga8Instance: MainModule | null = null;
+let aga8Promise: Promise<MainModule> | null = null;
+
+/**
+ * Retrieve the AGA8 instance
+ * @returns A promise resolving to the AGA8 instance
+ */
+export async function getAGA8Instance() {
+  if (aga8Instance) {
+    return aga8Instance;
+  }
+
+  if (!aga8Promise) {
+    aga8Promise = AGA8wasm().then((instance) => {
+      instance.SetupGERG();
+      aga8Instance = instance;
+
+      return instance;
+    });
+  }
+
+  return aga8Promise;
+}
+
+/**
+ * Reset the AGA8 instance
+ */
+export function resetAGA8Instance() {
+  aga8Instance = null;
+  aga8Promise = null;
 }

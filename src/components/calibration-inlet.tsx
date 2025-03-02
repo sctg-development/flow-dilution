@@ -17,7 +17,7 @@
  */
 import type { FC } from "react";
 
-import { AGA8wasm, R, type GasMixtureExt } from "@sctg/aga8-js";
+import { R, type GasMixtureExt } from "@sctg/aga8-js";
 import { useEffect } from "react";
 
 import { OrificeSelector } from "./orifice-selector";
@@ -25,7 +25,11 @@ import { PressureSlider } from "./pressure-slider";
 import { ConcentrationSelector } from "./concentration-selector";
 
 import { Cd } from "@/config/site";
-import { FlowData, logSonicNozzleFlowCalculation } from "@/utilities";
+import {
+  FlowData,
+  getAGA8Instance,
+  logSonicNozzleFlowCalculation,
+} from "@/utilities";
 
 interface CalibrationInletProps {
   label: string;
@@ -58,9 +62,7 @@ async function computeGasFlowFunctionOfPressure(
   orifice: number,
 ): Promise<FlowData> {
   // Initialize GERG-2008 module
-  const AGA8 = await AGA8wasm();
-
-  AGA8.SetupGERG();
+  const AGA8 = await getAGA8Instance();
 
   const A = Math.PI * Math.pow(orifice / 2000, 2); // A - Area of the orifice
 

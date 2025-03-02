@@ -15,13 +15,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import { AGA8wasm, R, type GasMixtureExt } from "@sctg/aga8-js";
+import { R, type GasMixtureExt } from "@sctg/aga8-js";
 import { type FC, useEffect } from "react";
 
 import { GasSelector } from "@/components/gas-selector";
 import { OrificeSelector } from "@/components/orifice-selector";
 import { PressureSlider } from "@/components/pressure-slider";
-import { type FlowData, logSonicNozzleFlowCalculation } from "@/utilities";
+import {
+  type FlowData,
+  getAGA8Instance,
+  logSonicNozzleFlowCalculation,
+} from "@/utilities";
 import { Cd } from "@/config/site";
 
 interface GasInletProps {
@@ -54,9 +58,7 @@ async function computeGasFlowFunctionOfPressure(
   orifice: number,
 ): Promise<FlowData> {
   // Initialize GERG-2008 module
-  const AGA8 = await AGA8wasm();
-
-  AGA8.SetupGERG();
+  const AGA8 = await getAGA8Instance();
 
   const A = Math.PI * Math.pow(orifice / 2000, 2); // A - Area of the orifice
 
