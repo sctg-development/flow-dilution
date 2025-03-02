@@ -38,6 +38,7 @@ interface CalibrationInletProps {
   onCalibrationConcentrationChange: (concentration: number) => void;
   onOrificeChange: (orifice: number) => void;
   onFlowDataChange: (flowData: FlowData) => void;
+  onComputeFlow?: (isComputing: boolean) => void;
 }
 
 /**
@@ -126,9 +127,14 @@ export const CalibrationInlet: FC<CalibrationInletProps> = ({
   onCalibrationConcentrationChange,
   onOrificeChange,
   onFlowDataChange,
+  onComputeFlow,
 }) => {
+  if (!onComputeFlow) {
+    onComputeFlow = () => {};
+  }
   useEffect(() => {
     const updateFlow = async () => {
+      onComputeFlow(true);
       const newFlowData = await computeGasFlowFunctionOfPressure(
         temperature,
         pressure,
@@ -137,6 +143,7 @@ export const CalibrationInlet: FC<CalibrationInletProps> = ({
         selectedOrifice,
       );
 
+      onComputeFlow(false);
       onFlowDataChange(newFlowData);
     };
 

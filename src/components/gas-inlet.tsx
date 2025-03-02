@@ -15,10 +15,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import type React from "react";
-
 import { AGA8wasm, R, type GasMixtureExt } from "@sctg/aga8-js";
-import { useEffect } from "react";
+import { type FC, useEffect } from "react";
 
 import { GasSelector } from "@/components/gas-selector";
 import { OrificeSelector } from "@/components/orifice-selector";
@@ -36,6 +34,7 @@ interface GasInletProps {
   onGasChange: (gas: GasMixtureExt) => void;
   onOrificeChange: (orifice: number) => void;
   onFlowDataChange: (flowData: FlowData) => void;
+  onComputeFlow?: (isComputing: boolean) => void;
 }
 
 /**
@@ -112,7 +111,7 @@ async function computeGasFlowFunctionOfPressure(
   return _flowData;
 }
 
-export const GasInlet: React.FC<GasInletProps> = ({
+export const GasInlet: FC<GasInletProps> = ({
   label,
   pressure,
   selectedGas,
@@ -122,9 +121,14 @@ export const GasInlet: React.FC<GasInletProps> = ({
   onGasChange,
   onOrificeChange,
   onFlowDataChange,
+  onComputeFlow,
 }) => {
+  if (!onComputeFlow) {
+    onComputeFlow = () => {};
+  }
   useEffect(() => {
     const updateFlow = async () => {
+      onComputeFlow(true);
       const newFlowData = await computeGasFlowFunctionOfPressure(
         temperature,
         pressure,
@@ -133,6 +137,7 @@ export const GasInlet: React.FC<GasInletProps> = ({
         selectedOrifice,
       );
 
+      onComputeFlow(false);
       onFlowDataChange(newFlowData);
     };
 
