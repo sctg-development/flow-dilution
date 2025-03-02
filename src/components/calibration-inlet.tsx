@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import type React from "react";
+import type { FC } from "react";
 
 import { AGA8wasm, R, type GasMixtureExt } from "@sctg/aga8-js";
 import { useEffect } from "react";
@@ -115,7 +115,7 @@ async function computeGasFlowFunctionOfPressure(
   return _flowData;
 }
 
-export const CalibrationInlet: React.FC<CalibrationInletProps> = ({
+export const CalibrationInlet: FC<CalibrationInletProps> = ({
   label,
   pressure,
   selectedGas,
