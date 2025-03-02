@@ -4,43 +4,147 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SCTG Flow Dilution</title>
+    <title>Flow Dilution Calculator - Sonic Nozzle Gas Dilution Tool</title>
     <meta key="title" content="SCTG Flow Dilution" property="og:title" />
-    <meta
-      content="Calculate gas flow dilution using sonic nozzles with GERG-2008 equations of state and ISO 9300:2022 standards"
-      property="og:description"
-    />
-    <meta
-      content="A web-based tool for calculating gas flow dilution using sonic nozzles with real-time calculations and support for multiple gas mixtures"
-      name="description"
-    />
+<!-- Primary Meta Tags -->
+<meta name="title" content="Flow Dilution Calculator - GERG-2008 & ISO 9300:2022" />
+<meta name="description" content="Calculate precise gas dilutions using sonic nozzles with GERG-2008 equations of state and ISO 9300:2022 standards. Real-time calculations for calibration gas mixtures." />
+<meta name="keywords" content="gas dilution, sonic nozzle, flow calculator, calibration gas, GERG-2008, ISO 9300:2022, AGA8, gas mixtures" />
+<meta name="author" content="Ronan LE MEILLAT, SCTG Development" />
+<meta name="application-name" content="Flow Dilution" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://dilution.lasersmart.work/" />
+<meta property="og:title" content="Flow Dilution Calculator - Sonic Nozzle Gas Dilution Tool" />
+<meta property="og:description" content="Professional tool for calculating gas flow dilutions using sonic nozzles with GERG-2008 equations and ISO 9300:2022 standards. Ideal for calibration gas production." />
+<meta property="og:image" content="https://dilution.lasersmart.work/screenshot.png" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="https://dilution.lasersmart.work/" />
+<meta property="twitter:title" content="Flow Dilution Calculator - Sonic Nozzle Gas Dilution Tool" />
+<meta property="twitter:description" content="Professional tool for calculating gas flow dilutions using sonic nozzles with GERG-2008 equations and ISO 9300:2022 standards." />
+<meta property="twitter:image" content="https://dilution.lasersmart.work/screenshot.png" />
+
+<!-- Technical Meta -->
+<meta name="theme-color" content="#ffffff" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
     <link href="/favicon.ico" rel="icon" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "SoftwareApplication",
-        "name": "SCTG Flow Dilution",
-        "applicationCategory": "Engineering Tool",
-        "SoftwareSourceCode" : {
-          "codeRepository": "https://github.com/sctg-development/flow-dilution",
-          "programmingLanguage": "typescript"
-        },
+        "name": "Flow Dilution Calculator",
+        "alternateName": "SCTG Flow Dilution",
+        "applicationCategory": "EngineeringApplication",
+        "applicationSubCategory": "CalculationTool",
         "operatingSystem": "Any",
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "EUR"
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/OnlineOnly"
         },
-        "description": "A web-based tool for calculating gas flow dilution using sonic nozzles. Implements GERG-2008 equations of state and ISO 9300:2022 standards for accurate gas property calculations.",
-        "softwareVersion": "1.0",
+        "description": "A professional web application for calculating gas flow dilutions using sonic nozzles according to ISO 9300:2022 standards. The tool implements the AGA8/GERG-2008 equations of state for accurate gas property calculations and provides real-time results for industrial calibration gas production.",
+        "softwareVersion": "2.0",
+        "datePublished": "2025-03-02",
+        "featureList": "Real-time calculations, Multiple gas mixture support, Configurable inlet pressures, Selectable orifice sizes, Calibration gas dilution, Mass flow calculations",
+        "fileSize": "1.2MB",
         "author": {
+          "@type": "Person",
+          "name": "Ronan LE MEILLAT",
+          "url": "https://github.com/eltorio",
+          "memberOf": {
+            "@type": "Organization",
+            "name": "SCTG Development",
+            "url": "https://github.com/sctg-development"
+          }
+        },
+        "editor": {
+          "@type": "Person",
+          "name": "Ronan LE MEILLAT",
+          "url": "https://github.com/aeltorio",
+          "memberOf": {
+            "@type": "Organization",
+            "name": "SCTG Development",
+            "url": "https://github.com/sctg-development"
+          }
+        },
+        "publisher": {
           "@type": "Organization",
           "name": "SCTG Development",
-          "url": "https://github.com/sctg-development"
+          "url": "https://github.com/sctg-development",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://dilution.lasersmart.work/logo.svg"
+          }
+        },
+        "sourceOrganization": {
+          "@type": "Organization",
+          "name": "SCTG Development"
         },
         "license": "https://www.gnu.org/licenses/agpl-3.0.html",
-        "keywords": "gas flow, dilution, sonic nozzles, GERG-2008, ISO 9300:2022, gas mixtures, flow calculation"
-      }
+        "keywords": "gas flow dilution, sonic nozzle, GERG-2008, ISO 9300:2022, calibration gas, mass flow, AGA8, gas properties, engineering tool",
+        "url": "https://sctg.eu.org/",
+        "maintainer": {
+          "@type": "Person",
+          "name": "Ronan LE MEILLAT"
+        },
+        "potentialAction": {
+          "@type": "UseAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://dilution.lasersmart.work/"
+          }
+        },
+        "softwareHelp": {
+          "@type": "CreativeWork",
+          "url": "https://github.com/sctg-development/flow-dilution/blob/main/README.md"
+        },
+        "hasPart": [
+          {
+            "@type": "SoftwareApplication",
+            "name": "General Gas Dilution Calculator",
+            "description": "Calculate dilutions for any gas mixtures using two sonic nozzles"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Calibration Gas Calculator",
+            "description": "Calculate precise calibration gas concentrations"
+          },
+          {
+            "@type": "SoftwareSourceCode",
+            "codeRepository": "https://github.com/sctg-development/flow-dilution",
+            "programmingLanguage": [
+              "TypeScript",
+              "React",
+              "JavaScript"
+            ],
+            "runtimePlatform": "Web Browser",
+            "targetProduct": {
+              "@type": "SoftwareApplication",
+              "name": "Flow Dilution Calculator"
+            }
+          },
+          {
+            "@type": "SoftwareSourceCode",
+            "codeRepository": "https://github.com/sctg-development/aga8-js",
+            "programmingLanguage": [
+              "C",
+              "TypeScript"
+            ],
+            "runtimePlatform": "Web Browser",
+            "targetProduct": {
+              "@type": "SoftwareApplication",
+              "name": "AGA8 Gas Properties Calculator"
+            }
+          }
+        ]
+      }      
     </script>
   </head>
   <body>
