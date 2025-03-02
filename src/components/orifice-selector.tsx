@@ -1,5 +1,4 @@
-import type React from "react";
-
+import { type FC } from "react";
 import { Select, SelectItem } from "@heroui/select";
 
 import { siteConfig } from "@/config/site";
@@ -9,7 +8,7 @@ interface OrificeSelectorProps {
   selectedOrifice: number;
   onOrificeChange: (orifice: number) => void;
 }
-export const OrificeSelector: React.FC<OrificeSelectorProps> = ({
+export const OrificeSelector: FC<OrificeSelectorProps> = ({
   label,
   selectedOrifice,
   onOrificeChange,

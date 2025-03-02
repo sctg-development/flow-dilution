@@ -1,5 +1,4 @@
-import type React from "react";
-
+import { type FC } from "react";
 import {
   Table,
   TableHeader,
@@ -22,7 +21,7 @@ interface SonicNozzleTableProps {
   flowData: FlowData;
 }
 
-export const SonicNozzleTable: React.FC<SonicNozzleTableProps> = ({
+export const SonicNozzleTable: FC<SonicNozzleTableProps> = ({
   gas,
   temperature,
   pressure,

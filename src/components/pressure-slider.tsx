@@ -1,6 +1,5 @@
-import type React from "react";
-
 import { Slider } from "@heroui/slider";
+import { type FC } from "react";
 
 interface PressureSliderProps {
   label?: string;
@@ -8,7 +7,7 @@ interface PressureSliderProps {
   onChange: (value: number) => void;
 }
 
-export const PressureSlider: React.FC<PressureSliderProps> = ({
+export const PressureSlider: FC<PressureSliderProps> = ({
   label,
   value,
   onChange,
