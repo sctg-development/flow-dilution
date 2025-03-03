@@ -20,6 +20,36 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 
+import _package from "./package.json";
+
+type PackageJson = {
+  name: string;
+  private: boolean;
+  version: string;
+  type: string;
+  scripts: {
+    dev: string;
+    build: string;
+    lint: string;
+    preview: string;
+    [key: string]: string;
+  };
+  dependencies: {
+    react: string;
+    "react-dom": string;
+    "react-router-dom": string;
+    [key: string]: string;
+  };
+  devDependencies: {
+    typescript: string;
+    eslint: string;
+    vite: string;
+    [key: string]: string;
+  };
+};
+
+const packageJson: PackageJson = _package;
+
 /**
  * Vite plugin to add a version timestamp to the softwareVersion and datePublished
  * in the JSON-LD schema.
@@ -53,6 +83,33 @@ function versionTimestampPlugin(): Plugin {
     },
   };
 }
+
+/**
+ * Extract all vendor package from package.json dependencies
+ * @param packageJson
+ * @param vendorPrefix
+ * @returns Array of vendor package names
+ */
+function extractPerVendorDependencies(
+  packageJson: PackageJson,
+  vendorPrefix: string,
+): string[] {
+  const dependencies = Object.keys(packageJson.dependencies || {});
+
+  return dependencies.filter((dependency) =>
+    dependency.startsWith(`${vendorPrefix}/`),
+  );
+}
+
+/**
+ * Extract all "@heroui/*" package from package.json dependencies
+ * @param packageJson
+ * @returns Array of "@heroui/*" package names
+ */
+function extractHerouiDependencies(packageJson: PackageJson): string[] {
+  return extractPerVendorDependencies(packageJson, "@heroui");
+}
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), tsconfigPaths(), tailwindcss(), versionTimestampPlugin()],
@@ -74,24 +131,8 @@ export default defineConfig({
             "react-router-dom",
             "@react-aria/visually-hidden",
           ],
-          sctg: ["@sctg/aga8-js", "@sctg/scientific-notation"],
-          heroui: [
-            "@heroui/button",
-            "@heroui/card",
-            "@heroui/dropdown",
-            "@heroui/input",
-            "@heroui/link",
-            "@heroui/navbar",
-            "@heroui/select",
-            "@heroui/skeleton",
-            "@heroui/slider",
-            "@heroui/switch",
-            "@heroui/system",
-            "@heroui/table",
-            "@heroui/tabs",
-            "@heroui/theme",
-            "@heroui/use-clipboard",
-          ],
+          sctg: extractPerVendorDependencies(packageJson, "@sctg"),
+          heroui: extractHerouiDependencies(packageJson),
           tailwindcss: ["tailwind-variants", "tailwindcss"],
           utilities: ["framer-motion"],
         },
