@@ -27,6 +27,7 @@
     "@heroui/tabs": "https://pkg.pr.new/@heroui/tabs@63afa9a",
     "@heroui/theme": "https://pkg.pr.new/@heroui/theme@63afa9a",
     "@heroui/use-clipboard": "https://pkg.pr.new/@heroui/use-clipboard@63afa9a",
+    "@heroui/shared-utils": "https://pkg.pr.new/@heroui/shared-utils@63afa9a",
     "@react-aria/visually-hidden": "3.8.19",
     "@react-types/shared": "3.27.0",
     "@sctg/aga8-js": "1.0.9",
@@ -60,7 +61,7 @@
     "http-server": "14.1.1",
     "npm-check-updates": "^17.1.15",
     "postcss": "8.5.3",
-    "prettier": "3.5.2",
+    "prettier": "3.5.3",
     "typescript": "5.8.2",
     "vite": "^6.2.0",
     "vite-tsconfig-paths": "^5.1.4"

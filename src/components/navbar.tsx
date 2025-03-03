@@ -9,7 +9,7 @@ import {
   NavbarMenu,
 } from "@heroui/navbar";
 import { link as linkStyles } from "@heroui/theme";
-import clsx from "clsx";
+import { clsx } from "@heroui/shared-utils";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
