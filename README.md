@@ -8,10 +8,10 @@ A web-based tool for calculating gas flow dilution using sonic nozzles according
 
 ## 🚀 Live Flow Dilution Demo
 
-Try it now at [Lasersmart Dilution](https://dilution.lasersmart.work/)!
+Try it now at [Lasersmart Dilution](https://dilution.lasersmart.work/)!  
+Or [Live edit it on CodeSandbox](https://githubbox.com/sctg-development/flow-dilution)
 
 <img width="1257" alt="image" src="https://github.com/user-attachments/assets/e7f4a749-329a-4abc-8a23-6f1f620fc32b" />
-
 
 ## Overview
 
