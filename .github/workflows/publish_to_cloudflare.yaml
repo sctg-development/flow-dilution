@@ -3,8 +3,8 @@ name: Publish Sonic Nozzle demo to Cloudflare Pages
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
     paths:
       - '**'
 
@@ -23,6 +23,14 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+
+    - name: Tell CF that the production branch is the main branch
+      run: |
+        curl --request PATCH \
+            "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CLOUDFLARE_ACCOUNT_ID }}/pages/projects/flow-dilution" \
+            --header "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+            --header "Content-Type: application/json" \
+            --data "{\"production_branch\": \"main\"}" || true
 
     - name: Build
       run: |
