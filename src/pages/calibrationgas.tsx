@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-
+import { useTranslation } from "react-i18next";
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
@@ -51,6 +51,7 @@ const SonicNozzleTable = lazy(() =>
 );
 
 export const CalibrationGasPage = () => {
+  const { t } = useTranslation();
   /**
    * The temperature in Kelvin.
    */
@@ -244,7 +245,7 @@ export const CalibrationGasPage = () => {
     <DefaultLayout>
       <section className="">
         <div>
-          <h1 className={title()}>Dilution of calibration gas bottle</h1>
+          <h1 className={title()}>{t("dilution-of-calibration-gas-bottle")}</h1>
           <p>
             This page helps you select appropriate sonic nozzles for diluting
             calibration gases to desired concentrations. For example, you can
@@ -254,15 +255,15 @@ export const CalibrationGasPage = () => {
             9300:2022 standards for sonic nozzle flow calculations.
           </p>
           <p className="text-xs">
-            Note that the mass of the calibration gas (ppm values) is ignored in
-            the calculation. 1000 ppm = 0.1% so it is less than the ISO9300:2022
-            standard tolerance.
+            {t(
+              "note-that-the-mass-of-the-calibration-gas-ppm-values-is-ignored-in-the-calculation-1000-ppm-0-1-so-it-is-less-than-the-iso9300-2022-standard-tolerance",
+            )}
           </p>
           <Input
             isRequired
             className="max-w-xs mt-4"
             defaultValue={temperature.toString()}
-            label="Temperature in K"
+            label={t("temperature-in-k")}
             labelPlacement="outside-left"
             size="md"
             type="number"
@@ -272,7 +273,7 @@ export const CalibrationGasPage = () => {
           <div className="mt-4 w-full flex flex-col md:flex-row gap-4">
             <div className="w-full md:w-1/2 flex flex-col flex-wrap gap-4">
               <GasInlet
-                label="Dilution gas"
+                label={t("dilution-gas")}
                 pressure={inlet1Pressure}
                 selectedGas={selectedGasDilution}
                 selectedOrifice={selectedOrificeInlet1}
@@ -286,7 +287,7 @@ export const CalibrationGasPage = () => {
             </div>
             <div className="w-full md:w-1/2 flex flex-col flex-wrap gap-4">
               <CalibrationInlet
-                label={"Calibration bottle"}
+                label={t("calibration-bottle")}
                 pressure={inlet2Pressure}
                 selectedCalibrationConcentration={
                   selectedCalibrationConcentration
@@ -308,7 +309,7 @@ export const CalibrationGasPage = () => {
       </section>
       <Card className="mt-4">
         <CardHeader className="text-lg font-bold -mb-3">
-          Flow Ratio Visualization
+          {t("flow-ratio-visualization")}
         </CardHeader>
         <CardBody>
           <div className="w-full h-8 bg-gray-200 rounded-lg overflow-hidden relative">
@@ -330,7 +331,7 @@ export const CalibrationGasPage = () => {
           </div>
           <div className="flex justify-between text-xs mt-0.5">
             <span>
-              Dilution Gas:{" "}
+              {t("dilution-gas")}:{" "}
               {(
                 (inletDilutionFlowData.massFlow /
                   (inletDilutionFlowData.massFlow +
@@ -340,7 +341,7 @@ export const CalibrationGasPage = () => {
               %
             </span>
             <span>
-              Calibration Gas:{" "}
+              {t("calibration-gas")}:{" "}
               {(
                 (inletCalibrationFlowData.massFlow /
                   (inletDilutionFlowData.massFlow +
@@ -352,17 +353,17 @@ export const CalibrationGasPage = () => {
           </div>
         </CardBody>
       </Card>
-      <Tabs aria-label="Gas Information" className="mt-4">
-        <Tab key="results" title="Results">
-          <Table removeWrapper aria-label="Flow Results" className="mt-4">
+      <Tabs aria-label={t("gas-information")} className="mt-4">
+        <Tab key="results" title={t("result", { count: 2 })}>
+          <Table removeWrapper aria-label={t("flow-results")} className="mt-4">
             <TableHeader>
               <TableColumn>Parameter</TableColumn>
               <TableColumn>Value</TableColumn>
               <TableColumn>Unit</TableColumn>
             </TableHeader>
             <TableBody>
-              <TableRow key="Dilution Mass Flow">
-                <TableCell>Dilution Mass Flow</TableCell>
+              <TableRow key={t("dilution-mass-flow")}>
+                <TableCell>{t("dilution-mass-flow")}</TableCell>
                 <TableCell>
                   {inletDilutionisComputing ? (
                     <Skeleton className="h-8">&nbsp;</Skeleton>
@@ -382,8 +383,8 @@ export const CalibrationGasPage = () => {
                 </TableCell>
                 <TableCell>kg/s</TableCell>
               </TableRow>
-              <TableRow key="Calibration bottle Flow">
-                <TableCell>Calibration bottle Flow</TableCell>
+              <TableRow key={t("calibration-bottle-flow")}>
+                <TableCell>{t("calibration-bottle-flow")}</TableCell>
                 <TableCell>
                   {inletCalibrationisComputing ? (
                     <Skeleton className="h-8">&nbsp;</Skeleton>
@@ -403,8 +404,8 @@ export const CalibrationGasPage = () => {
                 </TableCell>
                 <TableCell>kg/s</TableCell>
               </TableRow>
-              <TableRow key="Calibration gas Mass Flow">
-                <TableCell>Calibration gas Mass Flow</TableCell>
+              <TableRow key={t("calibration-gas-mass-flow")}>
+                <TableCell>{t("calibration-gas-mass-flow")}</TableCell>
                 <TableCell>
                   {inletDilutionisComputing || inletCalibrationisComputing ? (
                     <Skeleton className="h-8">&nbsp;</Skeleton>
@@ -430,8 +431,10 @@ export const CalibrationGasPage = () => {
                 </TableCell>
                 <TableCell>kg/s</TableCell>
               </TableRow>
-              <TableRow key="Outlet Volume Flow at 101.325 kPa">
-                <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
+              <TableRow key={t("outlet-volume-flow-at-kpa", { kpa: 101.325 })}>
+                <TableCell>
+                  {t("outlet-volume-flow-at-kpa", { kpa: 101.325 })}
+                </TableCell>
                 <TableCell>
                   {inletDilutionisComputing || inletCalibrationisComputing ? (
                     <Skeleton className="h-8">&nbsp;</Skeleton>
@@ -451,7 +454,9 @@ export const CalibrationGasPage = () => {
                 </TableCell>
                 <TableCell>L/s</TableCell>
               </TableRow>
-              <TableRow key="Outlet Volume Flow at 101.325 kPa 2">
+              <TableRow
+                key={t("outlet-volume-flow-at-kpa", { kpa: 101.325 }) + "2"}
+              >
                 <TableCell>&nbsp;</TableCell>
                 <TableCell>
                   {inletDilutionisComputing || inletCalibrationisComputing ? (
@@ -472,9 +477,9 @@ export const CalibrationGasPage = () => {
                 </TableCell>
                 <TableCell>L/min</TableCell>
               </TableRow>
-              <TableRow key="Concentration of calibration gas at outlet">
+              <TableRow key={t("concentration-of-calibration-gas-at-outlet")}>
                 <TableCell>
-                  Concentration of calibration gas at outlet
+                  {t("concentration-of-calibration-gas-at-outlet")}
                 </TableCell>
                 <TableCell>
                   {inletDilutionisComputing || inletCalibrationisComputing ? (
@@ -495,8 +500,8 @@ export const CalibrationGasPage = () => {
                 </TableCell>
                 <TableCell>ppm</TableCell>
               </TableRow>
-              <TableRow key="Flow Critical Pressure">
-                <TableCell>Flow Critical Pressure</TableCell>
+              <TableRow key={t("flow-critical-pressure")}>
+                <TableCell>{t("flow-critical-pressure")}</TableCell>
                 <TableCell>
                   {inletDilutionisComputing || inletCalibrationisComputing ? (
                     <Skeleton className="h-8">&nbsp;</Skeleton>
@@ -527,7 +532,7 @@ export const CalibrationGasPage = () => {
             </TableBody>
           </Table>
         </Tab>
-        <Tab key="dilution" title="Dilution Gas Details">
+        <Tab key="dilution" title={t("dilution-gas-details")}>
           <Skeleton isLoaded={!inletDilutionisComputing}>
             {inletDilutionFlowData && (
               <Suspense fallback={<Skeleton className="h-8">&nbsp;</Skeleton>}>
@@ -543,7 +548,7 @@ export const CalibrationGasPage = () => {
             )}
           </Skeleton>
         </Tab>
-        <Tab key="calibration" title="Calibration Gas Details">
+        <Tab key="calibration" title={t("calibration-gas-details")}>
           <Skeleton isLoaded={!inletCalibrationisComputing}>
             {inletCalibrationFlowData && (
               <Suspense fallback={<Skeleton className="h-8">&nbsp;</Skeleton>}>
@@ -561,7 +566,7 @@ export const CalibrationGasPage = () => {
         </Tab>
       </Tabs>
       <Button className="mt-4" color="secondary" onPress={exportData}>
-        Export Configuration
+        {t("export-configuration")}
       </Button>
     </DefaultLayout>
   );
