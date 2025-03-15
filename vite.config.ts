@@ -130,6 +130,8 @@ export default defineConfig({
             "react-dom",
             "react-router-dom",
             "@react-aria/visually-hidden",
+            "react-i18next",
+            "i18next",
           ],
           sctg: extractPerVendorDependencies(packageJson, "@sctg"),
           heroui: extractHerouiDependencies(packageJson),
