@@ -63,5 +63,7 @@
     "concentration-of-calibration-gas-at-outlet": "Concentración de gas de calibración en la salida",
     "flow-critical-pressure": "Presión crítica de flujo",
     "calibration-gas-mass-flow": "Calibración de gas Flujo másico",
-    "heat-capacity-ratio-k": "Relación de capacidad calorífica (κ)"
+    "heat-capacity-ratio-k": "Relación de capacidad calorífica (κ)",
+    "page-presentation-calibration": "Esta página le ayuda a seleccionar las boquillas sónicas adecuadas para diluir los gases de calibración a las concentraciones deseadas. Por ejemplo, puede calcular cómo diluir un gas de calibración de 50 ppm H<sub>2</sub>S en N<sub>2</sub> gas de calibración con N puro<sub>2</sub> para lograr una concentración final de 5 ppm H<sub>2</sub>S. La calculadora utiliza las normas ISO 9300:2022 para los cálculos del caudal de las boquillas sónicas.",
+    "page-presentation-dilution": "Esta página le permite calcular el flujo másico de dos mezclas de gases en un sistema de dilución utilizando dos boquillas sónicas."
 }
