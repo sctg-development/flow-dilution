@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
@@ -247,12 +247,7 @@ export const CalibrationGasPage = () => {
         <div>
           <h1 className={title()}>{t("dilution-of-calibration-gas-bottle")}</h1>
           <p>
-            This page helps you select appropriate sonic nozzles for diluting
-            calibration gases to desired concentrations. For example, you can
-            calculate how to dilute a 50 ppm H<sub>2</sub>S in N<sub>2</sub>{" "}
-            calibration gas with pure N<sub>2</sub> to achieve a final
-            concentration of 5 ppm H<sub>2</sub>S. The calculator uses ISO
-            9300:2022 standards for sonic nozzle flow calculations.
+            <Trans>{t('page-presentation-calibration')}</Trans>
           </p>
           <p className="text-xs">
             {t(

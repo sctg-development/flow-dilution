@@ -63,5 +63,7 @@
   "flow-n-mass-flow": "Flow {{nb}} Mass Flow",
   "concentration-of-gas-n-in-total-flow": "Concentration of Gas {{n}} in total flow",
   "gas-n-details": "Gas {{n}} Details",
-  "save-current-configuration-as-json": "Save current configuration as JSON"
+  "save-current-configuration-as-json": "Save current configuration as JSON",
+  "page-presentation-calibration": "This page helps you select appropriate sonic nozzles for diluting calibration gases to desired concentrations. For example, you can calculate how to dilute a 50 ppm H<sub>2</sub>S in N<sub>2</sub> calibration gas with pure N<sub>2</sub> to achieve a final concentration of 5 ppm H<sub>2</sub>S. The calculator uses ISO 9300:2022 standards for sonic nozzle flow calculations.",
+  "page-presentation-dilution": "This page allows you to compute the mass flow of two gas mixtures in a dilution system using two sonic nozzles."
 }
