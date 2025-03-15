@@ -15,11 +15,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-import { reactI18n } from "../i18n";
+import reactI18n from "../i18n";
 
 export type SiteConfig = typeof siteConfig;
 
-const t = reactI18n;
+const t = reactI18n.t;
 
 /**
  * Interface representing a sonic nozzle orifice
