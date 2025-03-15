@@ -3,6 +3,8 @@ name: Publish Sonic Nozzle demo to Cloudflare Pages
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - '**'
 

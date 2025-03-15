@@ -42,6 +42,7 @@ import { title } from "@/components/primitives";
 import { DefaultLayout } from "@/layouts/default";
 import { FlowData } from "@/utilities";
 import { CopyButton } from "@/components/copy-button";
+import { useTranslation } from "react-i18next";
 
 const SonicNozzleTable = lazy(() =>
   import("@/components/sonic-nozzle-table").then((module) => ({
@@ -145,6 +146,7 @@ export const DilutionPage = () => {
     a.download = `dilution-setup-${new Date().toISOString().split("T")[0]}.json`;
     a.click();
   };
+  const {t}=useTranslation();
 
   return (
     <DefaultLayout>
@@ -159,7 +161,7 @@ export const DilutionPage = () => {
             isRequired
             className="max-w-xs mt-4"
             defaultValue={temperature.toString()}
-            label="Temperature in K"
+            label={t('temperature-in-k')}
             labelPlacement="outside-left"
             size="md"
             type="number"
@@ -169,7 +171,7 @@ export const DilutionPage = () => {
           <div className="mt-4 w-full flex flex-col md:flex-row gap-4">
             <div className="w-full md:w-1/2 flex flex-col flex-wrap gap-4">
               <GasInlet
-                label="Inlet 1"
+                label={t('inlet',{nb:1})}
                 pressure={inlet1Pressure}
                 selectedGas={selectedGasInlet1}
                 selectedOrifice={selectedOrificeInlet1}
@@ -183,7 +185,7 @@ export const DilutionPage = () => {
             </div>
             <div className="w-w-full md:w-1/2 flex flex-col flex-wrap gap-4">
               <GasInlet
-                label="Inlet 2"
+                label={t('inlet',{nb:2})}
                 pressure={inlet2Pressure}
                 selectedGas={selectedGasInlet2}
                 selectedOrifice={selectedOrificeInlet2}
@@ -200,7 +202,7 @@ export const DilutionPage = () => {
 
         <Card className="mt-4">
           <CardHeader className="text-lg font-bold -mb-3">
-            Flow Ratio Visualization
+            {t('flow-ratio-visualization')}
           </CardHeader>
           <CardBody>
             <div className="w-full h-8 bg-gray-200 rounded-lg overflow-hidden relative">
@@ -222,7 +224,7 @@ export const DilutionPage = () => {
             </div>
             <div className="flex justify-between text-xs mt-0.5">
               <span>
-                Gas 1:{" "}
+                {t('gas')} 1:{" "}
                 {(
                   (inlet1FlowData.massFlow /
                     (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
@@ -231,7 +233,7 @@ export const DilutionPage = () => {
                 %
               </span>
               <span>
-                Gas 2:{" "}
+                {t('gas')} 2:{" "}
                 {(
                   (inlet2FlowData.massFlow /
                     (inlet1FlowData.massFlow + inlet2FlowData.massFlow)) *
@@ -242,9 +244,9 @@ export const DilutionPage = () => {
             </div>
           </CardBody>
         </Card>
-        <Tabs aria-label="Gas Information" className="mt-4">
-          <Tab key="results" title="Results">
-            <Table removeWrapper aria-label="Flow Results" className="mt-4">
+        <Tabs aria-label={t('gas-information')} className="mt-4">
+          <Tab key="results" title={t('result',{count:2})}>
+            <Table removeWrapper aria-label={t('flow-results')} className="mt-4">
               <TableHeader>
                 <TableColumn>Parameter</TableColumn>
                 <TableColumn>Value</TableColumn>
@@ -252,7 +254,7 @@ export const DilutionPage = () => {
               </TableHeader>
               <TableBody>
                 <TableRow key="flow1">
-                  <TableCell>Flow 1 Mass Flow</TableCell>
+                  <TableCell>{t('flow-n-mass-flow',{nb:1})}</TableCell>
                   <TableCell>
                     {inlet1isComputing ? (
                       <Skeleton className="h-8">&nbsp;</Skeleton>
@@ -273,7 +275,7 @@ export const DilutionPage = () => {
                   <TableCell>kg/s</TableCell>
                 </TableRow>
                 <TableRow key="flow2">
-                  <TableCell>Flow 2 Mass Flow</TableCell>
+                  <TableCell>{t('flow-n-mass-flow',{nb:2})}</TableCell>
                   <TableCell>
                     {inlet2isComputing ? (
                       <Skeleton className="h-8">&nbsp;</Skeleton>
@@ -294,7 +296,7 @@ export const DilutionPage = () => {
                   <TableCell>kg/s</TableCell>
                 </TableRow>
                 <TableRow key="concentration">
-                  <TableCell>Concentration of Gas 2 in total flow</TableCell>
+                  <TableCell>{t('concentration-of-gas-n-in-total-flow', {n:2})}</TableCell>
                   <TableCell>
                     <Skeleton
                       isLoaded={!inlet1isComputing && !inlet2isComputing}
@@ -306,7 +308,7 @@ export const DilutionPage = () => {
                   <TableCell>%</TableCell>
                 </TableRow>
                 <TableRow key="volumeflow">
-                  <TableCell>Outlet Volume Flow at 101.325 kPa</TableCell>
+                  <TableCell>{t('outlet-volume-flow-at-kpa',{kpa:101.325})}</TableCell>
                   <TableCell>
                     <Skeleton
                       isLoaded={!inlet1isComputing && !inlet2isComputing}
@@ -325,7 +327,7 @@ export const DilutionPage = () => {
                   <TableCell>L/s</TableCell>
                 </TableRow>
                 <TableRow key="criticalPressure">
-                  <TableCell>Flow Critical Pressure</TableCell>
+                  <TableCell>{t('flow-critical-pressure')}</TableCell>
                   <TableCell>
                     <Skeleton
                       isLoaded={!inlet1isComputing && !inlet2isComputing}
@@ -339,7 +341,7 @@ export const DilutionPage = () => {
               </TableBody>
             </Table>
           </Tab>
-          <Tab key="dilution" title="Gas 1 Details">
+          <Tab key="dilution" title={t('gas-n-details',{n:1})}>
             <Skeleton isLoaded={!inlet1isComputing}>
               {inlet1FlowData && (
                 <Suspense
@@ -357,7 +359,7 @@ export const DilutionPage = () => {
               )}
             </Skeleton>
           </Tab>
-          <Tab key="calibration" title="Gas 2 Details">
+          <Tab key="calibration" title={t('gas-n-details',{n:2})}>
             <Skeleton isLoaded={!inlet2isComputing}>
               {inlet2FlowData && (
                 <Suspense
@@ -378,9 +380,9 @@ export const DilutionPage = () => {
         </Tabs>
       </section>
       <div className="mt-4 flex gap-2 justify-start">
-        <Tooltip content="Save current configuration as JSON">
+        <Tooltip content={t('save-current-configuration-as-json')}>
           <Button color="secondary" onPress={exportData}>
-            Export Configuration
+            {t('export-configuration')}
           </Button>
         </Tooltip>
       </div>

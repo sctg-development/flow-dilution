@@ -1,4 +1,25 @@
+/**
+ * @copyright Copyright (c) 2024-2025 Ronan LE MEILLAT
+ * @license AGPL-3.0-or-later
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+import { reactI18n } from "../i18n";
+
 export type SiteConfig = typeof siteConfig;
+
+const t = reactI18n;
 
 /**
  * Interface representing a sonic nozzle orifice
@@ -23,41 +44,41 @@ export interface Concentration {
 }
 
 export const siteConfig = {
-  name: "Flow Dilution",
-  description: "Comprehensive dilution simulator for AGA8 gaz",
+  name: t("site-name"),
+  description: t("comprehensive-dilution-simulator-for-aga8-gaz"),
   navItems: [
     {
-      label: "Dilution",
+      label: t("dilution"),
       href: "/",
     },
     {
-      label: "Calibration Gas",
+      label: t("calibration-gas"),
       href: "/calibrationgas",
     },
     {
-      label: "AGA8 Computations",
+      label: t("aga8-computations"),
       href: "https://aga8.lasersmart.work/",
     },
     {
-      label: "Sonic Nozzle",
+      label: t("sonic-nozzle"),
       href: "https://sonic.lasersmart.work/",
     },
   ],
   navMenuItems: [
     {
-      label: "Dilution",
+      label: t("dilution"),
       href: "/",
     },
     {
-      label: "Calibration Gas",
+      label: t("calibration-gas"),
       href: "/calibrationgas",
     },
     {
-      label: "AGA8 Computations",
+      label: t("aga8-computations"),
       href: "https://aga8.lasersmart.work/",
     },
     {
-      label: "Sonic Nozzle",
+      label: t("sonic-nozzle"),
       href: "https://sonic.lasersmart.work/",
     },
   ],
@@ -66,47 +87,47 @@ export const siteConfig = {
     sponsor: "https://github.com/sponsors/sctg-development",
   },
   orifices: [
-    { size: 0.001, name: "1 Micron" },
-    { size: 0.002, name: "2 Micron" },
-    { size: 0.003, name: "3 Micron" },
-    { size: 0.004, name: "4 Micron" },
-    { size: 0.005, name: "5 Micron" },
-    { size: 0.006, name: "6 Micron" },
-    { size: 0.007, name: "7 Micron" },
-    { size: 0.008, name: "8 Micron" },
-    { size: 0.009, name: "9 Micron" },
-    { size: 0.01, name: "10 Micron" },
-    { size: 0.012, name: "12 Micron" },
-    { size: 0.015, name: "15 Micron" },
-    { size: 0.017, name: "17 Micron" },
-    { size: 0.02, name: "20 Micron" },
-    { size: 0.023, name: "23 Micron" },
-    { size: 0.025, name: "25 Micron" },
-    { size: 0.03, name: "30 Micron" },
-    { size: 0.035, name: "35 Micron" },
-    { size: 0.04, name: "40 Micron" },
-    { size: 0.045, name: "45 Micron" },
-    { size: 0.05, name: "50 Micron" },
-    { size: 0.075, name: "75 Micron" },
-    { size: 0.1, name: "100 Micron" },
-    { size: 0.15, name: "150 Micron" },
-    { size: 0.2, name: "200 Micron" },
-    { size: 0.25, name: "250 Micron" },
-    { size: 0.3, name: "300 Micron" },
-    { size: 0.35, name: "350 Micron" },
-    { size: 0.4, name: "400 Micron" },
-    { size: 0.45, name: "450 Micron" },
-    { size: 0.5, name: "500 Micron" },
-    { size: 0.55, name: "550 Micron" },
-    { size: 0.6, name: "600 Micron" },
-    { size: 0.65, name: "650 Micron" },
-    { size: 0.7, name: "700 Micron" },
-    { size: 0.75, name: "750 Micron" },
-    { size: 0.8, name: "800 Micron" },
-    { size: 0.85, name: "850 Micron" },
-    { size: 0.9, name: "900 Micron" },
-    { size: 0.95, name: "950 Micron" },
-    { size: 1.0, name: "1 mm" },
+    { size: 0.001, name: t("micron", { count: 1 }) },
+    { size: 0.002, name: t("micron", { count: 2 }) },
+    { size: 0.003, name: t("micron", { count: 3 }) },
+    { size: 0.004, name: t("micron", { count: 4 }) },
+    { size: 0.005, name: t("micron", { count: 5 }) },
+    { size: 0.006, name: t("micron", { count: 6 }) },
+    { size: 0.007, name: t("micron", { count: 7 }) },
+    { size: 0.008, name: t("micron", { count: 8 }) },
+    { size: 0.009, name: t("micron", { count: 9 }) },
+    { size: 0.01, name: t("micron", { count: 10 }) },
+    { size: 0.012, name: t("micron", { count: 12 }) },
+    { size: 0.015, name: t("micron", { count: 15 }) },
+    { size: 0.017, name: t("micron", { count: 17 }) },
+    { size: 0.02, name: t("micron", { count: 20 }) },
+    { size: 0.023, name: t("micron", { count: 23 }) },
+    { size: 0.025, name: t("micron", { count: 25 }) },
+    { size: 0.03, name: t("micron", { count: 30 }) },
+    { size: 0.035, name: t("micron", { count: 35 }) },
+    { size: 0.04, name: t("micron", { count: 40 }) },
+    { size: 0.045, name: t("micron", { count: 45 }) },
+    { size: 0.05, name: t("micron", { count: 50 }) },
+    { size: 0.075, name: t("micron", { count: 75 }) },
+    { size: 0.1, name: t("micron", { count: 100 }) },
+    { size: 0.15, name: t("micron", { count: 150 }) },
+    { size: 0.2, name: t("micron", { count: 200 }) },
+    { size: 0.25, name: t("micron", { count: 250 }) },
+    { size: 0.3, name: t("micron", { count: 300 }) },
+    { size: 0.35, name: t("micron", { count: 350 }) },
+    { size: 0.4, name: t("micron", { count: 400 }) },
+    { size: 0.45, name: t("micron", { count: 450 }) },
+    { size: 0.5, name: t("micron", { count: 500 }) },
+    { size: 0.55, name: t("micron", { count: 550 }) },
+    { size: 0.6, name: t("micron", { count: 600 }) },
+    { size: 0.65, name: t("micron", { count: 650 }) },
+    { size: 0.7, name: t("micron", { count: 700 }) },
+    { size: 0.75, name: t("micron", { count: 750 }) },
+    { size: 0.8, name: t("micron", { count: 800 }) },
+    { size: 0.85, name: t("micron", { count: 850 }) },
+    { size: 0.9, name: t("micron", { count: 900 }) },
+    { size: 0.95, name: t("micron", { count: 950 }) },
+    { size: 1.0, name: t("millimeter", { count: 1 }) },
   ],
   calibrationConcentrations: [
     { concentration: 5e-6, name: "5 ppm" },

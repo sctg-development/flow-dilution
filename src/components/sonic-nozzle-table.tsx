@@ -1,4 +1,22 @@
+/**
+ * @copyright Copyright (c) 2024-2025 Ronan LE MEILLAT
+ * @license AGPL-3.0-or-later
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 import { type FC } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Table,
   TableHeader,
@@ -29,6 +47,7 @@ export const SonicNozzleTable: FC<SonicNozzleTableProps> = ({
   orifice,
   flowData,
 }) => {
+  const { t } = useTranslation();
   const { A, molarMass, Rs, rho, p_crit, properties, rho_out, massFlow } =
     flowData;
 
@@ -37,39 +56,39 @@ export const SonicNozzleTable: FC<SonicNozzleTableProps> = ({
     rows: [string, number, string][];
   }[] = [
     {
-      section: "Input Conditions",
+      section: t("input-conditions"),
       rows: [
-        ["Temperature", temperature - 273.15, "°C"],
-        ["Inlet pressure", pressure, "kPa"],
-        ["Outlet pressure", outletPressure, "kPa"],
-        ["Throat diameter", orifice, "mm"],
-        ["Throat area", A * 1e6, "mm²"],
+        [t("temperature"), temperature - 273.15, "°C"],
+        [t("inlet-pressure"), pressure, "kPa"],
+        [t("outlet-pressure"), outletPressure, "kPa"],
+        [t("throat-diameter"), orifice, "mm"],
+        [t("throat-area"), A * 1e6, "mm²"],
       ],
     },
     {
-      section: "Gas Properties at Inlet",
+      section: t("gas-properties-at-inlet"),
       rows: [
-        ["Molar mass", molarMass, "g/mol"],
-        ["Specific gas constant", Rs, "J/(kg·K)"],
-        ["Density", rho, "kg/m³"],
-        ["Critical flow factor (Cf)", properties.Cf, "-"],
-        ["Heat capacity ratio (κ)", properties.Kappa, "-"],
+        [t("molar-mass"), molarMass, "g/mol"],
+        [t("specific-gas-constant"), Rs, "J/(kg·K)"],
+        [t("density"), rho, "kg/m³"],
+        [t("critical-flow-factor-cf"), properties.Cf, "-"],
+        [t("heat-capacity-ratio-k"), properties.Kappa, "-"],
       ],
     },
     {
-      section: "Gas Properties at Outlet",
-      rows: [["Density", rho_out, "kg/m³"]],
+      section: t("gas-properties-at-outlet"),
+      rows: [[t("density"), rho_out, "kg/m³"]],
     },
     {
-      section: "Results",
+      section: t("result", { count: 2 }),
       rows: [
-        ["Critical outlet pressure", p_crit, "kPa"],
-        ["Mass flow rate", massFlow, "kg/s"],
-        ["Mass flow rate", massFlow * 1000 * 3600, "g/h"],
-        ["Mass flow rate", massFlow * 1000 * 60, "g/min"],
-        ["Volume flow at outlet", massFlow / rho_out, "m³/s"],
-        ["Volume flow at outlet", (massFlow / rho_out) * 1000, "L/s"],
-        ["Volume flow at outlet", (massFlow / rho_out) * 1000 * 3600, "L/h"],
+        [t("critical-outlet-pressure"), p_crit, "kPa"],
+        [t("mass-flow-rate"), massFlow, "kg/s"],
+        [t("mass-flow-rate"), massFlow * 1000 * 3600, "g/h"],
+        [t("mass-flow-rate"), massFlow * 1000 * 60, "g/min"],
+        [t("volume-flow-at-outlet"), massFlow / rho_out, "m³/s"],
+        [t("volume-flow-at-outlet"), (massFlow / rho_out) * 1000, "L/s"],
+        [t("volume-flow-at-outlet"), (massFlow / rho_out) * 1000 * 3600, "L/h"],
       ],
     },
   ];
@@ -78,14 +97,16 @@ export const SonicNozzleTable: FC<SonicNozzleTableProps> = ({
     <Table
       isStriped
       removeWrapper
-      aria-label={`Sonic Nozzle Results - ${gas.name}`}
+      aria-label={t("sonic-nozzle-results-gas-name", {
+        gasName: gas.name,
+      })}
       className="max-w-full"
     >
       <TableHeader>
-        <TableColumn>Section</TableColumn>
-        <TableColumn>Parameter</TableColumn>
-        <TableColumn>Value</TableColumn>
-        <TableColumn>Unit</TableColumn>
+        <TableColumn>{t('section')}</TableColumn>
+        <TableColumn>{t('parameter')}</TableColumn>
+        <TableColumn>{t('value')}</TableColumn>
+        <TableColumn>{t('unit')}</TableColumn>
       </TableHeader>
       <TableBody>
         {data.map(

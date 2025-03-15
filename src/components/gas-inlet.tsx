@@ -17,6 +17,7 @@
  */
 import { R, type GasMixtureExt } from "@sctg/aga8-js";
 import { type FC, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import { GasSelector } from "@/components/gas-selector";
 import { OrificeSelector } from "@/components/orifice-selector";
@@ -128,6 +129,8 @@ export const GasInlet: FC<GasInletProps> = ({
   if (!onComputeFlow) {
     onComputeFlow = () => {};
   }
+  const { t } = useTranslation();
+
   useEffect(() => {
     const updateFlow = async () => {
       onComputeFlow(true);
@@ -147,21 +150,21 @@ export const GasInlet: FC<GasInletProps> = ({
   }, [temperature, pressure, selectedGas, selectedOrifice, onFlowDataChange]);
 
   return (
-    <div aria-label={`${label} Configuration`} role="group">
+    <div aria-label={t("label-configuration", { label: label })} role="group">
       <PressureSlider
-        label={`${label} Pressure`}
+        label={t("label-pressure", { label: label })}
         value={pressure}
         onChange={onPressureChange}
       />
       <div className="my-4">
         <GasSelector
-          label={`Gas ${label}`}
+          label={t("Gas", { label: label })}
           selectedGas={selectedGas}
           onGasChange={onGasChange}
         />
       </div>
       <OrificeSelector
-        label={`Orifice ${label}`}
+        label={t("Orifice", { label: label })}
         selectedOrifice={selectedOrifice}
         onOrificeChange={onOrificeChange}
       />
