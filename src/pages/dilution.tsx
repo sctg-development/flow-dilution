@@ -42,7 +42,7 @@ import { title } from "@/components/primitives";
 import { DefaultLayout } from "@/layouts/default";
 import { FlowData } from "@/utilities";
 import { CopyButton } from "@/components/copy-button";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 
 const SonicNozzleTable = lazy(() =>
   import("@/components/sonic-nozzle-table").then((module) => ({
@@ -154,8 +154,7 @@ export const DilutionPage = () => {
         <div>
           <h1 className={title()}>Dilution</h1>
           <p>
-            This page allows you to compute the mass flow of two gas mixtures in
-            a dilution system using two sonic nozzles.
+            <Trans i18nKey="page-presentation-dilution"></Trans>
           </p>
           <Input
             isRequired

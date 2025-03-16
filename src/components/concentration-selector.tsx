@@ -18,6 +18,7 @@
 import type React from "react";
 
 import { Select, SelectItem } from "@heroui/select";
+import { useTranslation } from "react-i18next";
 
 import { siteConfig } from "@/config/site";
 
@@ -32,10 +33,12 @@ export const ConcentrationSelector: React.FC<ConcentrationSelectorProps> = ({
   selectedConcentration,
   onConcentrationChange,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Select
-      aria-label="Concentration Values"
-      className="max-w-xs"
+      aria-label={t("concentration-values")}
+      className="max-w-[448px] flex flex-row justify-items-stretch"
       label={label}
       labelPlacement="outside-left"
       selectedKeys={new Set([selectedConcentration.toString()])}

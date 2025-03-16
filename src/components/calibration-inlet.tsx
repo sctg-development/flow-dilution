@@ -19,6 +19,7 @@ import type { FC } from "react";
 
 import { R, type GasMixtureExt } from "@sctg/aga8-js";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import { OrificeSelector } from "./orifice-selector";
 import { PressureSlider } from "./pressure-slider";
@@ -131,6 +132,8 @@ export const CalibrationInlet: FC<CalibrationInletProps> = ({
   onFlowDataChange,
   onComputeFlow,
 }) => {
+  const { t } = useTranslation();
+
   if (!onComputeFlow) {
     onComputeFlow = () => {};
   }
@@ -153,21 +156,26 @@ export const CalibrationInlet: FC<CalibrationInletProps> = ({
   }, [temperature, pressure, selectedGas, selectedOrifice, onFlowDataChange]);
 
   return (
-    <div aria-label={`${label} Configuration`} role="group">
+    <div
+      aria-label={`${label} Configuration`}
+      className="flex flex-col"
+      role="group"
+    >
       <PressureSlider
-        label={`${label} Pressure`}
+        label={t("pression-of", { label })}
         value={pressure}
         onChange={onPressureChange}
       />
       <div className="my-4">
         <ConcentrationSelector
-          label={`${label} concentration`}
+          label={t("concentration-of", { label })}
           selectedConcentration={selectedCalibrationConcentration}
           onConcentrationChange={onCalibrationConcentrationChange}
         />
       </div>
       <OrificeSelector
-        label={`Orifice ${label}`}
+        className="max-w-[448px] flex flex-row justify-items-stretch"
+        label={t("orifice-of", { label })}
         selectedOrifice={selectedOrifice}
         onOrificeChange={onOrificeChange}
       />

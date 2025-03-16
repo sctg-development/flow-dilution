@@ -33,6 +33,7 @@ import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon, HeartFilledIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
+import { LanguageSwitch } from "./language-switch";
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -77,6 +78,7 @@ export const Navbar = () => {
             <GithubIcon className="text-default-500" />
           </Link>
           <ThemeSwitch />
+          <LanguageSwitch />
         </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button

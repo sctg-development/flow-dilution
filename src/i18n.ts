@@ -16,8 +16,12 @@ i18n
   .init({
     resources,
     lng: "en",
+    fallbackLng: "en",
     interpolation: {
       escapeValue: false, // react already safes from xss
+    },
+    react: {
+      transKeepBasicHtmlNodesFor: ["br", "strong", "i", "p", "sub", "sup"],
     },
   });
 

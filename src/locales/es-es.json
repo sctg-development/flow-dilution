@@ -9,7 +9,7 @@
     "inlet": "Entrada {{nb}}",
     "gas-n-details": "Gas {{n}} Detalles",
     "switch-to-light-mode": "Cambiar al modo de luz",
-    "dilution-of-calibration-gas-bottle": "Dilución de la botella de gas de calibración",
+    "dilution-of-calibration-gas-bottle": "Dilución de una botella de gas de calibración",
     "inlet-pressure": "Presión de entrada",
     "value": "Valor",
     "volume-flow-at-outlet": "Caudal volumétrico a la salida",
@@ -18,7 +18,7 @@
     "molar-mass": "Masa molar",
     "note-that-the-mass-of-the-calibration-gas-ppm-values-is-ignored-in-the-calculation-1000-ppm-0-1-so-it-is-less-than-the-iso9300-2022-standard-tolerance": "Tenga en cuenta que la masa del gas de calibración (valores de ppm) se ignora en el cálculo. 1000 ppm = 0,1%, por lo que es inferior a la tolerancia estándar de ISO9300:2022.",
     "critical-outlet-pressure": "Presión de salida crítica",
-    "label-pressure": "{{label}} Presión",
+    "label-pressure": "Presión {{label}}",
     "throat-area": "Área de la garganta",
     "input-conditions": "Condiciones de entrada",
     "result_other": "Resultados",
@@ -63,5 +63,12 @@
     "concentration-of-calibration-gas-at-outlet": "Concentración de gas de calibración en la salida",
     "flow-critical-pressure": "Presión crítica de flujo",
     "calibration-gas-mass-flow": "Calibración de gas Flujo másico",
-    "heat-capacity-ratio-k": "Relación de capacidad calorífica (κ)"
+    "heat-capacity-ratio-k": "Relación de capacidad calorífica (κ)",
+    "page-presentation-calibration": "Esta página le ayuda a seleccionar las boquillas sónicas adecuadas para diluir los gases de calibración a las concentraciones deseadas. Por ejemplo, puede calcular cómo diluir un gas de calibración de 50 ppm H<sub>2</sub>S en N<sub>2</sub> gas de calibración con N puro<sub>2</sub> para lograr una concentración final de 5 ppm H<sub>2</sub>S. La calculadora utiliza las normas ISO 9300:2022 para los cálculos del caudal de las boquillas sónicas.",
+    "page-presentation-dilution": "Esta página le permite calcular el flujo másico de dos mezclas de gases en un sistema de dilución utilizando dos boquillas sónicas.",
+    "title": "Flow Dilution Calculator - Herramienta de dilución de gas de boquilla sónica",
+    "concentration-values": "Valores de concentración",
+    "pression-of": "Presión {{label}}",
+    "concentration-of": "{{label}} Concentración",
+    "orifice-of": "Orificio {{label}}"
 }
