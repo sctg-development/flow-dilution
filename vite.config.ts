@@ -54,7 +54,10 @@ type PackageJson = {
 const packageJson: PackageJson = _package;
 
 /**
- * Vite plugin to add a version timestamp to the softwareVersion and datePublished
+ * Vite plugin to configure some values in the JSON-LD schema
+ * - Update the softwareVersion with a timestamp
+ * - Update the datePublished with the current date
+ * - Update the fileSize with the size of the dist folder
  * in the JSON-LD schema.
  */
 function jsonLdSetPlugin(): Plugin {
