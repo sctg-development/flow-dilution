@@ -19,6 +19,7 @@ import type React from "react";
 
 import { Select, SelectItem } from "@heroui/select";
 import { pureGasMixtures, type GasMixtureExt } from "@sctg/aga8-js";
+import { useTranslation } from "react-i18next";
 
 const usedGasMixtures = [...pureGasMixtures];
 
@@ -33,9 +34,11 @@ export const GasSelector: React.FC<GasSelectorProps> = ({
   selectedGas,
   onGasChange,
 }) => {
+  const { t } = useTranslation();
+
   return (
     <Select
-      aria-label="Gas Mixtures"
+      aria-label={t("gas-mixtures")}
       className="max-w-xs"
       label={label}
       labelPlacement="outside-left"
