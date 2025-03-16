@@ -19,7 +19,7 @@ import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 export const LanguageSwitch: FC = () => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const [language, setLanguage] = useState<string>(i18n.language);
 
   useEffect(() => {
@@ -29,6 +29,9 @@ export const LanguageSwitch: FC = () => {
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
     setLanguage(lng);
+    document.documentElement.lang = lng;
+    document.title = t("title");
+    document.head.querySelector("meta[key='title']")?.setAttribute("content", t("title"));
   };
 
   return (

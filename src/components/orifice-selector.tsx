@@ -24,16 +24,22 @@ interface OrificeSelectorProps {
   label?: string;
   selectedOrifice: number;
   onOrificeChange: (orifice: number) => void;
+  className?: string;
 }
 export const OrificeSelector: FC<OrificeSelectorProps> = ({
   label,
   selectedOrifice,
   onOrificeChange,
+  className,
 }) => {
+  if (!className) {
+    className = "max-w-xs";
+  }
+
   return (
     <Select
       aria-label="Orifice Sizes"
-      className="max-w-xs"
+      className={className}
       label={label}
       labelPlacement="outside-left"
       selectedKeys={new Set([selectedOrifice.toString()])}

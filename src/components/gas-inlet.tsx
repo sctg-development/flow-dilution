@@ -158,7 +158,7 @@ export const GasInlet: FC<GasInletProps> = ({
       />
       <div className="my-4">
         <GasSelector
-          label={t("Gas", { label: label })}
+          label={label}
           selectedGas={selectedGas}
           onGasChange={onGasChange}
         />
