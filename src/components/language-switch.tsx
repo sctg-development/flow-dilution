@@ -45,20 +45,20 @@ export const LanguageSwitch: FC = () => {
   return (
     <div className="flex gap-1">
       <button
-        className={`${language === "en" ? "text-primary" : "text-default-600"}`}
-        onClick={() => changeLanguage("en")}
+        className={`${language === "en-US" ? "text-primary" : "text-default-600"}`}
+        onClick={() => changeLanguage("en-US")}
       >
         EN
       </button>
       <button
-        className={`${language === "fr" ? "text-primary" : "text-default-600"}`}
-        onClick={() => changeLanguage("fr")}
+        className={`${language === "fr-FR" ? "text-primary" : "text-default-600"}`}
+        onClick={() => changeLanguage("fr-FR")}
       >
         FR
       </button>
       <button
-        className={`${language === "es" ? "text-primary" : "text-default-600"}`}
-        onClick={() => changeLanguage("es")}
+        className={`${language === "es-ES" ? "text-primary" : "text-default-600"}`}
+        onClick={() => changeLanguage("es-ES")}
       >
         ES
       </button>
