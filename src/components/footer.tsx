@@ -27,7 +27,7 @@ export const Footer = () => {
         isExternal
         className="flex items-center gap-1 text-current"
         href="https://www.sctg.eu.org"
-        title={t('brand-full')}
+        title={t("brand-full")}
       >
         <span className="text-default-600">{t("Powered by")}</span>
         <p className="text-primary">SCTG</p>

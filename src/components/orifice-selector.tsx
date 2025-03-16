@@ -17,6 +17,7 @@
  */
 import { type FC } from "react";
 import { Select, SelectItem } from "@heroui/select";
+import { useTranslation } from "react-i18next";
 
 import { siteConfig } from "@/config/site";
 
@@ -32,13 +33,15 @@ export const OrificeSelector: FC<OrificeSelectorProps> = ({
   onOrificeChange,
   className,
 }) => {
+  const { t } = useTranslation();
+
   if (!className) {
     className = "max-w-xs";
   }
 
   return (
     <Select
-      aria-label="Orifice Sizes"
+      aria-label={t("orifice-sizes")}
       className={className}
       label={label}
       labelPlacement="outside-left"

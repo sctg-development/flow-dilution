@@ -1,27 +1,43 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-
-import fr from "./locales/fr-fr.json" assert { type: "json" };
-import en from "./locales/en-us.json" assert { type: "json" };
-import es from "./locales/es-es.json" assert { type: "json" };
-
-const resources = {
-  en: { translation: en },
-  es: { translation: es },
-  fr: { translation: fr },
-};
+import i18nextHttpBackend, { HttpBackendOptions } from "i18next-http-backend";
 
 i18n
+  .use(i18nextHttpBackend)
   .use(initReactI18next) // passes i18n down to react-i18next
-  .init({
-    resources,
-    lng: "en",
-    fallbackLng: "en",
+  .init<HttpBackendOptions>({
+    //resources,
+    lng: "en-US",
+    fallbackLng: "en-US",
     interpolation: {
       escapeValue: false, // react already safes from xss
     },
     react: {
       transKeepBasicHtmlNodesFor: ["br", "strong", "i", "p", "sub", "sup"],
+    },
+    backend: {
+      loadPath: (lng) => {
+        const reqlng = lng[0];
+        let url: URL;
+
+        // Vite does not know how to resolve
+        // new URL(`./locales/${reqlng.toLowerCase()}.json`, import.meta.url)
+        switch (reqlng) {
+          case "en-US":
+            url = new URL("./locales/en-us.json", import.meta.url);
+            break;
+          case "fr-FR":
+            url = new URL("./locales/fr-fr.json", import.meta.url);
+            break;
+          case "es-ES":
+            url = new URL("./locales/es-es.json", import.meta.url);
+            break;
+          default:
+            url = new URL("./locales/en-us.json", import.meta.url);
+        }
+
+        return url.toString();
+      },
     },
   });
 

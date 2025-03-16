@@ -70,5 +70,7 @@
   "pression-of": "{{label}} Pressure",
   "concentration-of": "{{label}} Concentration",
   "orifice-of": "{{label}} Orifice",
-  "title": "Flow Dilution Calculator - Sonic Nozzle Gas Dilution Tool"
+  "title": "Flow Dilution Calculator - Sonic Nozzle Gas Dilution Tool",
+  "orifice-sizes": "Orifice Sizes",
+  "gas-mixtures": "Gas Mixtures"
 }

@@ -15,6 +15,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+import fs from "node:fs";
+import path from "node:path";
+
 import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -51,12 +54,16 @@ type PackageJson = {
 const packageJson: PackageJson = _package;
 
 /**
- * Vite plugin to add a version timestamp to the softwareVersion and datePublished
+ * Vite plugin to configure some values in the JSON-LD schema
+ * - Update the softwareVersion with a timestamp
+ * - Update the datePublished with the current date
+ * - Update the fileSize with the size of the dist folder
  * in the JSON-LD schema.
  */
-function versionTimestampPlugin(): Plugin {
+function jsonLdSetPlugin(): Plugin {
   return {
     name: "version-timestamp",
+    enforce: "post",
     transformIndexHtml(html: string) {
       // Create a version timestamp
       const now = new Date();
@@ -80,6 +87,83 @@ function versionTimestampPlugin(): Plugin {
           /"datePublished":\s*"[^"]*"/,
           `"datePublished": "${year}-${month}-${day}"`,
         );
+    },
+    closeBundle() {
+      /**
+       * Get all files in a directory
+       * @param dirPath - Directory path
+       * @param arrayOfFiles - Array of files
+       * @returns Array of files
+       */
+      const getAllFiles = function (
+        dirPath: fs.PathLike,
+        arrayOfFiles?: string[],
+      ): string[] {
+        const files = fs.readdirSync(dirPath);
+
+        let _arrayOfFiles = arrayOfFiles || [];
+
+        files.forEach(function (file) {
+          if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+            _arrayOfFiles = getAllFiles(dirPath + "/" + file, _arrayOfFiles);
+          } else {
+            // eslint-disable-next-line no-undef
+            _arrayOfFiles.push(path.join(__dirname, dirPath.toString(), file));
+          }
+        });
+        if (arrayOfFiles) {
+          arrayOfFiles = _arrayOfFiles;
+        }
+
+        return _arrayOfFiles;
+      };
+
+      /**
+       * Get the total size of all files in a directory
+       * @param directoryPath - Directory path
+       * @returns Total size of all files in the directory
+       */
+      const getTotalSize = function (directoryPath: fs.PathLike): number {
+        const arrayOfFiles = getAllFiles(directoryPath);
+
+        let totalSize = 0;
+
+        arrayOfFiles.forEach(function (filePath) {
+          totalSize += fs.statSync(filePath).size;
+        });
+
+        return totalSize;
+      };
+
+      // Compute the size of the dist folder
+      const distSize = getTotalSize("dist");
+
+      /**
+       * Format the file size in bytes to a human-readable compliant with the JSON-LD
+       * @param bytes - File size in bytes
+       * @returns Human-readable file size
+       *
+       * @see {@link https://schema.org/fileSize}
+       * @example
+       * formatFileSize(1024) // 1KB
+       */
+      const formatFileSize = (bytes: number) => {
+        if (bytes < 1024) return bytes + "B";
+        else if (bytes < 1048576) return (bytes / 1024).toFixed(3) + "KB";
+        else return (bytes / 1048576).toFixed(3) + "MB";
+      };
+
+      const readableDistSize = formatFileSize(distSize);
+      // Change the "fileSize": "xxxx" in the JSON-LD to the actual dist folder size
+      // eslint-disable-next-line no-undef
+      const jsonLdPath = path.join(__dirname, "dist", "index.html");
+      let jsonLd = fs.readFileSync(jsonLdPath, "utf8");
+
+      jsonLd = jsonLd.replace(
+        /"fileSize":\s*"[^"]*"/,
+        `"fileSize": "${readableDistSize.toString()}"`,
+      );
+      fs.writeFileSync(jsonLdPath, jsonLd);
     },
   };
 }
@@ -112,7 +196,7 @@ function extractHerouiDependencies(packageJson: PackageJson): string[] {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths(), tailwindcss(), versionTimestampPlugin()],
+  plugins: [react(), tsconfigPaths(), tailwindcss(), jsonLdSetPlugin()],
   optimizeDeps: {
     exclude: ["@sctg/aga8-js"],
   },
@@ -130,9 +214,8 @@ export default defineConfig({
             "react-dom",
             "react-router-dom",
             "@react-aria/visually-hidden",
-            "react-i18next",
-            "i18next",
           ],
+          i18next: ["i18next", "react-i18next"],
           sctg: extractPerVendorDependencies(packageJson, "@sctg"),
           heroui: extractHerouiDependencies(packageJson),
           tailwindcss: ["tailwind-variants", "tailwindcss"],

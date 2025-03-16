@@ -29,11 +29,12 @@ import { link as linkStyles } from "@heroui/theme";
 import { clsx } from "@heroui/shared-utils";
 import { useTranslation } from "react-i18next";
 
+import { LanguageSwitch } from "./language-switch";
+
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon, HeartFilledIcon } from "@/components/icons";
 import { Logo } from "@/components/icons";
-import { LanguageSwitch } from "./language-switch";
 
 export const Navbar = () => {
   const { t } = useTranslation();
@@ -48,7 +49,7 @@ export const Navbar = () => {
             href="/"
           >
             <Logo />
-            <p className="font-bold text-inherit">{t('brand')}</p>
+            <p className="font-bold text-inherit">{t("brand")}</p>
           </Link>
         </NavbarBrand>
         <div className="hidden lg:flex gap-4 justify-start ml-2">
