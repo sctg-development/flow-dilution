@@ -247,7 +247,7 @@ export const CalibrationGasPage = () => {
         <div>
           <h1 className={title()}>{t("dilution-of-calibration-gas-bottle")}</h1>
           <p>
-            <Trans>{t("page-presentation-calibration")}</Trans>
+            <Trans t={t}>page-presentation-calibration</Trans>
           </p>
           <p className="text-xs">
             {t(

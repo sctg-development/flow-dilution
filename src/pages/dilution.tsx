@@ -154,7 +154,7 @@ export const DilutionPage = () => {
         <div>
           <h1 className={title()}>{t("dilution")}</h1>
           <p>
-            <Trans i18nKey="page-presentation-dilution" />
+            <Trans t={t}>page-presentation-dilution</Trans>
           </p>
           <Input
             isRequired

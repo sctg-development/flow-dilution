@@ -43,7 +43,7 @@ export interface Concentration {
   name: string;
 }
 
-export const siteConfig = {
+export const siteConfig = () => ({
   name: t("site-name"),
   description: t("comprehensive-dilution-simulator-for-aga8-gaz"),
   navItems: [
@@ -140,7 +140,7 @@ export const siteConfig = {
     { concentration: 500e-6, name: "500 ppm" },
     { concentration: 1e-3, name: "1000 ppm" },
   ],
-};
+});
 
 // Constants for toroidal nozzle
 export const Re_thoroidal_max = 3.2e7; // Maximal Reynolds number for toroidal nozzle
