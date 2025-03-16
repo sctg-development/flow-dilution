@@ -247,7 +247,7 @@ export const CalibrationGasPage = () => {
         <div>
           <h1 className={title()}>{t("dilution-of-calibration-gas-bottle")}</h1>
           <p>
-            <Trans>{t('page-presentation-calibration')}</Trans>
+            <Trans>{t("page-presentation-calibration")}</Trans>
           </p>
           <p className="text-xs">
             {t(
@@ -352,9 +352,9 @@ export const CalibrationGasPage = () => {
         <Tab key="results" title={t("result", { count: 2 })}>
           <Table removeWrapper aria-label={t("flow-results")} className="mt-4">
             <TableHeader>
-              <TableColumn>{t('parameter')}</TableColumn>
-              <TableColumn>{t('value')}</TableColumn>
-              <TableColumn>{t('unit')}</TableColumn>
+              <TableColumn>{t("parameter")}</TableColumn>
+              <TableColumn>{t("value")}</TableColumn>
+              <TableColumn>{t("unit")}</TableColumn>
             </TableHeader>
             <TableBody>
               <TableRow key={t("dilution-mass-flow")}>

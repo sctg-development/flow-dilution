@@ -152,7 +152,7 @@ export const DilutionPage = () => {
     <DefaultLayout>
       <section className="">
         <div>
-          <h1 className={title()}>{t('dilution')}</h1>
+          <h1 className={title()}>{t("dilution")}</h1>
           <p>
             <Trans i18nKey="page-presentation-dilution" />
           </p>

@@ -103,10 +103,10 @@ export const SonicNozzleTable: FC<SonicNozzleTableProps> = ({
       className="max-w-full"
     >
       <TableHeader>
-        <TableColumn>{t('section')}</TableColumn>
-        <TableColumn>{t('parameter')}</TableColumn>
-        <TableColumn>{t('value')}</TableColumn>
-        <TableColumn>{t('unit')}</TableColumn>
+        <TableColumn>{t("section")}</TableColumn>
+        <TableColumn>{t("parameter")}</TableColumn>
+        <TableColumn>{t("value")}</TableColumn>
+        <TableColumn>{t("unit")}</TableColumn>
       </TableHeader>
       <TableBody>
         {data.map(
