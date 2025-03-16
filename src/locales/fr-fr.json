@@ -70,5 +70,7 @@
     "concentration-of": "Concentration {{label}}",
     "orifice-of": "Buse {{label}}",
     "title": "Flow Dilution Calculator - dilution de gaz avec des buses soniques",
-    "concentration-values": "Concentrations"
+    "concentration-values": "Concentrations",
+    "orifice-sizes": "Diamètres de buse",
+    "gas-mixtures": "Mélange gazeux"
 }
