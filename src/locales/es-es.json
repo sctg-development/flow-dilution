@@ -70,5 +70,7 @@
     "concentration-values": "Valores de concentración",
     "pression-of": "Presión {{label}}",
     "concentration-of": "{{label}} Concentración",
-    "orifice-of": "Orificio {{label}}"
+    "orifice-of": "Orificio {{label}}",
+    "orifice-sizes": "Tamaños de orificio",
+    "gas-mixtures": "Mezclas de gases"
 }
