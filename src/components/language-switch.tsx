@@ -31,7 +31,15 @@ export const LanguageSwitch: FC = () => {
     setLanguage(lng);
     document.documentElement.lang = lng;
     document.title = t("title");
-    document.head.querySelector("meta[key='title']")?.setAttribute("content", t("title"));
+    document.head
+      .querySelector("meta[key='title']")
+      ?.setAttribute("content", t("title"));
+    document.head
+      .querySelector("meta[name='title']")
+      ?.setAttribute("content", t("title"));
+    document.head
+      .querySelector("meta[property='og:title']")
+      ?.setAttribute("content", t("title"));
   };
 
   return (
