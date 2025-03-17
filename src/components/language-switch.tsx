@@ -17,6 +17,16 @@
  */
 import { type FC, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@heroui/dropdown";
+import { Button } from "@heroui/button";
+
+import { availableLanguages } from "@/i18n";
+import { I18nIcon } from "@/components/icons";
 
 export const LanguageSwitch: FC = () => {
   const { i18n, t } = useTranslation();
@@ -37,31 +47,46 @@ export const LanguageSwitch: FC = () => {
     document.head
       .querySelector("meta[name='title']")
       ?.setAttribute("content", t("title"));
-    document.head
-      .querySelector("meta[property='og:title']")
-      ?.setAttribute("content", t("title"));
+  };
+
+  /**
+   * Get the short language code
+   * @param lng
+   * @returns
+   */
+  const getShortLanguage = (lng: string) => {
+    // use the language code for Chinese
+    if (lng.startsWith("zh")) {
+      return "中文";
+    }
+
+    // use the first part of the language code
+    return lng.split("-")[0];
   };
 
   return (
     <div className="flex gap-1">
-      <button
-        className={`${language === "en-US" ? "text-primary" : "text-default-600"}`}
-        onClick={() => changeLanguage("en-US")}
-      >
-        EN
-      </button>
-      <button
-        className={`${language === "fr-FR" ? "text-primary" : "text-default-600"}`}
-        onClick={() => changeLanguage("fr-FR")}
-      >
-        FR
-      </button>
-      <button
-        className={`${language === "es-ES" ? "text-primary" : "text-default-600"}`}
-        onClick={() => changeLanguage("es-ES")}
-      >
-        ES
-      </button>
+      <Dropdown>
+        <DropdownTrigger>
+          <Button aria-label={t("language")} variant="light">
+            <I18nIcon className="text-default-500" size={24} />
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu>
+          {availableLanguages.map((lng) => (
+            <DropdownItem key={lng} aria-label={`${t("language")}: ${lng}`}>
+              <button
+                key={lng}
+                className={`${language === lng ? "text-primary" : "text-default-600"} w-full`}
+                type="button"
+                onClick={() => changeLanguage(lng)}
+              >
+                {getShortLanguage(lng).toLocaleUpperCase()}
+              </button>
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
+      </Dropdown>
     </div>
   );
 };

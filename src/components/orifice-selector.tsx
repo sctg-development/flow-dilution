@@ -56,7 +56,7 @@ export const OrificeSelector: FC<OrificeSelectorProps> = ({
         }
       }}
     >
-      {siteConfig.orifices.map((orifice) => (
+      {siteConfig().orifices.map((orifice) => (
         <SelectItem key={orifice.size}>{orifice.name}</SelectItem>
       ))}
     </Select>

@@ -42,3 +42,4 @@ i18n
   });
 
 export default i18n;
+export const availableLanguages = ["en-US", "fr-FR", "es-ES"];

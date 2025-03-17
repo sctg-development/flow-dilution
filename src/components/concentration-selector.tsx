@@ -52,7 +52,7 @@ export const ConcentrationSelector: React.FC<ConcentrationSelectorProps> = ({
         }
       }}
     >
-      {siteConfig.calibrationConcentrations.map((item) => (
+      {siteConfig().calibrationConcentrations.map((item) => (
         <SelectItem key={item.concentration}>{item.name}</SelectItem>
       ))}
     </Select>
