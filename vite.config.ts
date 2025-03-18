@@ -23,9 +23,9 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
 
-import _package from "./package.json";
+import _package from "./package.json" with { type: "json" };
 
-type PackageJson = {
+export type PackageJson = {
   name: string;
   private: boolean;
   version: string;
@@ -50,6 +50,23 @@ type PackageJson = {
     [key: string]: string;
   };
 };
+
+/**
+ * Extract all vendor package from package.json dependencies
+ * @param packageJson
+ * @param vendorPrefix
+ * @returns Array of vendor package names
+ */
+export function extractPerVendorDependencies(
+  packageJson: PackageJson,
+  vendorPrefix: string,
+): string[] {
+  const dependencies = Object.keys(packageJson.dependencies || {});
+
+  return dependencies.filter((dependency) =>
+    dependency.startsWith(`${vendorPrefix}/`),
+  );
+}
 
 const packageJson: PackageJson = _package;
 
@@ -166,23 +183,6 @@ function jsonLdSetPlugin(): Plugin {
       fs.writeFileSync(jsonLdPath, jsonLd);
     },
   };
-}
-
-/**
- * Extract all vendor package from package.json dependencies
- * @param packageJson
- * @param vendorPrefix
- * @returns Array of vendor package names
- */
-function extractPerVendorDependencies(
-  packageJson: PackageJson,
-  vendorPrefix: string,
-): string[] {
-  const dependencies = Object.keys(packageJson.dependencies || {});
-
-  return dependencies.filter((dependency) =>
-    dependency.startsWith(`${vendorPrefix}/`),
-  );
 }
 
 /**
