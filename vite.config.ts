@@ -210,11 +210,14 @@ export default defineConfig({
         assetFileNames: "assets/flow-dilution-[hash].[ext]",
         // Grouping strategy
         manualChunks: {
-          react: [
-            "react",
-            "react-dom",
-            "react-router-dom",
+          react: ["react", "react-dom", "react-router-dom"],
+          reactAria: [
             "@react-aria/visually-hidden",
+            "@react-aria/table",
+            "@react-aria/toggle",
+            "@react-aria/grid",
+            "@react-aria/overlays",
+            "@react-aria/focus",
           ],
           i18next: ["i18next", "react-i18next", "i18next-http-backend"],
           sctg: extractPerVendorDependencies(packageJson, "@sctg"),
