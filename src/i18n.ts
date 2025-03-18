@@ -36,13 +36,31 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import i18nextHttpBackend, { HttpBackendOptions } from "i18next-http-backend";
 
+export interface AvailableLanguage {
+  code: string; // ISO 639-1 language code
+  nativeName: string; // Native name of the language
+  isRTL: boolean; // Right-to-left language
+  isDefault?: boolean; // Default language
+}
+
+export const availableLanguages: AvailableLanguage[] = [
+  { code: "en-US", nativeName: "English", isRTL: false, isDefault: true },
+  { code: "fr-FR", nativeName: "Français", isRTL: false },
+  { code: "es-ES", nativeName: "Español", isRTL: false },
+];
+
+const fallbackLng = "en-US";
+
 i18n
   .use(i18nextHttpBackend)
   .use(initReactI18next) // passes i18n down to react-i18next
   .init<HttpBackendOptions>({
     //resources,
-    lng: "en-US",
-    fallbackLng: "en-US",
+    lng:
+      localStorage.getItem("preferredLanguage") ||
+      availableLanguages.find((lang) => lang.isDefault)?.code ||
+      fallbackLng,
+    fallbackLng: fallbackLng,
     interpolation: {
       escapeValue: false, // react already safes from xss
     },
@@ -76,14 +94,3 @@ i18n
   });
 
 export default i18n;
-export interface AvailableLanguage {
-  code: string; // ISO 639-1 language code
-  nativeName: string; // Native name of the language
-  isRTL: boolean; // Right-to-left language
-}
-
-export const availableLanguages: AvailableLanguage[] = [
-  { code: "en-US", nativeName: "English", isRTL: false },
-  { code: "fr-FR", nativeName: "Français", isRTL: false },
-  { code: "es-ES", nativeName: "Español", isRTL: false },
-];
