@@ -201,6 +201,7 @@ export default defineConfig({
     exclude: ["@sctg/aga8-js"],
   },
   build: {
+    assetsInlineLimit: 1024,
     rollupOptions: {
       output: {
         // Customizing the output file names
@@ -215,11 +216,11 @@ export default defineConfig({
             "react-router-dom",
             "@react-aria/visually-hidden",
           ],
-          i18next: ["i18next", "react-i18next"],
+          i18next: ["i18next", "react-i18next", "i18next-http-backend"],
           sctg: extractPerVendorDependencies(packageJson, "@sctg"),
-          heroui: extractHerouiDependencies(packageJson),
           tailwindcss: ["tailwind-variants", "tailwindcss"],
           utilities: ["framer-motion"],
+          heroui: extractHerouiDependencies(packageJson),
         },
       },
     },
