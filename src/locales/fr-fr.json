@@ -64,7 +64,7 @@
   "gas-properties-at-outlet": "Propriétés du gaz à la sortie",
   "dilution-mass-flow": "Débit massique de dilution",
   "brand-full": "SCTG Développement",
-  "page-presentation-calibration": "Cette page vous aide à sélectionner les buses soniques appropriées pour diluer les gaz d’étalonnage aux concentrations souhaitées. Par exemple, vous pouvez calculer comment diluer un gaz d’étalonnage de 50 ppm de H<sub>2</sub>S dans du N<sub>2</sub> pour obtenir une concentration finale de 5 ppm H<sub>2</sub>S. Le calculateur utilise la norme ISO 9300:2022 pour les calculs de débit des buses soniques.",
+  "page-presentation-calibration": "Cette page vous aide à sélectionner les buses soniques appropriées pour diluer un gaz d’étalonnage aux concentrations souhaitées. Par exemple, vous pouvez calculer comment diluer un gaz d’étalonnage de 50 ppm de H<sub>2</sub>S dans du N<sub>2</sub> pour obtenir une concentration finale de 5 ppm H<sub>2</sub>S. Le calculateur utilise la norme ISO 9300:2022 pour les calculs de débit des buses soniques.",
   "page-presentation-dilution": "Cette page vous permet de calculer le débit massique de deux mélanges de gaz dans un système de dilution à l'aide de deux buses soniques.",
   "pression-of": "Pression {{label}}",
   "concentration-of": "Concentration {{label}}",
