@@ -22,6 +22,7 @@ import { defineConfig, type Plugin } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import tailwindcss from "@tailwindcss/vite";
+import { githubPagesSpa } from "@sctg/vite-plugin-github-pages-spa";
 
 import _package from "./package.json" with { type: "json" };
 
@@ -196,7 +197,13 @@ function extractHerouiDependencies(packageJson: PackageJson): string[] {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tsconfigPaths(), tailwindcss(), jsonLdSetPlugin()],
+  plugins: [
+    react(),
+    tsconfigPaths(),
+    tailwindcss(),
+    jsonLdSetPlugin(),
+    githubPagesSpa(),
+  ],
   optimizeDeps: {
     exclude: ["@sctg/aga8-js"],
   },
