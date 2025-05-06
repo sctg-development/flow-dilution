@@ -26,7 +26,6 @@ export interface PreviewButtonProps extends ButtonProps {
 }
 
 export const PreviewButton = forwardRef<
-  // eslint-disable-next-line no-undef
   HTMLButtonElement | null,
   PreviewButtonProps
 >((props, ref) => {
