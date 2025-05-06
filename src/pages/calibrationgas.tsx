@@ -20,6 +20,7 @@ import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Input } from "@heroui/input";
 import { Skeleton } from "@heroui/skeleton";
+import { Tooltip } from "@heroui/tooltip";
 import {
   Table,
   TableBody,
@@ -178,7 +179,55 @@ export const CalibrationGasPage = () => {
     a.click();
   };
 
-  /**s
+  const importData = async () => {
+    const input = document.createElement("input");
+
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          const content = e.target?.result;
+
+          if (content) {
+            const json = JSON.parse(content as string);
+
+            setTemperature(json.temperature);
+            setSelectedGasDilution(
+              availableGasMixtures.find(
+                (gas) => gas.name === json.dilutionGas.name,
+              ) as GasMixtureExt,
+            );
+            setInletDilutionPressure(json.dilutionGas.pressure);
+            setSelectedOrificeInletDilution(json.dilutionGas.orifice);
+            setInletDilutionFlowData({
+              ...inletDilutionFlowData,
+              massFlow: json.dilutionGas.massFlow,
+            });
+            setSelectedCalibrationConcentration(
+              json.calibrationGas.bottleConcentration,
+            );
+            setInlet2Pressure(json.calibrationGas.pressure);
+            setSelectedOrificeInlet2(json.calibrationGas.orifice);
+            setInletCalibrationFlowData({
+              ...inletCalibrationFlowData,
+              massFlow: json.calibrationGas.massFlow,
+            });
+            setDilutionisComputing(false);
+            setInletCalibrationisComputing(false);
+          }
+        };
+        reader.readAsText(file);
+      }
+    };
+    input.click();
+  };
+
+  /**
    * Compute the outlet volume flow at 101.325 kPa.
    * @param massFlow1 - The mass flow of the dilution gas.
    * @param rho_out1 - The output density of the dilution gas.
@@ -560,9 +609,18 @@ export const CalibrationGasPage = () => {
           </Skeleton>
         </Tab>
       </Tabs>
-      <Button className="mt-4" color="secondary" onPress={exportData}>
-        {t("export-configuration")}
-      </Button>
+      <div className="mt-4 flex gap-2 justify-start">
+        <Tooltip content={t("save-current-configuration-as-json")}>
+          <Button color="secondary" onPress={exportData}>
+            {t("export-configuration")}
+          </Button>
+        </Tooltip>
+        <Tooltip content={t("import-configuration-as-json")}>
+          <Button color="secondary" onPress={importData}>
+            {t("import-configuration")}
+          </Button>
+        </Tooltip>
+      </div>
     </DefaultLayout>
   );
 };
