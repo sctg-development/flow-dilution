@@ -7,6 +7,7 @@ import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import unusedImports from 'eslint-plugin-unused-imports';
 import importPlugin from 'eslint-plugin-import';
 import prettierPlugin from 'eslint-plugin-prettier';
+import globals from 'globals';
 
 export default [
   eslint.configs.recommended,
@@ -17,14 +18,7 @@ export default [
       sourceType: 'module',
       parser: tsParser,
       globals: {
-        // Ajout des globals du navigateur
-        console: 'readonly',
-        document: 'readonly',
-        localStorage: 'readonly',
-        window: 'readonly',
-        SVGSVGElement: 'readonly',
-        Blob: 'readonly',
-        URL: 'readonly',
+        ...globals.browser,
       },
       parserOptions: {
         ecmaFeatures: {

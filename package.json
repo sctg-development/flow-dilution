@@ -64,6 +64,7 @@
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-unused-imports": "^4.1.4",
+    "globals": "^16.0.0",
     "http-server": "^14.1.1",
     "npm-check-updates": "^18.0.1",
     "postcss": "^8.5.3",
