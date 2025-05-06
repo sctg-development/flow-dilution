@@ -73,5 +73,7 @@
   "orifice-of": "Orificio {{label}}",
   "orifice-sizes": "Tamaños de orificio",
   "gas-mixtures": "Mezclas de gases",
-  "language": "Idioma"
+  "language": "Idioma",
+  "import-configuration-as-json": "Importar configuración exportada previamente como JSON",
+  "import-configuration": "Configuración de importación"
 }

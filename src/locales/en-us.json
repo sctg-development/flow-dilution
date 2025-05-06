@@ -73,5 +73,7 @@
   "title": "Flow Dilution Calculator - Sonic Nozzle Gas Dilution Tool",
   "orifice-sizes": "Orifice Sizes",
   "gas-mixtures": "Gas Mixtures",
-  "language": "Language"
+  "language": "Language",
+  "import-configuration-as-json": "Import previously exported configuration as json",
+  "import-configuration": "Import configuration"
 }

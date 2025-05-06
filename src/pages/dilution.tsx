@@ -113,6 +113,51 @@ export const DilutionPage = () => {
     ],
   );
 
+  const importData = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = (event) => {
+      const file = (event.target as HTMLInputElement).files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const content = e.target?.result;
+          if (content) {
+            const json = JSON.parse(content as string);
+            setTemperature(json.temperature);
+            setInlet1Pressure(json.gas1.pressure);
+            setInlet2Pressure(json.gas2.pressure);
+            setSelectedOrificeInlet1(json.gas1.orifice);
+            setSelectedOrificeInlet2(json.gas2.orifice);
+            setSelectedGasInlet1(
+              availableGasMixtures.find(
+                (gas) => gas.name === json.gas1.name,
+              ) || availableGasMixtures[0],
+            );
+            setSelectedGasInlet2(
+              availableGasMixtures.find(
+                (gas) => gas.name === json.gas2.name,
+              ) || availableGasMixtures[0],
+            );
+            setInlet1FlowData({
+              ...inlet1FlowData,
+              massFlow: json.gas1.massFlow,
+            });
+            setInlet2FlowData({
+              ...inlet2FlowData,
+              massFlow: json.gas2.massFlow,
+            });
+            setInlet1isComputing(false);
+            setInlet2isComputing(false);
+          }
+        };
+        reader.readAsText(file);
+      }
+    };
+    input.click();
+  };
+  
   const exportData = () => {
     const data = {
       timestamp: new Date().toISOString(),
@@ -390,6 +435,11 @@ export const DilutionPage = () => {
         <Tooltip content={t("save-current-configuration-as-json")}>
           <Button color="secondary" onPress={exportData}>
             {t("export-configuration")}
+          </Button>
+        </Tooltip>
+        <Tooltip content={t("import-configuration-as-json")}>
+          <Button color="secondary" onPress={importData}>
+            {t("import-configuration")}
           </Button>
         </Tooltip>
       </div>

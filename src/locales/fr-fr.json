@@ -73,5 +73,7 @@
   "concentration-values": "Concentrations",
   "orifice-sizes": "Diamètres de buse",
   "gas-mixtures": "Mélange gazeux",
-  "language": "Langue"
+  "language": "Langue",
+  "import-configuration-as-json": "Importer la configuration précédemment exportée en tant que JSON",
+  "import-configuration": "Configuration d'importation"
 }
