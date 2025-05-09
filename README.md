@@ -19,9 +19,10 @@ This application helps calculate and visualize gas flow dilution using sonic noz
 
 ## Features
 
-- Two main calculation modes:
+- Three main calculation modes:
   - General gas dilution
   - Calibration gas dilution
+  - Parameter optimizer for calibration gas
 - Real-time calculation of mass flow rates
 - Support for multiple gas mixtures using GERG-2008 equation of state
 - Configurable inlet pressures (0-1000 kPa)
@@ -53,6 +54,15 @@ This application helps calculate and visualize gas flow dilution using sonic noz
 4. Adjust pressures and orifice sizes
 5. View resulting concentration and flow rates
 6. Optional: View detailed gas properties for each inlet
+
+### Parameter Optimizer
+
+1. Set target flow rate (L/min) and concentration (ppm)
+2. Configure dilution gas and calibration bottle concentration
+3. Adjust constraints (min critical pressure, max pressures)
+4. Click "Find Optimal Configurations" button
+5. Review the best configuration and alternative options
+6. Export the selected configuration as JSON
 
 Note: The mass of the calibration gas (ppm values) is ignored in calculations as 1000 ppm = 0.1% is within ISO 9300:2022 standard tolerance.
 

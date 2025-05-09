@@ -15,6 +15,12 @@ const CalibrationGasPage = lazy(() =>
   })),
 );
 
+const OptimizerPage = lazy(() =>
+  import("@/pages/optimizer").then((module) => ({
+    default: module.OptimizerPage,
+  })),
+);
+
 export function App() {
   return (
     <Routes>
@@ -33,6 +39,14 @@ export function App() {
           </Suspense>
         }
         path="/calibrationgas"
+      />
+      <Route
+        element={
+          <Suspense fallback={<SiteLoading />}>
+            <OptimizerPage />
+          </Suspense>
+        }
+        path="/optimizer"
       />
     </Routes>
   );

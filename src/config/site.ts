@@ -56,6 +56,10 @@ export const siteConfig = () => ({
       href: "/calibrationgas",
     },
     {
+      label: t("optimizer"),
+      href: "/optimizer",
+    },
+    {
       label: t("aga8-computations"),
       href: "https://aga8.lasersmart.work/",
     },
@@ -72,6 +76,10 @@ export const siteConfig = () => ({
     {
       label: t("calibration-gas"),
       href: "/calibrationgas",
+    },
+    {
+      label: t("optimizer"),
+      href: "/optimizer",
     },
     {
       label: t("aga8-computations"),
