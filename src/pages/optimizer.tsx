@@ -85,7 +85,7 @@ export const OptimizerPage = () => {
   const [maxDilutionPressure, setMaxDilutionPressure] = useState<number>(400); // kPa
 
   const [progress, setProgress] = useState<number>(0);
-  const [totalIterations, setTotalIterations] = useState<number>(0);
+  // const [totalIterations, setTotalIterations] = useState<number>(0);
 
   const availableOrifices = useMemo(() => {
     return siteConfig().orifices.map((orifice) => orifice.size);
@@ -227,7 +227,7 @@ export const OptimizerPage = () => {
       filteredDilutionPressures.length *
       filteredCalibrationPressures.length;
 
-    setTotalIterations(totalCalcs);
+    // setTotalIterations(totalCalcs);
 
     let completedIterations = 0;
 
@@ -371,6 +371,7 @@ export const OptimizerPage = () => {
       // Take top 10 results
       setOptimizationResults(results.slice(0, 10));
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error("Optimization error:", error);
     } finally {
       setIsCalculating(false);
