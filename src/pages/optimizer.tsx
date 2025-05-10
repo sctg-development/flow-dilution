@@ -347,9 +347,9 @@ export const OptimizerPage = () => {
 
               if (
                 progressRef.current > lastProgressUpdateRef.current ||
-                now - lastProgressUpdateRef.current > 500
+                now - lastProgressUpdateRef.current > 250
               ) {
-                // Update at least every 500ms
+                // Update at least every 250ms
                 lastProgressUpdateRef.current = now;
 
                 // Use a promise and setTimeout to ensure the UI can update
@@ -558,7 +558,7 @@ export const OptimizerPage = () => {
             </Button>
 
             {isCalculating && (
-              <div className="mt-4 w-full max-w-md">
+              <div className="mt-4 w-full">
                 <div className="flex flex-row items-center justify-between mb-2">
                   <span className="text-sm text-gray-600">
                     {t("optimizing-configurations") ||
