@@ -37,7 +37,7 @@
     "@sctg/scientific-notation": "^1.0.1",
     "@tailwindcss/postcss": "^4.1.6",
     "@tailwindcss/vite": "^4.1.6",
-    "framer-motion": "12.10.5",
+    "framer-motion": "12.23.26",
     "i18next": "^25.1.2",
     "i18next-http-backend": "^3.0.2",
     "react": "19.1.0",
