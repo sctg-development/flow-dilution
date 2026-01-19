@@ -40,7 +40,7 @@
     "framer-motion": "12.10.5",
     "i18next": "^25.1.2",
     "i18next-http-backend": "^3.0.2",
-    "react": "19.1.0",
+    "react": "19.2.3",
     "react-dom": "19.1.0",
     "react-i18next": "^15.5.1",
     "react-router-dom": "7.6.0",
